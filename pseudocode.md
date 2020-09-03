@@ -9,7 +9,9 @@ Short-lived user access tokens are valid for only one hour
 To get a long-lived User access token you will first create a short-lived User access token.
 Next, you will exchange the short-lived User access token for a long-lived User access token.
 ### Get the token
-`curl -i -X GET "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app-id}&client_secret=app-secret}&fb_exchange_token={short-lived-user-access-token`
+```curl -i -X GET "https://graph.facebook.com/oauth/access_token?
+grant_type=fb_exchange_token&client_id={app-id}&client_secret=app-secret}&fb_exchange_token={short-lived-user-access-token```
+
 ### Output format
     {
         "access_token": "{long-lived-user-access-token}",
