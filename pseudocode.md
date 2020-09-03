@@ -13,7 +13,7 @@ Next, you will exchange the short-lived User access token for a long-lived User 
 ## Get page access token
 ## Get Access Tokens of Pages You Manage
 
-# Manage Facebook Pages
+
     Reference URL: https://developers.facebook.com/docs/pages/managing
     Get a list of Pages, Tasks & Tokens
 # Publish Page Content
