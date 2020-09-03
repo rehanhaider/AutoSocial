@@ -1,7 +1,6 @@
 import requests
 import json
 
-
 def getLongLivedUserAccessToken(app_id, app_secret, short_lived_user_access_token):
     token = requests.get(
         f"https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app_id}&client_secret={app_secret}&fb_exchange_token={short_lived_user_access_token}"
