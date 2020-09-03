@@ -8,14 +8,15 @@ Short-lived user access tokens are valid for only one hour
 ## Get long lived user access token (valid for 60 days)
 To get a long-lived User access token you will first create a short-lived User access token.
 Next, you will exchange the short-lived User access token for a long-lived User access token.
-    curl -i -X GET "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app-id}&client_secret=app-secret}&fb_exchange_token={short-lived-user-access-token"
+
 ## Get list of pages
 ## Get page access token
 ## Get Access Tokens of Pages You Manage
 
-
+# Manage Facebook Pages
     Reference URL: https://developers.facebook.com/docs/pages/managing
     Get a list of Pages, Tasks & Tokens
+    curl -i -X GET "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app-id}&client_secret=app-secret}&fb_exchange_token={short-lived-user-access-token
 # Publish Page Content
     ## Reference URL: https://developers.facebook.com/docs/pages/publishing
     ## Publish content
