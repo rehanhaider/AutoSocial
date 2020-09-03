@@ -14,6 +14,7 @@ Next, you will exchange the short-lived User access token for a long-lived User 
 ## Get Access Tokens of Pages You Manage
 
 # Manage Facebook Pages
+ok test this 
     Reference URL: https://developers.facebook.com/docs/pages/managing
     Get a list of Pages, Tasks & Tokens
     curl -i -X GET "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app-id}&client_secret=app-secret}&fb_exchange_token={short-lived-user-access-token
