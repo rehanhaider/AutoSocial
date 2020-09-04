@@ -11,7 +11,8 @@ Use one of the following methods to get a short-lived User access token:
 * The Graph Explorer tool (https://developers.facebook.com/docs/graph-api/explorer#get-token-dropdown)
 * The Facebook Login Dialog in-app (https://developers.facebook.com/docs/facebook-login/)
 Short-lived user access tokens are valid for only one hour
-This document only describes the Graph Explorer tool method for now
+
+***This document only describes the Graph Explorer tool method for now***
 
 ### Step 1.2: Get long lived user access token (valid for 60 days)
 To get a long-lived User access token you will first create a short-lived User access token.

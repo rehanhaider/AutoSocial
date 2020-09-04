@@ -1,0 +1,19 @@
+#:kivy 1.11.1
+<MainScreen>:
+    GridLayout:
+        cols: 1
+        GridLayout:
+            cols: 1
+            TextInput:
+                id: createPost
+                hint_text: "Create a new Post"
+        GridLayout:
+            cols: 1
+            Button:
+                text: "Submit"
+
+
+<RootWidget>:
+    MainScreen:
+        name: "mainScreen"
+    
