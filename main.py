@@ -2,10 +2,6 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from pathlib import Path
-import ConfigManager
-import GraphAPI
-
-
 
 Builder.load_file("design.kv")
 
