@@ -43,5 +43,3 @@ def schedulePhoto(page_id, path_to_photo, scheduled_time, page_access_token):
         f"https://graph.facebook.com/{page_id}/photos?published=false&url={path_to_photo}&scheduled_publish_time={scheduled_time}&access_token={page_access_token}"
     )
     return str(photo_schedule.content,"utf-8")
-
-
