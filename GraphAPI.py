@@ -2,44 +2,46 @@ import requests
 import json
 
 
-def getShortLivedUserAccessToken(config_file):
-    pass
+def getShortLivedUserAccessToken():
+    return "EAAJghWvjIX8BAAnowdUwMaTZCEa6xlXuU1QpxJLMBg29NGR452TrsWEdqV7iDVdAOFo4h2OZBRYGLtJDp0FZCnirm2DucvRp0nSnEoYhl6iuCAxpr6yz7NQ54ePeiDr8ZCq8HGrUndvMbGmTZC4SXzVq1WngsZBCEuV8c5dY0BwXraTYky7dFBeY8NvRfNKeLfqt0sZCGBbKwZDZD"
 
 
 def getLongLivedUserAccessToken(app_id, app_secret, short_lived_user_access_token):
     token = requests.get(
         f"https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={app_id}&client_secret={app_secret}&fb_exchange_token={short_lived_user_access_token}"
     )
-    return token
+    return json.loads(str(token.content,"utf-8"))
 
+def getUserID(user_access_token):
+    user = requests.get(f"https://graph.facebook.com/v8.0/me?fields=id%2Cname&access_token={user_access_token}")
+    return json.loads(str(user.content,"utf-8"))
 
-def getManagedPageAccessToken(page_id, user_access_token):
+def getManagedPageAccessDetails(user_id, user_access_token):
     """
     If you used a short-lived User access token, the Page access token is valid for only 1 hour.
     If you used a long-lived User access token, the Page access token has no expiration date.
     """
-    pageToken = requests.get(
-        f"https://graph.facebook.com/{page_id}?fields=access_token&access_token={user_access_token}"
-    )
-    return pageToken
+    pageDetails = requests.get(
+        f"https://graph.facebook.com/{user_id}/accounts?fields=name,access_token&access_token={user_access_token}"
+    )    
+    return str(pageDetails.content,"utf-8")
 
-
-def getListOfPages(user_id, user_access_token):
-    pages = requests.get(
-        f"https://graph.facebook.com/{user_id}/accounts?access_token={user_access_token}"
-    )
-    return pages
-
-
-def publishaPhoto(page_id, path_to_photo, page_access_token):
+def publishPhotoByURL(page_id, url_to_photo, page_access_token):
     photo_post = requests.post(
-        f"https://graph.facebook.com/{page_id}/photos?url={path_to_photo}&access_token={page_access_token}"
+        f"https://graph.facebook.com/{page_id}/photos?url={url_to_photo}&access_token={page_access_token}"
     )
     return photo_post
 
+def publishPhotoByFile(page_id, path_to_photo, caption, page_access_token):
+    files = {"source": open(path_to_photo, "rb")}
+    photo_post = requests.post(f"https://graph.facebook.com/{page_id}/photos?access_token={page_access_token}&caption={caption}", files=files)
+
+    return photo_post
 
 def schedulePhoto(page_id, path_to_photo, scheduled_time, page_access_token):
     photo_schedule = requests.post(
         f"https://graph.facebook.com/{page_id}/photos?published=false&url={path_to_photo}&scheduled_publish_time={scheduled_time}&access_token={page_access_token}"
     )
     return photo_schedule
+
+

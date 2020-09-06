@@ -131,6 +131,12 @@ Reference URL: https://developers.facebook.com/docs/graph-api/reference/photo
 * The ***pages_read_engagement*** permission
 * A Page access token requested by a person who is able to perform the CREATE_CONTENT task on the Page that is being queried
 
+There are two ways to upload photos to Facebook:
+* Attach the photo as multipart/form-data. The name of the object doesn't matter, but historically people have used source as the parameter name for the photo. How this works depends on the SDK you happen to be using to do the post.
+* Use a photo that is already on the internet by publishing using the url parameter:
+
+Regerence URL: https://developers.facebook.com/docs/graph-api/reference/v2.1/page/photos
+
 #### Send a POST request to the /{page-id}/feed endpoint:
 ```
 curl -i -X "POST https://graph.facebook.com/{page-id}/photos
