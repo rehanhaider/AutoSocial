@@ -56,6 +56,7 @@ class Facebook():
         userDetails = GraphAPI.getManagedPageAccessDetails(userID, self.longUserAccessToken)
         print(userDetails)
 
+    
 
 fb = Facebook()
 #fb.getLongLivedUserAccessToken()
