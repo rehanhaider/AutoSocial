@@ -1,18 +1,35 @@
 #:kivy 1.11.1
 <MainScreen>:
-    GridLayout:
-        cols: 1
-        GridLayout:
-            cols: 1
-            TextInput:
-                id: createPost
-                hint_text: "Create a new Post"
-        GridLayout:
-            cols: 1
-            Button:
-                text: "Submit"
-
-
+    BoxLayout:
+        orientation:"vertical"
+        MDToolbar:
+            title: "All"
+            md_bg_color: .2, .2, .2, 1
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["menu", lambda x: app.callback()]]
+        MDBottomNavigation:
+            panel_color: .2, .2, .2, 1
+            MDBottomNavigationItem:
+                name: "home"
+                text: "Home"
+                icon: "res/icons/MainScreen/BottomNavBar/home.png"
+                MDLabel:
+                    text: "Home"
+                    halign: "center"
+            MDBottomNavigationItem:
+                name: "accounts"
+                text: "Accounts"
+                icon: "res/icons/MainScreen/BottomNavBar/accounts.png"
+                MDLabel:
+                    text: "Accounts"
+                    halign: "center"
+            MDBottomNavigationItem:
+                name: "settings"
+                text: "Settings"
+                icon: "res/icons/MainScreen/BottomNavBar/accounts.png"
+                MDLabel:
+                    text: "Settings"
+                    halign: "center"
 <RootWidget>:
     MainScreen:
         name: "mainScreen"
