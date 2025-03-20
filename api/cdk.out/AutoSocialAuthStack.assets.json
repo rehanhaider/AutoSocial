@@ -1,0 +1,20 @@
+{
+  "version": "40.0.0",
+  "files": {
+    "58602b97f4bf1afe343681c23651e5e51675d6b91744c209cefcb4b9ac644106": {
+      "source": {
+        "path": "AutoSocialAuthStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "268674271179-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-268674271179-us-east-1",
+          "objectKey": "58602b97f4bf1afe343681c23651e5e51675d6b91744c209cefcb4b9ac644106.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::268674271179:role/cdk-hnb659fds-file-publishing-role-268674271179-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

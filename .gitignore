@@ -1,0 +1,36 @@
+# React Native
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+.DS_Store
+
+# Generated files
+.expo-shared/
+*.log
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies
+yarn.lock
+package-lock.json
+
+# Build
+build/
+*.tsbuildinfo
+
+# Assets
+*.psd
+*.ai 

@@ -1,0 +1,426 @@
+{
+ "Resources": {
+  "PostsTableC82B36F0": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "UserIdIndex",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "AutoSocial-Posts",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/PostsTable/Resource"
+   }
+  },
+  "SchedulesTableFBEB0188": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "UserIdIndex",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "AutoSocial-Schedules",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/SchedulesTable/Resource"
+   }
+  },
+  "MediaBucketBCBB02BA": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "autosocial-media-268674271179",
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST",
+        "DELETE",
+        "HEAD"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 3000
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/MediaBucket/Resource"
+   }
+  },
+  "MediaBucketPolicy68C27F6B": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "MediaBucketBCBB02BA"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MediaBucketBCBB02BA",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MediaBucketBCBB02BA",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/MediaBucket/Policy/Resource"
+   }
+  },
+  "MediaBucketAutoDeleteObjectsCustomResourceBC0A7C44": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "MediaBucketBCBB02BA"
+    }
+   },
+   "DependsOn": [
+    "MediaBucketPolicy68C27F6B"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/MediaBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-268674271179-us-east-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "MediaBucketBCBB02BA"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/3WLyw6CMBREv4V9uSLGxK3wARJwb0p7IeXRGm4LIU3/3SAmrFydMzOZFM63KyQRXygWso8HVYOvLBc94wu9vFw1H42swT95PSDLG/2VwOgCPnOiR7uVP9tRmEGJ9aj3HAIrkYybBLLckTXjERv9ZyomMyuJU8YJ2Z0IbWV5q3S7fR7Ovp0NTBuJ0NFpTlM4p5BEHSkVT05bNSKUOz99oZxB6gAAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialStorageStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "PostsTableName": {
+   "Value": {
+    "Ref": "PostsTableC82B36F0"
+   },
+   "Export": {
+    "Name": "AutoSocialPostsTableName"
+   }
+  },
+  "SchedulesTableName": {
+   "Value": {
+    "Ref": "SchedulesTableFBEB0188"
+   },
+   "Export": {
+    "Name": "AutoSocialSchedulesTableName"
+   }
+  },
+  "MediaBucketName": {
+   "Value": {
+    "Ref": "MediaBucketBCBB02BA"
+   },
+   "Export": {
+    "Name": "AutoSocialMediaBucketName"
+   }
+  },
+  "ExportsOutputFnGetAttPostsTableC82B36F0Arn40084DA1": {
+   "Value": {
+    "Fn::GetAtt": [
+     "PostsTableC82B36F0",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputFnGetAttPostsTableC82B36F0Arn40084DA1"
+   }
+  },
+  "ExportsOutputFnGetAttSchedulesTableFBEB0188Arn2760FA6A": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SchedulesTableFBEB0188",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputFnGetAttSchedulesTableFBEB0188Arn2760FA6A"
+   }
+  },
+  "ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MediaBucketBCBB02BA",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B"
+   }
+  },
+  "ExportsOutputRefPostsTableC82B36F06B4D022D": {
+   "Value": {
+    "Ref": "PostsTableC82B36F0"
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputRefPostsTableC82B36F06B4D022D"
+   }
+  },
+  "ExportsOutputRefSchedulesTableFBEB01887B045454": {
+   "Value": {
+    "Ref": "SchedulesTableFBEB0188"
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputRefSchedulesTableFBEB01887B045454"
+   }
+  },
+  "ExportsOutputRefMediaBucketBCBB02BA270A7AEB": {
+   "Value": {
+    "Ref": "MediaBucketBCBB02BA"
+   },
+   "Export": {
+    "Name": "AutoSocialStorageStack:ExportsOutputRefMediaBucketBCBB02BA270A7AEB"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

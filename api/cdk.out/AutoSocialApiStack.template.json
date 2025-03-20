@@ -1,0 +1,1942 @@
+{
+ "Resources": {
+  "AutoSocialApiA85E26F5": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "Auto Social API Gateway",
+    "Name": "AutoSocialApi",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Resource"
+   }
+  },
+  "AutoSocialApiDeployment40312A87ce55120f487777b29c8a21f337c3a919": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Auto Social API Gateway",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "DependsOn": [
+    "AutoSocialApiauthGET9A39B0A6",
+    "AutoSocialApiauthOPTIONSD087D666",
+    "AutoSocialApiauth48214EFB",
+    "AutoSocialApiOPTIONS8DF07895",
+    "AutoSocialApipostsidDELETE72F748D9",
+    "AutoSocialApipostsidGETB42F771E",
+    "AutoSocialApipostsidOPTIONSF3130185",
+    "AutoSocialApipostsidPUTFFA232DD",
+    "AutoSocialApipostsid8CBA81D3",
+    "AutoSocialApipostsGET9F324975",
+    "AutoSocialApipostsOPTIONS1F65C133",
+    "AutoSocialApipostsPOST2FF84AA3",
+    "AutoSocialApiposts21D42ACB",
+    "AutoSocialApischedulesidDELETEC6147540",
+    "AutoSocialApischedulesidGET648FC733",
+    "AutoSocialApischedulesidOPTIONS7B70EBFF",
+    "AutoSocialApischedulesidPUT2579A842",
+    "AutoSocialApischedulesidB3D3BBA5",
+    "AutoSocialApischedulesGETD0BAB164",
+    "AutoSocialApischedulesOPTIONSD463A2B0",
+    "AutoSocialApischedulesPOST90248F68",
+    "AutoSocialApischedules9A9789EF"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Deployment/Resource"
+   }
+  },
+  "AutoSocialApiDeploymentStageprod332E4F01": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "AutoSocialApiDeployment40312A87ce55120f487777b29c8a21f337c3a919"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    },
+    "StageName": "prod",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "AutoSocialApiOPTIONS8DF07895": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "AutoSocialApiA85E26F5",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApiauth48214EFB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AutoSocialApiA85E26F5",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "auth",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/auth/Resource"
+   }
+  },
+  "AutoSocialApiauthOPTIONSD087D666": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AutoSocialApiauth48214EFB"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/auth/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApiauthGETApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15GETauthCA1EDDB8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthFunctionA1CD5E0F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/GET/auth"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/auth/GET/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.GET..auth"
+   }
+  },
+  "AutoSocialApiauthGETApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15GETauth07C59FC6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthFunctionA1CD5E0F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/GET/auth"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/auth/GET/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.GET..auth"
+   }
+  },
+  "AutoSocialApiauthGET9A39B0A6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthFunctionA1CD5E0F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApiauth48214EFB"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/auth/GET/Resource"
+   }
+  },
+  "AutoSocialApiposts21D42ACB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AutoSocialApiA85E26F5",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "posts",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/Resource"
+   }
+  },
+  "AutoSocialApipostsOPTIONS1F65C133": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AutoSocialApiposts21D42ACB"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApipostsGETApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15GETposts01A536D3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/GET/posts"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/GET/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.GET..posts"
+   }
+  },
+  "AutoSocialApipostsGETApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15GETpostsAA9DF693": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/GET/posts"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/GET/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.GET..posts"
+   }
+  },
+  "AutoSocialApipostsGET9F324975": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "PostsFunction3DC4AEDB",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApiposts21D42ACB"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/GET/Resource"
+   }
+  },
+  "AutoSocialApipostsPOSTApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15POSTpostsBD5FB10F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/POST/posts"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/POST/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.POST..posts"
+   }
+  },
+  "AutoSocialApipostsPOSTApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15POSTpostsFA3D1E0F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/POST/posts"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/POST/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.POST..posts"
+   }
+  },
+  "AutoSocialApipostsPOST2FF84AA3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "PostsFunction3DC4AEDB",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApiposts21D42ACB"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/POST/Resource"
+   }
+  },
+  "AutoSocialApipostsid8CBA81D3": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AutoSocialApiposts21D42ACB"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/Resource"
+   }
+  },
+  "AutoSocialApipostsidOPTIONSF3130185": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AutoSocialApipostsid8CBA81D3"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApipostsidGETApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15GETpostsid27A30806": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/GET/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/GET/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.GET..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidGETApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15GETpostsid332BC614": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/GET/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/GET/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.GET..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidGETB42F771E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "PostsFunction3DC4AEDB",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApipostsid8CBA81D3"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/GET/Resource"
+   }
+  },
+  "AutoSocialApipostsidPUTApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15PUTpostsidE4B33B6B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/PUT/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/PUT/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.PUT..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidPUTApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15PUTpostsidB5B59435": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/PUT/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/PUT/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.PUT..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidPUTFFA232DD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "PostsFunction3DC4AEDB",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApipostsid8CBA81D3"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/PUT/Resource"
+   }
+  },
+  "AutoSocialApipostsidDELETEApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15DELETEpostsid393E52B4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/DELETE/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/DELETE/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.DELETE..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidDELETEApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15DELETEpostsid62DB4B41": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PostsFunction3DC4AEDB",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/DELETE/posts/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/DELETE/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.DELETE..posts.{id}"
+   }
+  },
+  "AutoSocialApipostsidDELETE72F748D9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "PostsFunction3DC4AEDB",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApipostsid8CBA81D3"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/posts/{id}/DELETE/Resource"
+   }
+  },
+  "AutoSocialApischedules9A9789EF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AutoSocialApiA85E26F5",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "schedules",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/Resource"
+   }
+  },
+  "AutoSocialApischedulesOPTIONSD463A2B0": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AutoSocialApischedules9A9789EF"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApischedulesGETApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15GETschedules6E415878": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/GET/schedules"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/GET/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.GET..schedules"
+   }
+  },
+  "AutoSocialApischedulesGETApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15GETschedulesC28FD291": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/GET/schedules"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/GET/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.GET..schedules"
+   }
+  },
+  "AutoSocialApischedulesGETD0BAB164": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SchedulesFunctionAFFF7405",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApischedules9A9789EF"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/GET/Resource"
+   }
+  },
+  "AutoSocialApischedulesPOSTApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15POSTschedules3331E9DC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/POST/schedules"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/POST/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.POST..schedules"
+   }
+  },
+  "AutoSocialApischedulesPOSTApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15POSTschedules855A270C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/POST/schedules"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/POST/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.POST..schedules"
+   }
+  },
+  "AutoSocialApischedulesPOST90248F68": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SchedulesFunctionAFFF7405",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApischedules9A9789EF"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/POST/Resource"
+   }
+  },
+  "AutoSocialApischedulesidB3D3BBA5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AutoSocialApischedules9A9789EF"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/Resource"
+   }
+  },
+  "AutoSocialApischedulesidOPTIONS7B70EBFF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AutoSocialApischedulesidB3D3BBA5"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/OPTIONS/Resource"
+   }
+  },
+  "AutoSocialApischedulesidGETApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15GETschedulesid9ED6FDF1": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/GET/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/GET/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.GET..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidGETApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15GETschedulesid67309A95": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/GET/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/GET/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.GET..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidGET648FC733": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SchedulesFunctionAFFF7405",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApischedulesidB3D3BBA5"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/GET/Resource"
+   }
+  },
+  "AutoSocialApischedulesidPUTApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15PUTschedulesidEF89F106": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/PUT/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/PUT/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.PUT..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidPUTApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15PUTschedulesidCC7A3B1D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/PUT/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/PUT/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.PUT..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidPUT2579A842": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SchedulesFunctionAFFF7405",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApischedulesidB3D3BBA5"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/PUT/Resource"
+   }
+  },
+  "AutoSocialApischedulesidDELETEApiPermissionAutoSocialApiStackAutoSocialApiF16CCF15DELETEschedulesid397695BD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/",
+       {
+        "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+       },
+       "/DELETE/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/DELETE/ApiPermission.AutoSocialApiStackAutoSocialApiF16CCF15.DELETE..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidDELETEApiPermissionTestAutoSocialApiStackAutoSocialApiF16CCF15DELETEschedulesidDC7BEA40": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SchedulesFunctionAFFF7405",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:268674271179:",
+       {
+        "Ref": "AutoSocialApiA85E26F5"
+       },
+       "/test-invoke-stage/DELETE/schedules/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/DELETE/ApiPermission.Test.AutoSocialApiStackAutoSocialApiF16CCF15.DELETE..schedules.{id}"
+   }
+  },
+  "AutoSocialApischedulesidDELETEC6147540": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AutoSocialAuthorizerF44ED165"
+    },
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SchedulesFunctionAFFF7405",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AutoSocialApischedulesidB3D3BBA5"
+    },
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialApi/Default/schedules/{id}/DELETE/Resource"
+   }
+  },
+  "AutoSocialAuthorizerF44ED165": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "AutoSocialApiStackAutoSocialAuthorizerA49DC7E0",
+    "ProviderARNs": [
+     {
+      "Fn::ImportValue": "AutoSocialAuthStack:ExportsOutputFnGetAttUserPool6BA7E5F2Arn686ACC00"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "AutoSocialApiA85E26F5"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AutoSocialAuthorizer/Resource"
+   }
+  },
+  "LambdaExecutionRoleD5C26073": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/LambdaExecutionRole/Resource"
+   }
+  },
+  "LambdaExecutionRoleDefaultPolicy6D69732F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttPostsTableC82B36F0Arn40084DA1"
+        },
+        {
+         "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttSchedulesTableFBEB0188Arn2760FA6A"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttPostsTableC82B36F0Arn40084DA1"
+           },
+           "/index/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttSchedulesTableFBEB0188Arn2760FA6A"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputFnGetAttMediaBucketBCBB02BAArnB94B784B"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "cognito-idp:AdminGetUser",
+        "cognito-idp:AdminUpdateUserAttributes"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "AutoSocialAuthStack:ExportsOutputFnGetAttUserPool6BA7E5F2Arn686ACC00"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaExecutionRoleDefaultPolicy6D69732F",
+    "Roles": [
+     {
+      "Ref": "LambdaExecutionRoleD5C26073"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/LambdaExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "AuthFunctionA1CD5E0F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-268674271179-us-east-1",
+     "S3Key": "451b93387db1e378219838c56e91ca2ec8e39c437fe2742fd55bf3b9e3ebfd7f.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "POSTS_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefPostsTableC82B36F06B4D022D"
+      },
+      "SCHEDULES_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefSchedulesTableFBEB01887B045454"
+      },
+      "MEDIA_BUCKET": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefMediaBucketBCBB02BA270A7AEB"
+      },
+      "USER_POOL_ID": {
+       "Fn::ImportValue": "AutoSocialAuthStack:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      }
+     }
+    },
+    "Handler": "handler.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaExecutionRoleD5C26073",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "DependsOn": [
+    "LambdaExecutionRoleDefaultPolicy6D69732F",
+    "LambdaExecutionRoleD5C26073"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/AuthFunction/Resource",
+    "aws:asset:path": "asset.451b93387db1e378219838c56e91ca2ec8e39c437fe2742fd55bf3b9e3ebfd7f",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "PostsFunction3DC4AEDB": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-268674271179-us-east-1",
+     "S3Key": "b495103ed817c5d41c9ae9bf78fddaddb8a55e6c3d04389f8c2b1917a80c2594.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "POSTS_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefPostsTableC82B36F06B4D022D"
+      },
+      "SCHEDULES_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefSchedulesTableFBEB01887B045454"
+      },
+      "MEDIA_BUCKET": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefMediaBucketBCBB02BA270A7AEB"
+      },
+      "USER_POOL_ID": {
+       "Fn::ImportValue": "AutoSocialAuthStack:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      }
+     }
+    },
+    "Handler": "handler.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaExecutionRoleD5C26073",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ],
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "LambdaExecutionRoleDefaultPolicy6D69732F",
+    "LambdaExecutionRoleD5C26073"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/PostsFunction/Resource",
+    "aws:asset:path": "asset.b495103ed817c5d41c9ae9bf78fddaddb8a55e6c3d04389f8c2b1917a80c2594",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SchedulesFunctionAFFF7405": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-268674271179-us-east-1",
+     "S3Key": "94ac99737605ca79be8df12f82123c7a7f7481526fb9a7b8f75f9ea49eeb30ab.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "POSTS_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefPostsTableC82B36F06B4D022D"
+      },
+      "SCHEDULES_TABLE": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefSchedulesTableFBEB01887B045454"
+      },
+      "MEDIA_BUCKET": {
+       "Fn::ImportValue": "AutoSocialStorageStack:ExportsOutputRefMediaBucketBCBB02BA270A7AEB"
+      },
+      "USER_POOL_ID": {
+       "Fn::ImportValue": "AutoSocialAuthStack:ExportsOutputRefUserPool6BA7E5F296FD7236"
+      }
+     }
+    },
+    "Handler": "handler.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaExecutionRoleD5C26073",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "AutoSocial"
+     }
+    ]
+   },
+   "DependsOn": [
+    "LambdaExecutionRoleDefaultPolicy6D69732F",
+    "LambdaExecutionRoleD5C26073"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/SchedulesFunction/Resource",
+    "aws:asset:path": "asset.94ac99737605ca79be8df12f82123c7a7f7481526fb9a7b8f75f9ea49eeb30ab",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PzW6DMBCEnyV34yZElXolVLlVRUQ9R45ZyAZjI++6iCLevXIBpaf5Zne0P6k8vL3K/U4NlOiqTQze5HRhpVuhBrpOqsdGMQxqlFMJxFmPIq/thu/QGzd2YDlW/7kLqwZibYESyAWv4aQIxAfw3VWxudLWXSev7BqL7L4IfOGcoSzw3Xn8AR9jTzcLo7pbpeSU17YA3yEROivOwWqOkNd241mg6uRUOrPsilo4g3qMdqFZ0PGqiIBJZlEEHeUp6BY4Xj/H5GfgPvDz7r9c/BRtMwvrKpAPevlOU3lI5X73IMTEB8vYgSwX/QVX1qJ0eQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutoSocialApiStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "AutoSocialApiEndpointE313828D": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AutoSocialApiA85E26F5"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AutoSocialApiA85E26F5"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AutoSocialApiDeploymentStageprod332E4F01"
+      },
+      "/"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "AutoSocialApiUrl"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

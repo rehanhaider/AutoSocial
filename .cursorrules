@@ -18,15 +18,16 @@ The app has the following Modules
 
 Frontend:
 
--   React Native
+-   React Native (Typescript)
 -   Expo
--   AWS SDK
+-   AWS SDK (Not using Amplify)
 
 Backend:
+To be built using AWS CDK (Typescript)
 
 -   AWS Cognito
--   AWS API Gateway
--   AWS Lambda
+-   AWS API Gateway (Proxy Mode)
+-   AWS Lambda (Python 3.12)
 -   AWS DynamoDB
 -   AWS S3
 
@@ -34,3 +35,4 @@ Backend:
 
 -   All code related to mobile app should go in app directory.
 -   All code related to backend should go in api directory.
+-   Assume that the expo server is running and ask me for the error if any, instead of suggesting me to run the server.
