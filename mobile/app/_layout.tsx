@@ -2,11 +2,11 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native
 import { useFonts } from "expo-font";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { AuthService } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/useAuth";
 import { ActivityIndicator, View } from "react-native";
 
 // This hook will protect the route access based on authentication state.
@@ -35,27 +35,11 @@ export default function RootLayout() {
     const [loadedFonts] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
-    const [authChecked, setAuthChecked] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const status = await AuthService.checkAuthStatus();
-                setIsAuthenticated(status);
-            } catch (e) {
-                console.error("Auth check failed", e);
-                setIsAuthenticated(false);
-            } finally {
-                setAuthChecked(true);
-            }
-        };
-        checkAuth();
-    }, []);
+    const { isAuthenticated, loading } = useAuth();
 
     useProtectedRoute(isAuthenticated);
 
-    if (!loadedFonts || !authChecked) {
+    if (!loadedFonts || loading) {
         // Show a loading indicator while fonts are loading or auth check is in progress
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

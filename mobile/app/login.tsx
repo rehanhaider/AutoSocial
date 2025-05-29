@@ -1,26 +1,21 @@
-import { AuthService } from "@/lib/auth";
-import { router } from "expo-router";
+import { useAuth } from "@/lib/hooks/useAuth";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { login, loading } = useAuth();
 
     const handleLogin = async () => {
-        setIsLoading(true);
         setError(null);
         try {
-            await AuthService.login(email, password);
-            // Navigate to the main part of the app after successful login
-            router.replace("/(drawer)/(tabs)");
+            await login(email, password);
+            // Navigation will be handled by the useProtectedRoute hook in _layout.tsx
         } catch (err: any) {
             setError(err.message || "Login failed. Please check your credentials.");
             Alert.alert("Login Error", err.message || "Login failed. Please check your credentials.");
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -35,7 +30,7 @@ export default function LoginScreen() {
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                editable={!isLoading}
+                editable={!loading}
             />
             <TextInput
                 style={styles.input}
@@ -43,13 +38,9 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                editable={!isLoading}
+                editable={!loading}
             />
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#007bff" />
-            ) : (
-                <Button title="Login" onPress={handleLogin} color="#007bff" />
-            )}
+            {loading ? <ActivityIndicator size="large" color="#007bff" /> : <Button title="Login" onPress={handleLogin} color="#007bff" />}
             {/* TODO: Add links for Sign Up, Forgot Password */}
         </View>
     );

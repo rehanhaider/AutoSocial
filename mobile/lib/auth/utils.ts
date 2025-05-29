@@ -15,3 +15,32 @@ export function extractAttributesFromToken(token: string): UserAttributes {
         family_name: payload.family_name,
     };
 }
+
+// User display utilities
+export function getUserInitials(userAttributes: UserAttributes | null): string {
+    if (!userAttributes || !userAttributes.given_name || !userAttributes.family_name) {
+        return "U";
+    }
+    return (userAttributes.given_name.charAt(0) + userAttributes.family_name.charAt(0)).toUpperCase();
+}
+
+export function getUserFirstName(userAttributes: UserAttributes | null): string {
+    if (!userAttributes || !userAttributes.given_name) {
+        return "User";
+    }
+    return userAttributes.given_name;
+}
+
+export function getUserFullName(userAttributes: UserAttributes | null): string {
+    if (!userAttributes || !userAttributes.given_name || !userAttributes.family_name) {
+        return "User";
+    }
+    return `${userAttributes.given_name} ${userAttributes.family_name}`;
+}
+
+export function getUserEmail(userAttributes: UserAttributes | null): string {
+    if (!userAttributes || !userAttributes.email) {
+        return "";
+    }
+    return userAttributes.email;
+}

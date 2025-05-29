@@ -1,4 +1,5 @@
-import { AuthService } from "@/lib/auth";
+import { getUserEmail, getUserFirstName, getUserInitials } from "@/lib/auth/utils";
+import { useAuth } from "@/lib/hooks/useAuth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { useRouter } from "expo-router";
@@ -8,39 +9,39 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 function CustomDrawerContent(props: any) {
     const router = useRouter();
+    const { userAttributes, loading, logout } = useAuth();
 
     const handleLogout = async () => {
         try {
-            await AuthService.logout();
+            await logout();
             router.replace("/login");
         } catch (error) {
             console.error("Logout failed:", error);
         }
     };
 
-    const getInitials = (name: string) => {
-        return name
-            .split(" ")
-            .map((word) => word.charAt(0))
-            .join("")
-            .toUpperCase()
-            .slice(0, 2);
-    };
-
-    // For now, using placeholder user data
-    const userName = "John Doe";
-    const userInitials = getInitials(userName);
-    const firstName = userName.split(" ")[0];
+    if (loading) {
+        return (
+            <DrawerContentScrollView {...props} style={styles.drawerContainer}>
+                <View style={styles.userSection}>
+                    <View style={styles.avatar}>
+                        <Text style={styles.avatarText}>...</Text>
+                    </View>
+                    <Text style={styles.greeting}>Loading...</Text>
+                </View>
+            </DrawerContentScrollView>
+        );
+    }
 
     return (
         <DrawerContentScrollView {...props} style={styles.drawerContainer}>
             {/* User Info Section */}
             <View style={styles.userSection}>
                 <View style={styles.avatar}>
-                    <Text style={styles.avatarText}>{userInitials}</Text>
+                    <Text style={styles.avatarText}>{getUserInitials(userAttributes)}</Text>
                 </View>
-                <Text style={styles.greeting}>Hi, {firstName}!</Text>
-                <Text style={styles.userEmail}>john.doe@example.com</Text>
+                <Text style={styles.greeting}>Hi, {getUserFirstName(userAttributes)}!</Text>
+                <Text style={styles.userEmail}>{getUserEmail(userAttributes)}</Text>
             </View>
 
             {/* Navigation Items */}
