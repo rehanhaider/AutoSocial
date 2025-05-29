@@ -29,6 +29,8 @@ export default function TabLayout() {
                 tabBarStyle: {
                     backgroundColor: colors.surface,
                     borderTopColor: colors.border,
+                    height: 70,
+                    paddingTop: 10,
                 },
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.iconPrimary,
@@ -84,7 +86,6 @@ export default function TabLayout() {
         </Tabs>
     );
 }
-
 const styles = StyleSheet.create({
     plusIconContainer: {
         alignItems: "center",
