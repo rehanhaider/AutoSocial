@@ -1,46 +1,49 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import "react-native-reanimated";
 
+import { AuthProvider } from "@/lib/hooks/AuthProvider";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { ActivityIndicator, View } from "react-native";
 
-// This hook will protect the route access based on authentication state.
-function useProtectedRoute(user: boolean | null) {
-    const segments = useSegments();
-    const router = useRouter();
-
-    useEffect(() => {
-        if (user === null) {
-            // Still loading auth state
-            return;
-        }
-
-        if (!user && segments[0] !== "login") {
-            // Redirect to the login page if the user is not authenticated and not already on the login page.
-            router.replace("/login");
-        } else if (user && segments[0] === "login") {
-            // Redirect to the main app if the user is authenticated and currently on the login page.
-            router.replace("/(drawer)/(tabs)");
-        }
-    }, [user, segments, router]);
-}
-
-export default function RootLayout() {
+// This component contains the core app content and navigation logic.
+// It uses the useAuth hook to react to authentication state changes.
+function AppContent() {
     const [loadedFonts] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
     const { isAuthenticated, loading: authLoading } = useAuth();
     const { isDark, loading: themeLoading } = useTheme();
+    const router = useRouter();
 
-    useProtectedRoute(isAuthenticated);
+    useEffect(() => {
+        console.log("🚀 AppContent: useEffect triggered - isAuthenticated:", isAuthenticated, "authLoading:", authLoading);
+        // Wait for auth loading to complete before navigating
+        if (authLoading) {
+            console.log("🚀 AppContent: Auth state is loading, not navigating yet.");
+            return;
+        }
 
-    if (!loadedFonts || authLoading || themeLoading) {
-        // Show a loading indicator while fonts are loading or auth check is in progress
+        if (isAuthenticated === null) {
+            console.log("🚀 AppContent: isAuthenticated is null (initial state), not navigating.");
+            return;
+        }
+
+        if (!isAuthenticated) {
+            console.log("🚀 AppContent: Not authenticated, navigating to /login");
+            router.replace("/login");
+        } else {
+            console.log("🚀 AppContent: Authenticated, navigating to /(drawer)/(tabs)");
+            router.replace("/(drawer)/(tabs)");
+        }
+    }, [isAuthenticated, authLoading, router]);
+
+    // Show a global loading indicator if fonts, theme, or auth state is loading.
+    if (!loadedFonts || themeLoading || authLoading || isAuthenticated === null) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <ActivityIndicator size="large" />
@@ -50,17 +53,21 @@ export default function RootLayout() {
 
     return (
         <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-            <Stack>
-                <Stack.Screen
-                    name="(drawer)"
-                    options={{
-                        headerShown: false,
-                    }}
-                />
+            <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
             <StatusBar style={isDark ? "light" : "dark"} />
         </ThemeProvider>
+    );
+}
+
+// RootLayout now wraps AppContent with AuthProvider to provide global auth state.
+export default function RootLayout() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
     );
 }

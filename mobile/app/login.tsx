@@ -14,7 +14,7 @@ export default function LoginScreen() {
         setError(null);
         try {
             await login(email, password);
-            // Navigation will be handled by the useProtectedRoute hook in _layout.tsx
+            // No manual navigation needed - Stack will automatically switch when isAuthenticated becomes true
         } catch (err: any) {
             setError(err.message || "Login failed. Please check your credentials.");
             Alert.alert("Login Error", err.message || "Login failed. Please check your credentials.");
