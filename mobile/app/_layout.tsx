@@ -1,26 +1,79 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { AuthService } from "@/lib/auth";
+import { ActivityIndicator, View } from "react-native";
+
+// This hook will protect the route access based on authentication state.
+function useProtectedRoute(user: boolean | null) {
+    const segments = useSegments();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (user === null) {
+            // Still loading auth state
+            return;
+        }
+
+        if (!user && segments[0] !== "login") {
+            // Redirect to the login page if the user is not authenticated and not already on the login page.
+            router.replace("/login");
+        } else if (user && segments[0] === "login") {
+            // Redirect to the main app if the user is authenticated and currently on the login page.
+            router.replace("/(drawer)/(tabs)");
+        }
+    }, [user, segments, router]);
+}
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
-    const [loaded] = useFonts({
+    const [loadedFonts] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
+    const [authChecked, setAuthChecked] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-    if (!loaded) {
-        // Async font loading only occurs in development.
-        return null;
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const status = await AuthService.checkAuthStatus();
+                setIsAuthenticated(status);
+            } catch (e) {
+                console.error("Auth check failed", e);
+                setIsAuthenticated(false);
+            } finally {
+                setAuthChecked(true);
+            }
+        };
+        checkAuth();
+    }, []);
+
+    useProtectedRoute(isAuthenticated);
+
+    if (!loadedFonts || !authChecked) {
+        // Show a loading indicator while fonts are loading or auth check is in progress
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
     }
 
     return (
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                    name="(drawer)"
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
             <StatusBar style="auto" />
