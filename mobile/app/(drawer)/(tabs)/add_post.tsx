@@ -1,41 +1,72 @@
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function AddPostScreen() {
+    const colors = useThemeColors();
+
+    const dynamicStyles = StyleSheet.create({
+        container: {
+            backgroundColor: colors.background,
+        },
+        header: {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+        },
+        headerText: {
+            color: colors.text,
+        },
+        description: {
+            color: colors.textSecondary,
+        },
+        optionCard: {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+        },
+        optionTitle: {
+            color: colors.text,
+        },
+        optionDescription: {
+            color: colors.textSecondary,
+        },
+    });
+
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <MaterialCommunityIcons name="plus-circle" size={32} color="#10b981" />
-                <Text style={styles.headerText}>Create New Post</Text>
+        <ScrollView style={[styles.container, dynamicStyles.container]}>
+            <View style={[styles.header, dynamicStyles.header]}>
+                <MaterialCommunityIcons name="plus-circle" size={32} color={colors.success} />
+                <Text style={[styles.headerText, dynamicStyles.headerText]}>Create New Post</Text>
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.description}>Create and schedule your social media posts across multiple platforms.</Text>
+                <Text style={[styles.description, dynamicStyles.description]}>
+                    Create and schedule your social media posts across multiple platforms.
+                </Text>
 
                 <View style={styles.optionsContainer}>
-                    <View style={styles.optionCard}>
-                        <MaterialCommunityIcons name="image" size={32} color="#4f46e5" />
-                        <Text style={styles.optionTitle}>Photo Post</Text>
-                        <Text style={styles.optionDescription}>Share images with captions</Text>
+                    <View style={[styles.optionCard, dynamicStyles.optionCard]}>
+                        <MaterialCommunityIcons name="image" size={32} color={colors.primary} />
+                        <Text style={[styles.optionTitle, dynamicStyles.optionTitle]}>Photo Post</Text>
+                        <Text style={[styles.optionDescription, dynamicStyles.optionDescription]}>Share images with captions</Text>
                     </View>
 
-                    <View style={styles.optionCard}>
-                        <MaterialCommunityIcons name="video" size={32} color="#f59e0b" />
-                        <Text style={styles.optionTitle}>Video Post</Text>
-                        <Text style={styles.optionDescription}>Upload and share videos</Text>
+                    <View style={[styles.optionCard, dynamicStyles.optionCard]}>
+                        <MaterialCommunityIcons name="video" size={32} color={colors.warning} />
+                        <Text style={[styles.optionTitle, dynamicStyles.optionTitle]}>Video Post</Text>
+                        <Text style={[styles.optionDescription, dynamicStyles.optionDescription]}>Upload and share videos</Text>
                     </View>
 
-                    <View style={styles.optionCard}>
-                        <MaterialCommunityIcons name="text" size={32} color="#ef4444" />
-                        <Text style={styles.optionTitle}>Text Post</Text>
-                        <Text style={styles.optionDescription}>Share thoughts and updates</Text>
+                    <View style={[styles.optionCard, dynamicStyles.optionCard]}>
+                        <MaterialCommunityIcons name="text" size={32} color={colors.error} />
+                        <Text style={[styles.optionTitle, dynamicStyles.optionTitle]}>Text Post</Text>
+                        <Text style={[styles.optionDescription, dynamicStyles.optionDescription]}>Share thoughts and updates</Text>
                     </View>
 
-                    <View style={styles.optionCard}>
-                        <MaterialCommunityIcons name="calendar-clock" size={32} color="#8b5cf6" />
-                        <Text style={styles.optionTitle}>Schedule Post</Text>
-                        <Text style={styles.optionDescription}>Plan posts for later</Text>
+                    <View style={[styles.optionCard, dynamicStyles.optionCard]}>
+                        <MaterialCommunityIcons name="calendar-clock" size={32} color={colors.info} />
+                        <Text style={[styles.optionTitle, dynamicStyles.optionTitle]}>Schedule Post</Text>
+                        <Text style={[styles.optionDescription, dynamicStyles.optionDescription]}>Plan posts for later</Text>
                     </View>
                 </View>
             </View>

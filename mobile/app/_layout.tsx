@@ -5,8 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { useTheme } from "@/lib/hooks/useTheme";
 import { ActivityIndicator, View } from "react-native";
 
 // This hook will protect the route access based on authentication state.
@@ -31,15 +31,15 @@ function useProtectedRoute(user: boolean | null) {
 }
 
 export default function RootLayout() {
-    const colorScheme = useColorScheme();
     const [loadedFonts] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
-    const { isAuthenticated, loading } = useAuth();
+    const { isAuthenticated, loading: authLoading } = useAuth();
+    const { isDark, loading: themeLoading } = useTheme();
 
     useProtectedRoute(isAuthenticated);
 
-    if (!loadedFonts || loading) {
+    if (!loadedFonts || authLoading || themeLoading) {
         // Show a loading indicator while fonts are loading or auth check is in progress
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -49,7 +49,7 @@ export default function RootLayout() {
     }
 
     return (
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
             <Stack>
                 <Stack.Screen
                     name="(drawer)"
@@ -60,7 +60,7 @@ export default function RootLayout() {
                 <Stack.Screen name="login" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
-            <StatusBar style="auto" />
+            <StatusBar style={isDark ? "light" : "dark"} />
         </ThemeProvider>
     );
 }

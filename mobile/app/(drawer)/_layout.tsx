@@ -1,5 +1,6 @@
 import { getUserEmail, getUserFirstName, getUserInitials } from "@/lib/auth/utils";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { useRouter } from "expo-router";
@@ -10,6 +11,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 function CustomDrawerContent(props: any) {
     const router = useRouter();
     const { userAttributes, loading, logout } = useAuth();
+    const colors = useThemeColors();
 
     const handleLogout = async () => {
         try {
@@ -20,28 +22,53 @@ function CustomDrawerContent(props: any) {
         }
     };
 
+    const dynamicStyles = StyleSheet.create({
+        drawerContainer: {
+            backgroundColor: colors.surface,
+        },
+        userSection: {
+            backgroundColor: colors.background,
+            borderBottomColor: colors.border,
+        },
+        avatar: {
+            backgroundColor: colors.primary,
+        },
+        greeting: {
+            color: colors.text,
+        },
+        userEmail: {
+            color: colors.textSecondary,
+        },
+        logoutButton: {
+            borderTopColor: colors.border,
+        },
+        logoutText: {
+            color: colors.error,
+        },
+    });
+
     if (loading) {
         return (
-            <DrawerContentScrollView {...props} style={styles.drawerContainer}>
-                <View style={styles.userSection}>
-                    <View style={styles.avatar}>
+            <DrawerContentScrollView {...props} style={[styles.drawerContainer, dynamicStyles.drawerContainer]}>
+                <View style={[styles.userSection, dynamicStyles.userSection]}>
+                    <View style={[styles.avatar, dynamicStyles.avatar]}>
                         <Text style={styles.avatarText}>...</Text>
                     </View>
-                    <Text style={styles.greeting}>Loading...</Text>
+                    <Text style={[styles.greeting, dynamicStyles.greeting]}>Loading...</Text>
                 </View>
             </DrawerContentScrollView>
         );
     }
 
     return (
-        <DrawerContentScrollView {...props} style={styles.drawerContainer}>
+        <DrawerContentScrollView {...props} style={[styles.drawerContainer, dynamicStyles.drawerContainer]}>
             {/* User Info Section */}
-            <View style={styles.userSection}>
-                <View style={styles.avatar}>
+            <View style={[styles.userSection, dynamicStyles.userSection]}>
+                <View style={[styles.avatar, dynamicStyles.avatar]}>
                     <Text style={styles.avatarText}>{getUserInitials(userAttributes)}</Text>
                 </View>
-                <Text style={styles.greeting}>Hi, {getUserFirstName(userAttributes)}!</Text>
-                <Text style={styles.userEmail}>{getUserEmail(userAttributes)}</Text>
+                <Text style={[styles.greeting, dynamicStyles.greeting]}>Hi, {getUserFirstName(userAttributes)}!</Text>
+                <Text style={[styles.userEmail, dynamicStyles.userEmail]}>{getUserEmail(userAttributes)}</Text>
             </View>
 
             {/* Navigation Items */}
@@ -50,28 +77,41 @@ function CustomDrawerContent(props: any) {
                     label="Dashboard"
                     icon={({ color, size }) => <MaterialCommunityIcons name="view-dashboard" color={color} size={size} />}
                     onPress={() => props.navigation.navigate("(tabs)", { screen: "index" })}
+                    activeTintColor={colors.primary}
+                    inactiveTintColor={colors.iconPrimary}
+                    labelStyle={{ color: colors.text }}
                 />
 
                 <DrawerItem
                     label="Create Post"
                     icon={({ color, size }) => <MaterialCommunityIcons name="plus-circle" color={color} size={size} />}
                     onPress={() => props.navigation.navigate("(tabs)", { screen: "add_post" })}
+                    activeTintColor={colors.primary}
+                    inactiveTintColor={colors.iconPrimary}
+                    labelStyle={{ color: colors.text }}
                 />
 
                 <DrawerItem
                     label="Calendar"
                     icon={({ color, size }) => <MaterialCommunityIcons name="calendar" color={color} size={size} />}
                     onPress={() => props.navigation.navigate("(tabs)", { screen: "calendar" })}
+                    activeTintColor={colors.primary}
+                    inactiveTintColor={colors.iconPrimary}
+                    labelStyle={{ color: colors.text }}
                 />
 
-                <View style={styles.divider} />
+                <View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
                 <DrawerItem
                     label="Settings"
                     icon={({ color, size }) => <MaterialCommunityIcons name="cog" color={color} size={size} />}
                     onPress={() => {
-                        console.log("Settings pressed");
+                        props.navigation.closeDrawer();
+                        router.push("/(drawer)/(tabs)/settings");
                     }}
+                    activeTintColor={colors.primary}
+                    inactiveTintColor={colors.iconPrimary}
+                    labelStyle={{ color: colors.text }}
                 />
 
                 <DrawerItem
@@ -80,14 +120,17 @@ function CustomDrawerContent(props: any) {
                     onPress={() => {
                         console.log("Help pressed");
                     }}
+                    activeTintColor={colors.primary}
+                    inactiveTintColor={colors.iconPrimary}
+                    labelStyle={{ color: colors.text }}
                 />
             </View>
 
             {/* Logout Section */}
-            <View style={styles.logoutSection}>
+            <View style={[styles.logoutSection, dynamicStyles.logoutButton]}>
                 <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                    <MaterialCommunityIcons name="logout" color="#ef4444" size={20} />
-                    <Text style={styles.logoutText}>Logout</Text>
+                    <MaterialCommunityIcons name="logout" color={colors.error} size={20} />
+                    <Text style={[styles.logoutText, dynamicStyles.logoutText]}>Logout</Text>
                 </TouchableOpacity>
             </View>
         </DrawerContentScrollView>
@@ -95,13 +138,18 @@ function CustomDrawerContent(props: any) {
 }
 
 export default function DrawerLayout() {
+    const colors = useThemeColors();
+
     return (
         <Drawer
             drawerContent={(props) => <CustomDrawerContent {...props} />}
             screenOptions={{
                 headerShown: false,
-                drawerActiveTintColor: "#4f46e5",
-                drawerInactiveTintColor: "#64748b",
+                drawerActiveTintColor: colors.primary,
+                drawerInactiveTintColor: colors.iconPrimary,
+                drawerStyle: {
+                    backgroundColor: colors.surface,
+                },
             }}
         >
             <Drawer.Screen

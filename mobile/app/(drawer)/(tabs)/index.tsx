@@ -1,56 +1,102 @@
 import { getUserFirstName } from "@/lib/auth/utils";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
     const { userAttributes } = useAuth();
+    const colors = useThemeColors();
+
+    const dynamicStyles = StyleSheet.create({
+        container: {
+            backgroundColor: colors.background,
+        },
+        header: {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+        },
+        headerText: {
+            color: colors.text,
+        },
+        subHeaderText: {
+            color: colors.textSecondary,
+        },
+        description: {
+            color: colors.textSecondary,
+        },
+        statCard: {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+        },
+        statNumber: {
+            color: colors.text,
+        },
+        statLabel: {
+            color: colors.textSecondary,
+        },
+        sectionTitle: {
+            color: colors.text,
+        },
+        actionCard: {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+        },
+        actionTitle: {
+            color: colors.text,
+        },
+        actionSubtitle: {
+            color: colors.textSecondary,
+        },
+    });
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <MaterialCommunityIcons name="home" size={32} color="#4f46e5" />
-                <Text style={styles.headerText}>Welcome to AutoSocial</Text>
-                <Text style={styles.subHeaderText}>Hi {getUserFirstName(userAttributes)}! Ready to create amazing content?</Text>
+        <ScrollView style={[styles.container, dynamicStyles.container]}>
+            <View style={[styles.header, dynamicStyles.header]}>
+                <MaterialCommunityIcons name="home" size={32} color={colors.primary} />
+                <Text style={[styles.headerText, dynamicStyles.headerText]}>Welcome to AutoSocial</Text>
+                <Text style={[styles.subHeaderText, dynamicStyles.subHeaderText]}>
+                    Hi {getUserFirstName(userAttributes)}! Ready to create amazing content?
+                </Text>
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.description}>Your social media automation platform is ready to use!</Text>
+                <Text style={[styles.description, dynamicStyles.description]}>Your social media automation platform is ready to use!</Text>
 
                 <View style={styles.statsContainer}>
-                    <View style={styles.statCard}>
-                        <MaterialCommunityIcons name="post" size={24} color="#10b981" />
-                        <Text style={styles.statNumber}>0</Text>
-                        <Text style={styles.statLabel}>Posts</Text>
+                    <View style={[styles.statCard, dynamicStyles.statCard]}>
+                        <MaterialCommunityIcons name="post" size={24} color={colors.success} />
+                        <Text style={[styles.statNumber, dynamicStyles.statNumber]}>0</Text>
+                        <Text style={[styles.statLabel, dynamicStyles.statLabel]}>Posts</Text>
                     </View>
 
-                    <View style={styles.statCard}>
-                        <MaterialCommunityIcons name="calendar-clock" size={24} color="#f59e0b" />
-                        <Text style={styles.statNumber}>0</Text>
-                        <Text style={styles.statLabel}>Scheduled</Text>
+                    <View style={[styles.statCard, dynamicStyles.statCard]}>
+                        <MaterialCommunityIcons name="calendar-clock" size={24} color={colors.warning} />
+                        <Text style={[styles.statNumber, dynamicStyles.statNumber]}>0</Text>
+                        <Text style={[styles.statLabel, dynamicStyles.statLabel]}>Scheduled</Text>
                     </View>
 
-                    <View style={styles.statCard}>
-                        <MaterialCommunityIcons name="chart-line" size={24} color="#ef4444" />
-                        <Text style={styles.statNumber}>0</Text>
-                        <Text style={styles.statLabel}>Analytics</Text>
+                    <View style={[styles.statCard, dynamicStyles.statCard]}>
+                        <MaterialCommunityIcons name="chart-line" size={24} color={colors.error} />
+                        <Text style={[styles.statNumber, dynamicStyles.statNumber]}>0</Text>
+                        <Text style={[styles.statLabel, dynamicStyles.statLabel]}>Analytics</Text>
                     </View>
                 </View>
 
                 <View style={styles.quickActions}>
-                    <Text style={styles.sectionTitle}>Quick Actions</Text>
+                    <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Quick Actions</Text>
                     <View style={styles.actionGrid}>
-                        <View style={styles.actionCard}>
-                            <MaterialCommunityIcons name="plus-circle" size={28} color="#4f46e5" />
-                            <Text style={styles.actionTitle}>Create Post</Text>
-                            <Text style={styles.actionSubtitle}>Start creating content</Text>
+                        <View style={[styles.actionCard, dynamicStyles.actionCard]}>
+                            <MaterialCommunityIcons name="plus-circle" size={28} color={colors.primary} />
+                            <Text style={[styles.actionTitle, dynamicStyles.actionTitle]}>Create Post</Text>
+                            <Text style={[styles.actionSubtitle, dynamicStyles.actionSubtitle]}>Start creating content</Text>
                         </View>
 
-                        <View style={styles.actionCard}>
-                            <MaterialCommunityIcons name="calendar-plus" size={28} color="#10b981" />
-                            <Text style={styles.actionTitle}>Schedule</Text>
-                            <Text style={styles.actionSubtitle}>Plan your content</Text>
+                        <View style={[styles.actionCard, dynamicStyles.actionCard]}>
+                            <MaterialCommunityIcons name="calendar-plus" size={28} color={colors.success} />
+                            <Text style={[styles.actionTitle, dynamicStyles.actionTitle]}>Schedule</Text>
+                            <Text style={[styles.actionSubtitle, dynamicStyles.actionSubtitle]}>Plan your content</Text>
                         </View>
                     </View>
                 </View>

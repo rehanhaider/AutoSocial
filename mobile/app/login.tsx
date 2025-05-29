@@ -1,4 +1,5 @@
 import { useAuth } from "@/lib/hooks/useAuth";
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -7,6 +8,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const { login, loading } = useAuth();
+    const colors = useThemeColors();
 
     const handleLogin = async () => {
         setError(null);
@@ -19,13 +21,31 @@ export default function LoginScreen() {
         }
     };
 
+    const dynamicStyles = StyleSheet.create({
+        container: {
+            backgroundColor: colors.background,
+        },
+        logo: {
+            color: colors.text,
+        },
+        input: {
+            backgroundColor: colors.input,
+            borderColor: colors.inputBorder,
+            color: colors.inputText,
+        },
+        errorText: {
+            color: colors.error,
+        },
+    });
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.logo}>AutoSocial</Text>
-            {error && <Text style={styles.errorText}>{error}</Text>}
+        <View style={[styles.container, dynamicStyles.container]}>
+            <Text style={[styles.logo, dynamicStyles.logo]}>AutoSocial</Text>
+            {error && <Text style={[styles.errorText, dynamicStyles.errorText]}>{error}</Text>}
             <TextInput
-                style={styles.input}
+                style={[styles.input, dynamicStyles.input]}
                 placeholder="Email"
+                placeholderTextColor={colors.placeholder}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -33,14 +53,19 @@ export default function LoginScreen() {
                 editable={!loading}
             />
             <TextInput
-                style={styles.input}
+                style={[styles.input, dynamicStyles.input]}
                 placeholder="Password"
+                placeholderTextColor={colors.placeholder}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
                 editable={!loading}
             />
-            {loading ? <ActivityIndicator size="large" color="#007bff" /> : <Button title="Login" onPress={handleLogin} color="#007bff" />}
+            {loading ? (
+                <ActivityIndicator size="large" color={colors.primary} />
+            ) : (
+                <Button title="Login" onPress={handleLogin} color={colors.primary} />
+            )}
             {/* TODO: Add links for Sign Up, Forgot Password */}
         </View>
     );

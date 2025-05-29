@@ -1,3 +1,4 @@
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DrawerActions } from "@react-navigation/native";
 import { Tabs, useNavigation, useRouter } from "expo-router";
@@ -13,11 +14,24 @@ const PlusIcon = ({ color, size }: { color: string; size: number }) => (
 export default function TabLayout() {
     const router = useRouter();
     const navigation = useNavigation();
+    const colors = useThemeColors();
 
     return (
         <Tabs
             screenOptions={{
                 headerShown: true,
+                headerStyle: {
+                    backgroundColor: colors.surface,
+                },
+                headerTitleStyle: {
+                    color: colors.text,
+                },
+                tabBarStyle: {
+                    backgroundColor: colors.surface,
+                    borderTopColor: colors.border,
+                },
+                tabBarActiveTintColor: colors.primary,
+                tabBarInactiveTintColor: colors.iconPrimary,
                 headerLeft: () => (
                     <TouchableOpacity
                         onPress={() => {
@@ -25,17 +39,17 @@ export default function TabLayout() {
                         }}
                         style={{ marginLeft: Platform.OS === "ios" ? 15 : 10 }}
                     >
-                        <MaterialCommunityIcons name="menu" size={28} color="#333" />
+                        <MaterialCommunityIcons name="menu" size={28} color={colors.iconPrimary} />
                     </TouchableOpacity>
                 ),
                 headerRight: () => (
                     <TouchableOpacity
                         onPress={() => {
-                            console.log("Settings icon pressed");
+                            router.push("/(drawer)/(tabs)/settings");
                         }}
                         style={{ marginRight: Platform.OS === "ios" ? 15 : 10 }}
                     >
-                        <MaterialCommunityIcons name="cog" size={26} color="#333" />
+                        <MaterialCommunityIcons name="cog" size={26} color={colors.iconPrimary} />
                     </TouchableOpacity>
                 ),
             }}
@@ -59,6 +73,12 @@ export default function TabLayout() {
                 options={{
                     title: "Calendar",
                     tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="calendar" color={color} size={size} />,
+                }}
+            />
+            <Tabs.Screen
+                name="settings"
+                options={{
+                    href: null, // Hide from tab bar
                 }}
             />
         </Tabs>

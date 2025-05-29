@@ -1,45 +1,91 @@
+import { useThemeColors } from "@/lib/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function CalendarScreen() {
+    const colors = useThemeColors();
+
+    const dynamicStyles = StyleSheet.create({
+        container: {
+            backgroundColor: colors.background,
+        },
+        header: {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+        },
+        headerText: {
+            color: colors.text,
+        },
+        description: {
+            color: colors.textSecondary,
+        },
+        calendarContainer: {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+        },
+        monthText: {
+            color: colors.text,
+        },
+        weekDay: {
+            color: colors.textSecondary,
+        },
+        emptyText: {
+            color: colors.textSecondary,
+        },
+        emptySubtext: {
+            color: colors.textMuted,
+        },
+        upcomingSection: {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+        },
+        sectionTitle: {
+            color: colors.text,
+        },
+    });
+
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <MaterialCommunityIcons name="calendar" size={32} color="#f59e0b" />
-                <Text style={styles.headerText}>Content Calendar</Text>
+        <ScrollView style={[styles.container, dynamicStyles.container]}>
+            <View style={[styles.header, dynamicStyles.header]}>
+                <MaterialCommunityIcons name="calendar" size={32} color={colors.warning} />
+                <Text style={[styles.headerText, dynamicStyles.headerText]}>Content Calendar</Text>
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.description}>View and manage your scheduled posts across all platforms.</Text>
+                <Text style={[styles.description, dynamicStyles.description]}>
+                    View and manage your scheduled posts across all platforms.
+                </Text>
 
-                <View style={styles.calendarContainer}>
+                <View style={[styles.calendarContainer, dynamicStyles.calendarContainer]}>
                     <View style={styles.calendarHeader}>
-                        <MaterialCommunityIcons name="chevron-left" size={24} color="#64748b" />
-                        <Text style={styles.monthText}>January 2024</Text>
-                        <MaterialCommunityIcons name="chevron-right" size={24} color="#64748b" />
+                        <MaterialCommunityIcons name="chevron-left" size={24} color={colors.iconPrimary} />
+                        <Text style={[styles.monthText, dynamicStyles.monthText]}>January 2024</Text>
+                        <MaterialCommunityIcons name="chevron-right" size={24} color={colors.iconPrimary} />
                     </View>
 
                     <View style={styles.weekDays}>
                         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                            <Text key={day} style={styles.weekDay}>
+                            <Text key={day} style={[styles.weekDay, dynamicStyles.weekDay]}>
                                 {day}
                             </Text>
                         ))}
                     </View>
 
                     <View style={styles.emptyCalendar}>
-                        <MaterialCommunityIcons name="calendar-blank" size={48} color="#cbd5e1" />
-                        <Text style={styles.emptyText}>No scheduled posts yet</Text>
-                        <Text style={styles.emptySubtext}>Create your first scheduled post to see it here</Text>
+                        <MaterialCommunityIcons name="calendar-blank" size={48} color={colors.iconSecondary} />
+                        <Text style={[styles.emptyText, dynamicStyles.emptyText]}>No scheduled posts yet</Text>
+                        <Text style={[styles.emptySubtext, dynamicStyles.emptySubtext]}>
+                            Create your first scheduled post to see it here
+                        </Text>
                     </View>
                 </View>
 
-                <View style={styles.upcomingSection}>
-                    <Text style={styles.sectionTitle}>Upcoming Posts</Text>
+                <View style={[styles.upcomingSection, dynamicStyles.upcomingSection]}>
+                    <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Upcoming Posts</Text>
                     <View style={styles.emptyUpcoming}>
-                        <MaterialCommunityIcons name="clock-outline" size={32} color="#cbd5e1" />
-                        <Text style={styles.emptyText}>No upcoming posts</Text>
+                        <MaterialCommunityIcons name="clock-outline" size={32} color={colors.iconSecondary} />
+                        <Text style={[styles.emptyText, dynamicStyles.emptyText]}>No upcoming posts</Text>
                     </View>
                 </View>
             </View>
