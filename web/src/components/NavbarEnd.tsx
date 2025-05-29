@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
 import { AuthService } from "@lib/auth";
 import { $userInitials } from "@lib/stores/DefaultStore";
+import React, { useEffect, useRef, useState } from "react";
 
 export const NavbarEnd: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -66,12 +66,12 @@ export const NavbarEnd: React.FC = () => {
             {isAuthenticated ? (
                 <div className="relative" ref={dropdownRef}>
                     <div className="avatar placeholder cursor-pointer" onClick={toggleDropdown}>
-                        <div className="w-8 rounded-full bg-primary text-primary-content">
-                            <span className="text-xs flex h-full w-full items-center justify-center">{$userInitials.get()}</span>
+                        <div className="bg-primary text-primary-content w-8 rounded-full">
+                            <span className="flex h-full w-full items-center justify-center text-xs">{$userInitials.get()}</span>
                         </div>
                     </div>
                     {isDropdownOpen && (
-                        <div className="absolute right-0 z-50 mt-2 w-48 rounded-box bg-base-100 shadow-xl">
+                        <div className="rounded-box bg-base-100 absolute right-0 z-50 mt-2 w-48 shadow-xl">
                             <ul className="menu p-2">
                                 <li>
                                     <a href="/settings">Settings</a>
