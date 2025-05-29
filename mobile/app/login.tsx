@@ -15,8 +15,7 @@ export default function LoginScreen() {
         try {
             await AuthService.login(email, password);
             // Navigate to the main part of the app after successful login
-            // Replace '/(tabs)' with your actual main screen route if different
-            router.replace("/(tabs)");
+            router.replace("/(drawer)/(tabs)");
         } catch (err: any) {
             setError(err.message || "Login failed. Please check your credentials.");
             Alert.alert("Login Error", err.message || "Login failed. Please check your credentials.");
