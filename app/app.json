@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "SnapNews",
-        "slug": "SnapNews",
+        "name": "AutoSocial",
+        "slug": "AutoSocial",
         "version": "0.20250810.6",
         "orientation": "portrait",
         "icon": "./assets/AppIcon.png",
@@ -10,14 +10,14 @@
         "newArchEnabled": true,
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.mizanic.SnapNews"
+            "bundleIdentifier": "com.mizanic.AutoSocial"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/AppIcon.png",
                 "backgroundColor": "#071932"
             },
-            "package": "com.mizanic.SnapNews"
+            "package": "com.mizanic.AutoSocial"
         },
         "web": {
             "bundler": "metro",

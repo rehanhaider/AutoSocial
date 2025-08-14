@@ -1,3 +1,3 @@
-import LatestNewsScreen from "@/screen/news/LatestNewsScreen";
+import HomeScreen from "@/screen/home/HomeScreen";
 
-export default LatestNewsScreen;
+export default HomeScreen;
