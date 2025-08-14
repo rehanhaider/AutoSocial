@@ -1,9 +1,0 @@
----
-description: 
-globs: mobile/**/*.ts,mobile/**/*.tsx
-alwaysApply: false
----
-## Technology
-This is React Native project that uses Expo framework.
-
-AWS integration is handled through AWS SDK. Absoluty DO NOT USE AWS Amplify.

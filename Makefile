@@ -1,133 +1,123 @@
-# Default stack target for CDK commands (use --all for clarity)
-PROJECT ?= AutoSocial
+# ===============================
+# SnapNews Project Makefile
+# ===============================
+
+# --- Core Configuration ---
 STACK ?= --all
+ENV ?= dev
+SOURCE ?= all
 
-# Construct full stack name based on STACK variable
-ifeq ($(STACK),--all)
-  FULL_STACK_NAME=$(STACK)
-else
-  FULL_STACK_NAME=$(PROJECT)-$(STACK)Stack
-endif
+# --- Project Paths ---
+SCRIPTS_DIR := .scripts
+BACKEND_DIR := backend
+ADMIN_DIR := admin
+MOBILE_DIR := mobile
 
+# --- Categorized Script Directories ---
+AWS_SCRIPTS_DIR := $(SCRIPTS_DIR)/aws
+TESTING_SCRIPTS_DIR := $(SCRIPTS_DIR)/testing
+BUILD_SCRIPTS_DIR := $(SCRIPTS_DIR)/build
+UTILS_SCRIPTS_DIR := $(SCRIPTS_DIR)/utils
 
+# --- Default Target ---
+.DEFAULT_GOAL := help
 
-# --- Help Target ---
+# ===============================
+# MODULAR MAKEFILE INCLUDES
+# ===============================
+
+include .makefiles/infrastructure.mk
+include .makefiles/testing.mk
+include .makefiles/frontend.mk
+include .makefiles/setup.mk
+
+# ===============================
+# MAIN HELP SYSTEM
+# ===============================
+
 help:
+	@echo "SnapNews Project - Available Commands"
+	@echo "====================================="
+	@echo ""
 	@echo "Usage: make [target] [VAR=value]"
 	@echo ""
-	@echo "Targets:"
-	@echo "  help           Show this help message"
+	@echo "🏗️  Infrastructure:"
+	@echo "  deploy         Deploy stack(s) [STACK=name]"
+	@echo "  hotswap        Hotswap stack(s) for development"
+	@echo "  destroy        Destroy stack(s)"
+	@echo "  watch          Watch for changes"
 	@echo ""
-	@echo "  --- CDK Core Targets (use STACK=... to specify stack, defaults to --all) ---"
-	@echo "  deploy         Deploy specified stack(s) via CDK"
-	@echo "  destroy        Destroy specified stack(s) via CDK"
+	@echo "🧪 Testing:"
+	@echo "  test-reader    Test Lambda reader [SOURCE=name]"
+	@echo "  test-all       Run all tests"
+	@echo "  check-errors   Check Lambda errors"
 	@echo ""
-	@echo "  --- Helper Scripts & Tasks ---"
-	@echo "  layers         Create Lambda layers via script"
-	@echo "  env     Configure/Get environment variables via script"
+	@echo "🖥️  Frontend:"
+	@echo "  dev            Start admin dev server"
+	@echo "  mobile-dev     Start mobile dev server"
+	@echo "  build-all      Build all applications"
 	@echo ""
-	@echo "  --- Admin Frontend ---"
-	@echo "  dev            Run admin frontend dev server"
+	@echo "⚙️  Setup:"
+	@echo "  init-project   Initialize complete project"
+	@echo "  layers         Create Lambda layers"
+	@echo "  config-env     Configure environment"
 	@echo ""
+	@echo "🔧 Utilities:"
+	@echo "  clean          Clean build artifacts"
+	@echo "  status         Show project status"
+	@echo ""
+	@echo "📚 Detailed Help:"
+	@echo "  infrastructure-help  Show all infrastructure commands"
+	@echo "  testing-help        Show all testing commands"
+	@echo "  frontend-help       Show all frontend commands"
+	@echo "  setup-help          Show all setup commands"
+	@echo ""
+	@echo "📋 Quick Examples:"
+	@echo "  make deploy STACK=Api"
+	@echo "  make test-reader SOURCE=NDTV"
+	@echo "  make hotswap STACK=Lambda"
 
-# --- CDK Core Targets ---
-# These targets accept the STACK variable (e.g., make deploy STACK=MyStack)
+# ===============================
+# LEGACY COMPATIBILITY
+# ===============================
+# The modular makefiles already define these targets
 
-deploy:
-	@echo ">>> Deploying stack(s): [$(FULL_STACK_NAME)]"
-	cd aws && cdk deploy $(FULL_STACK_NAME) --require-approval never
+# ===============================
+# UTILITY TARGETS
+# ===============================
 
-destroy:
-	@echo ">>> Destroying stack(s): [$(FULL_STACK_NAME)]"
-	cd aws && cdk destroy $(FULL_STACK_NAME) # Add --force if needed
+clean:
+	@echo "🧹 Cleaning project..."
+	rm -f $(SCRIPTS_DIR)/*/response.json
+	rm -f $(SCRIPTS_DIR)/*/*/response.json
+	cd $(BACKEND_DIR) && rm -rf cdk.out || true
+	cd $(ADMIN_DIR) && rm -rf dist .next out node_modules/.cache || true
+	cd $(MOBILE_DIR) && rm -rf dist .expo node_modules/.cache || true
 
-# --- Helper Scripts & Tasks ---
+status:
+	@echo "📊 SnapNews Project Status:"
+	@echo "=========================="
+	@echo "  Environment: $(ENV)"
+	@echo "  Current stack: $(STACK)"
+	@echo "  Test source: $(SOURCE)"
+	@echo "  Backend dir: $(BACKEND_DIR)"
+	@echo "  Admin dir: $(ADMIN_DIR)"
+	@echo "  Mobile dir: $(MOBILE_DIR)"
+	@echo ""
+	@echo "  Script directories:"
+	@echo "    AWS scripts: $(AWS_SCRIPTS_DIR)"
+	@echo "    Testing scripts: $(TESTING_SCRIPTS_DIR)"
+	@echo "    Build scripts: $(BUILD_SCRIPTS_DIR)"
+	@echo "    Utility scripts: $(UTILS_SCRIPTS_DIR)"
+	@echo ""
+	@echo "  Git status:"
+	@git status --porcelain | head -5 || echo "    (Not a git repository)"
+	@echo ""
+	@echo "  AWS profile:"
+	@aws sts get-caller-identity --query 'Arn' --output text 2>/dev/null || echo "    (AWS not configured)"
 
-layers:
-	@echo ">>> Creating layers..."
-	./.scripts/create-layers.sh
+# ===============================
+# PHONY TARGETS
+# ===============================
 
-env-cdk:
-	@echo ">>> Creating .env.cdk.local files..."
-	./.scripts/create-env-cdk.sh
-	mise set
-
-env-aws:
-	@echo ">>> Creating .env.*.local files..."
-	./.scripts/create-env-aws.sh
-	mise set
-
-env:
-	@echo ">>> Creating .env.*.local files..."
-	make env-cdk
-	make env-aws
-
-
-
-# --- Web ---
-
-dev:
-	@echo ">>> Running admin frontend dev server..."
-	npm run --prefix ./web/ dev
-
-build:
-	@echo ">>> Building web output..."
-	npm run --prefix ./web/ build
-
-
-invalidate:
-	./.scripts/invalidate.sh
-
-upload:
-	@echo ">>> Uploading web output to S3..."
-	make build
-	./.scripts/add-bucket-policy.sh
-	./.scripts/deploy-host.sh
-
-
-# --- Mobile ---
-
-## WIP
-build-mobile:
-	@echo ">>> Building mobile output..."
-	cd mobile && npx expo prebuild
-	cd mobile/android && ./gradlew assembleRelease
-
-
-# --- Init ---
-
-create-bucket:
-	@echo ">>> Creating bucket..."
-	./.scripts/create-bucket.sh
-
-
-init:
-	@echo ">>> Initializing project..."
-	@echo ">>> Step 1: Creating bucket..."
-	make create-bucket
-	@echo ">>> Step 2: Creating layers..."
-	make layers
-	@echo ">>> Step 3: Creating .env.cdk.local files..."
-	make env-cdk
-	@echo ">>> Step 4: Deploying common stack..."
-	make deploy STACK=Common
-	@echo ">>> Step 5: Setting app data..."
-	./.scripts/set-appdata.sh
-	@echo ">>> Step 6: Deploying auth stack..."
-	make deploy STACK=Auth
-	@echo ">>> Step 7: Deploying api stack..."
-	make deploy STACK=Api
-	@echo ">>> Step 8: Create environment variables..."
-	make env
-	@echo ">>> Step 9: Deploying host stack..."
-	make deploy STACK=Host
-	./.scripts/add-bucket-policy.sh
-	@echo ">>> Step 10: Building web output..."
-	make build
-	@echo ">>> Step 11: Uploading web output to S3..."
-	make upload && make invalidate
-
-
-
-
-PHONY: build upload deploy destroy layers env-aws env create-bucket init help dev invalidate
+.PHONY: help clean status

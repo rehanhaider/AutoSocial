@@ -1,0 +1,46 @@
+{
+    "expo": {
+        "name": "SnapNews",
+        "slug": "SnapNews",
+        "version": "0.20250810.6",
+        "orientation": "portrait",
+        "icon": "./assets/AppIcon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.mizanic.SnapNews"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/AppIcon.png",
+                "backgroundColor": "#071932"
+            },
+            "package": "com.mizanic.SnapNews"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/AppIcon.png"
+        },
+        "plugins": [
+            "expo-router",
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./assets/AppIcon.png",
+                    "imageWidth": 200,
+                    "resizeMode": "contain",
+                    "backgroundColor": "#071932"
+                }
+            ],
+            "expo-localization",
+            "expo-font",
+            "expo-web-browser"
+        ],
+        "experiments": {
+            "typedRoutes": true
+        }
+    }
+}

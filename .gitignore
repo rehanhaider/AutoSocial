@@ -1,9 +1,13 @@
 node_modules/
+.venv/
+
+__pycache__/
 
 # local env files
 .env*.local
 .env
 .env/
+.pytest_cache/
 
 # layers
 .layers/
