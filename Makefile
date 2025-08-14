@@ -6,12 +6,13 @@
 STACK ?= --all
 ENV ?= dev
 SOURCE ?= all
+PROJECT_NAME ?= AutoSocial
 
 # --- Project Paths ---
 SCRIPTS_DIR := .scripts
-BACKEND_DIR := backend
+BACKEND_DIR := aws
 ADMIN_DIR := admin
-MOBILE_DIR := mobile
+MOBILE_DIR := app
 
 # --- Categorized Script Directories ---
 AWS_SCRIPTS_DIR := $(SCRIPTS_DIR)/aws
@@ -74,8 +75,7 @@ help:
 	@echo ""
 	@echo "📋 Quick Examples:"
 	@echo "  make deploy STACK=Api"
-	@echo "  make test-reader SOURCE=NDTV"
-	@echo "  make hotswap STACK=Lambda"
+	@echo "  make hotswap STACK=Api"
 
 # ===============================
 # LEGACY COMPATIBILITY
