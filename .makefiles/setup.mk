@@ -27,6 +27,10 @@ set-sources:
 	@echo "📰 Setting news sources..."
 	python3 $(BUILD_SCRIPTS_DIR)/set_sources.py
 
+create-bucket:
+	@echo "💾 Creating bucket..."
+	$(AWS_SCRIPTS_DIR)/create-bucket.sh
+
 # ===============================
 # PROJECT INITIALIZATION
 # ===============================

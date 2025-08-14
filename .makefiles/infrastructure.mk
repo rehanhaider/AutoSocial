@@ -4,7 +4,7 @@
 
 # --- Variables ---
 STACK ?= --all
-FULL_STACK_NAME = $(if $(filter --all,$(STACK)),$(STACK),SnapNews-$(STACK)Stack)
+FULL_STACK_NAME = $(if $(filter --all,$(STACK)),$(STACK),$(PROJECT_NAME)-$(STACK)Stack)
 
 # ===============================
 # CDK INFRASTRUCTURE TARGETS

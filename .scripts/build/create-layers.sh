@@ -2,27 +2,15 @@
 shopt -s expand_aliases
 alias echo="echo -e"
 
-
-# Check if the virtual environment exists
-if [ -f .env/bin/activate ]; then
-    echo "Activating virtual environment"
-    source .env/bin/activate
-else
-    echo "Virtual environment not found"
-    python3.12 -m venv .env
-    source .env/bin/activate
-fi
-
-
 # Layers directory
 LAYERS_DIR=.layers
 # Main requirements file
 MAIN_REQUIREMENTS_FILE=requirements.txt
 # Common requirements file
-COMMON_REQUIREMENTS_FILE=aws/requirements.txt
+COMMON_REQUIREMENTS_FILE=backend/src/fn/requirements.txt
 COMMON_OUTPUT_DIR=${LAYERS_DIR}/common/python
 
-SHARED_LIB_CODE_DIR=aws/src/stacks/shared
+SHARED_LIB_CODE_DIR=backend/src/shared
 
 # Create the layers directory
 rm -rf ${LAYERS_DIR}

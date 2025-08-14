@@ -27,8 +27,7 @@ DOMAIN_NAME = environ.get("DOMAIN_NAME")
 # ==================================================================================================
 # Global initializations
 cors_config = CORSConfig(
-    allow_origin=f"https://{DOMAIN_NAME}",
-    extra_origins=[f"https://www.{DOMAIN_NAME}", "http://localhost:3000"],
+    allow_origin="*",
     allow_headers=["*", "Authorization"],
 )
 
@@ -38,24 +37,31 @@ app = APIGatewayRestResolver(cors=cors_config)
 # Routes
 
 
-@app.post("/progress/<path_id>")
-def update_progress(path_id: str) -> dict:
+@app.get("/v1/home")
+def home() -> dict:
     data: dict = app.current_event.json_body
     user_id = parse_token(app.current_event.headers.get("authorization"))["cognito:username"]
     logger.info(f"User ID: {user_id}")
-    logger.info(f"Progress data: {data}")
-    logger.info(f"Path ID: {path_id}")
-    return RESPONSE(body={"message": "Progress data received"})
+    logger.info(f"Home data: {data}")
+    return RESPONSE(body={"message": "Home page data"})
 
 
-# This does not work with authorized API Gateway.
-# @app.get("/")
-# def index() -> dict:
-#     response = requests.get("https://jsonplaceholder.typicode.com/users", timeout=30)
-#     logger.info("Managed to fetch data from the API")
-#     # This needs to be single quotes, not double quotes. Otherwise, it will throw an error @TODO: Article
-#     # return RESPONSE(body=response.json()[0])
-#     return RESPONSE(body={"message": "Hello World"})
+@app.get("/v1/upload")
+def upload() -> dict:
+
+    ## Create an S3 signed URL
+    ## Send the S3 signed URL to the client
+    ## Default tag is "SCHEDULED=False"
+
+    return RESPONSE(body={"signedUrl": "s3://signed-url"})
+
+
+@app.post("/v1/schedule")
+def schedule() -> dict:
+    ## Get the s3 object key from request body
+    ## Schedule the job in eventbridge
+    ## Add the object key, and schedule id to the database along with details of the schedule
+    return RESPONSE(body={"jobId": "job-id"})
 
 
 def main(event: dict, context: LambdaContext) -> dict:

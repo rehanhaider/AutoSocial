@@ -1,20 +1,18 @@
-import { Stack, StackProps } from "aws-cdk-lib";
 import {
     aws_apigateway as apigateway,
-    aws_lambda as lambda,
-    aws_dynamodb as dynamodb,
-    aws_logs as logs,
     aws_cognito as cognito,
-    aws_ssm as ssm,
-    aws_certificatemanager as acm,
-    aws_ses as ses,
+    aws_dynamodb as dynamodb,
+    aws_lambda as lambda,
+    aws_logs as logs,
     RemovalPolicy,
     Size,
-    Duration,
+    aws_ssm as ssm,
+    Stack,
+    StackProps,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { ConstantsType, ParamsType } from "../constants";
 import { join } from "path";
+import { ConstantsType, ParamsType } from "../constants";
 
 export interface ApiStackProps extends StackProps {
     constants: ConstantsType;
@@ -42,15 +40,52 @@ export class ApiStack extends Stack {
             parameterName: props.params.COMMON_LAYER_ARN,
         });
 
-        const userPoolArn = ssm.StringParameter.fromStringParameterAttributes(this, `${props.constants.APP_NAME}-UserPoolArn`, {
-            parameterName: props.params.USER_POOL_ARN,
-        });
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Cognito User Pool
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        const userPool = cognito.UserPool.fromUserPoolArn(this, `${props.constants.APP_NAME}-UserPool`, userPoolArn.stringValue);
+        const userPool = new cognito.UserPool(this, `${props.constants.APP_NAME}-UserPool`, {
+            userPoolName: `${props.constants.APP_NAME}-UserPool`,
+            signInAliases: { email: true },
+            standardAttributes: {
+                email: {
+                    required: true,
+                    mutable: false,
+                },
+                givenName: {
+                    required: true,
+                    mutable: true,
+                },
+                familyName: {
+                    required: true,
+                    mutable: true,
+                },
+            },
+            mfa: cognito.Mfa.OFF,
+            accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
+            selfSignUpEnabled: true,
+            autoVerify: { email: true },
+            email: cognito.UserPoolEmail.withCognito(),
+            removalPolicy: RemovalPolicy.DESTROY,
+        });
+
+        const userPoolClient = new cognito.UserPoolClient(this, `${props.constants.APP_NAME}-AppClient`, {
+            userPool: userPool,
+            userPoolClientName: `${props.constants.APP_NAME}-AppClient`,
+            generateSecret: false, // Auth handled at client side. For secure app, we need to enable this so that we can authenticate in server
+            authFlows: {
+                userSrp: true, // Includes refresh tokens. No need to define explicitly
+                userPassword: true,
+                custom: true, // In case we need to add any auth challenge for secure app
+            },
+        });
+
+        // Customer domain not configured as it requries setting up a separate subdomain and associated pages. Rather using link & redirect URLs
+        userPool.addDomain(`${props.constants.APP_NAME}-UserPoolDomain`, {
+            cognitoDomain: {
+                domainPrefix: userPoolClient.userPoolClientId,
+            },
+        });
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // DynamoDB table
@@ -60,16 +95,6 @@ export class ApiStack extends Stack {
             tableName: tableName.stringValue,
             grantIndexPermissions: true,
         });
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Email Identity
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        const emailIdentity = ses.EmailIdentity.fromEmailIdentityName(
-            this,
-            `${props.constants.APP_NAME}-EmailIdentity`,
-            `${props.constants.DOMAIN_NAME}`
-        );
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Lambda handler
@@ -96,7 +121,6 @@ export class ApiStack extends Stack {
             environment: {
                 TABLE_NAME: table.tableName,
                 PROJECT_NAME: props.constants.APP_NAME,
-                DOMAIN_NAME: props.constants.DOMAIN_NAME,
             },
         });
 
@@ -118,75 +142,24 @@ export class ApiStack extends Stack {
         });
 
         // Base API Gateway. @TODO Evaluate if this can be configured at API GW V2
-        const apiGateway = new apigateway.RestApi(this, `${props.constants.APP_NAME}-Api`, {
+        const apiGateway = new apigateway.LambdaRestApi(this, `${props.constants.APP_NAME}-Api`, {
+            handler: apiFn,
+            proxy: true,
             restApiName: `${props.constants.APP_NAME}-Api`,
             deployOptions: {
-                stageName: "v1",
+                stageName: "api",
             },
             endpointTypes: [apigateway.EndpointType.REGIONAL],
             minCompressionSize: Size.bytes(0),
-
             defaultCorsPreflightOptions: {
                 allowOrigins: ["*"],
                 allowMethods: apigateway.Cors.ALL_METHODS,
                 allowHeaders: ["*", "Authorization"],
             },
-        });
-
-        // Proxy Authenticated API
-        const proxyApi = apiGateway.root.addProxy({
-            defaultIntegration: new apigateway.LambdaIntegration(apiFn),
             defaultMethodOptions: {
                 authorizationType: apigateway.AuthorizationType.COGNITO,
                 authorizer: authorizer,
             },
-            defaultCorsPreflightOptions: {
-                allowOrigins: ["*"],
-                allowMethods: apigateway.Cors.ALL_METHODS,
-                allowHeaders: ["*", "Authorization"],
-            },
-        });
-
-        //////////////////////////////////////////
-        // API Definitions for Waitlist
-        //////////////////////////////////////////
-
-        // Waitlist Lambda
-        const waitlistLambda = new lambda.Function(this, `${props.constants.APP_NAME}-WaitlistLambda`, {
-            code: lambda.Code.fromAsset(join(__dirname, "fn/api")),
-            handler: "waitlist.handler",
-            runtime: lambda.Runtime.PYTHON_3_12,
-            environment: {
-                TABLE_NAME: tableName.stringValue,
-                DOMAIN_NAME: props.constants.DOMAIN_NAME,
-                EMAIL_IDENTITY_ARN: emailIdentity.emailIdentityArn,
-                PROJECT_NAME: props.constants.APP_NAME,
-            },
-            layers: [commonLayer, powertoolsLayer],
-        });
-
-        // Grant permissions to the Waitlist Lambda
-        table.grantReadWriteData(waitlistLambda);
-        emailIdentity.grantSendEmail(waitlistLambda);
-        // Waitlist Resource
-        const waitlistResource = apiGateway.root.addResource("waitlist");
-
-        waitlistResource.addMethod("POST", new apigateway.LambdaIntegration(waitlistLambda), {
-            authorizationType: apigateway.AuthorizationType.NONE,
-            methodResponses: [
-                {
-                    statusCode: "200",
-                },
-            ],
-        });
-
-        waitlistResource.addMethod("GET", new apigateway.LambdaIntegration(waitlistLambda), {
-            authorizationType: apigateway.AuthorizationType.NONE,
-            methodResponses: [
-                {
-                    statusCode: "200",
-                },
-            ],
         });
     }
 }
