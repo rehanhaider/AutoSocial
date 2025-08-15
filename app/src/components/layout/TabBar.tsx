@@ -7,9 +7,7 @@ import { useHaptics } from "@/hooks/useHaptics";
 
 const TabBar = ({ state, navigation, colors, insets, colorScheme }: any) => {
     const icons: Record<string, { name: string; lib: any }> = {
-        Hot: { name: "flame", lib: Ionicons },
-        Latest: { name: "flash", lib: Ionicons },
-        Bookmark: { name: "bookmark", lib: Ionicons },
+        Home: { name: "home", lib: Ionicons },
     };
 
     const styles = StyleSheet.create({

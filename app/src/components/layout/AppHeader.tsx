@@ -114,8 +114,8 @@ const AppHeader: React.FC = () => {
                     {/* Center - Logo */}
                     <View style={styles.logoContainer}>
                         <Text style={[styles.logoText, { color: colors.accent.redditRed }]}>
-                            <Text style={[styles.logoBold, { color: colors.accent.redditRed }]}>Snap</Text>
-                            <Text style={[styles.logoLight, { color: colors.accent.redditRed }]}>News</Text>
+                            <Text style={[styles.logoBold, { color: colors.accent.redditRed }]}>Auto</Text>
+                            <Text style={[styles.logoLight, { color: colors.accent.redditRed }]}>Social</Text>
                         </Text>
                     </View>
 

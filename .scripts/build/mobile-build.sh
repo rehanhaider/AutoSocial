@@ -5,7 +5,7 @@ export NODE_ENV=development
 set -euo pipefail
 
 # Absolute project root for WSL-friendly paths
-PROJECT_ROOT="/home/rehan/SnapNews"
+PROJECT_ROOT="/home/rehan/Projects/autosocial"
 MOBILE_DIR="$PROJECT_ROOT/app"
 ANDROID_DIR="$PROJECT_ROOT/app/android"
 APP_JSON_FILE="$MOBILE_DIR/app.json"

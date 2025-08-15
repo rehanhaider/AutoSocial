@@ -54,7 +54,7 @@ const SettingsScreen: React.FC = () => {
                             >
                                 <Text
                                     style={{
-                                        color: theme === option.value ? colors.palette.brand[500] : colors.content.primary,
+                                        color: theme === option.value ? colors.content.primary : colors.content.secondary,
                                     }}
                                 >
                                     {option.label}

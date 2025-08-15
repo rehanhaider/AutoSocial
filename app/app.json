@@ -2,7 +2,7 @@
     "expo": {
         "name": "AutoSocial",
         "slug": "AutoSocial",
-        "version": "0.20250810.6",
+        "version": "0.20250815.2",
         "orientation": "portrait",
         "icon": "./assets/AppIcon.png",
         "scheme": "myapp",
@@ -15,7 +15,7 @@
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/AppIcon.png",
-                "backgroundColor": "#071932"
+                "backgroundColor": "#1f342e"
             },
             "package": "com.mizanic.AutoSocial"
         },
@@ -32,7 +32,7 @@
                     "image": "./assets/AppIcon.png",
                     "imageWidth": 200,
                     "resizeMode": "contain",
-                    "backgroundColor": "#071932"
+                    "backgroundColor": "#1f342e"
                 }
             ],
             "expo-localization",

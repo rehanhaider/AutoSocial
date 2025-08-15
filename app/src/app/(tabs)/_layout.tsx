@@ -10,7 +10,7 @@ import { useLocalSearchParams } from "expo-router";
 import HomeScreen from "@/screen/home/HomeScreen";
 
 type TabParamList = {
-    Home: { category?: string; time?: string };
+    Home: undefined;
 };
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
