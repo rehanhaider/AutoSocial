@@ -13,6 +13,7 @@ const SettingsScreen: React.FC = () => {
     const themeOptions: { label: string; value: Theme }[] = [
         { label: "Light", value: "light" },
         { label: "Dark", value: "dark" },
+        { label: "Premium", value: "premium" },
         { label: "System", value: "system" },
     ];
 

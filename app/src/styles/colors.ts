@@ -282,16 +282,72 @@ export const Palette = {
 };
 
 /**
+ * Premium Theme Colors
+ *
+ * Custom premium color palette using the specified premium colors
+ */
+const PremiumPalette = {
+    // Primary premium colors
+    darkGreen: "#1f342e", // Rich dark green (PRIMARY)
+    deepNavy: "#071932", // Deep navy blue (ACCENT)
+    bronze: "#dbbe7d", // Golden bronze text
+
+    // Generated scales for premium theme
+    primary: {
+        50: "#f4f6f5",
+        100: "#e8ebe9",
+        200: "#c5d1ca",
+        300: "#9bb0a3",
+        400: "#6d8a77",
+        500: "#4a6854",
+        600: "#3a5343",
+        700: "#2d4135",
+        800: "#1f342e", // Base premium dark green
+        900: "#152520",
+    } as ColorScale,
+
+    accent: {
+        50: "#f1f3f6",
+        100: "#e3e7ed",
+        200: "#c1cad8",
+        300: "#95a6bc",
+        400: "#647a9a",
+        500: "#485d7d",
+        600: "#394864",
+        700: "#2d3a51",
+        800: "#1e2b3f",
+        900: "#071932", // Base premium navy (ACCENT)
+    } as ColorScale,
+
+    text: {
+        50: "#fefdfb",
+        100: "#fdf9f1",
+        200: "#faf1de",
+        300: "#f5e4b8",
+        400: "#efd285",
+        500: "#dbbe7d", // Base premium bronze (TEXT)
+        600: "#c9a665",
+        700: "#a88c55",
+        800: "#8a7248",
+        900: "#715e3d",
+    } as ColorScale,
+};
+
+/**
  * Color System Builder
  *
  * Transforms the raw palette into semantic tokens and legacy compatibility layer.
- * Each mode (light/dark) gets its own optimized token mapping.
+ * Each mode (light/dark/premium) gets its own optimized token mapping.
  */
-const createColorSystem = (mode: "light" | "dark"): ColorSystem => {
+const createColorSystem = (mode: "light" | "dark" | "premium"): ColorSystem => {
     const isDark = mode === "dark";
+    const isPremium = mode === "premium";
 
     // For dark mode, we invert the neutral scale for appropriate contrast
-    const neutral = isDark
+    // For premium mode, we use a custom neutral scale based on the premium colors
+    const neutral = isPremium
+        ? PremiumPalette.primary
+        : isDark
         ? ({
               50: Palette.neutral[900], // Dark becomes light
               100: Palette.neutral[800],
@@ -308,32 +364,32 @@ const createColorSystem = (mode: "light" | "dark"): ColorSystem => {
 
     // Surface tokens (elevation-aware)
     const surface: SurfaceTokens = {
-        base: isDark ? "#0f0f0f" : Palette.white,
-        muted: isDark ? Palette.slate[900] : Palette.slate[50],
-        raised: isDark ? Palette.slate[800] : Palette.slate[100],
-        overlay: isDark ? Palette.alpha[80] : Palette.alpha[50],
-        accent: isDark ? Palette.brand[900] : Palette.brand[50],
-        inverse: isDark ? Palette.white : Palette.neutral[900],
+        base: isPremium ? PremiumPalette.primary[900] : isDark ? "#0f0f0f" : Palette.white,
+        muted: isPremium ? PremiumPalette.primary[800] : isDark ? Palette.slate[900] : Palette.slate[50],
+        raised: isPremium ? PremiumPalette.primary[700] : isDark ? Palette.slate[800] : Palette.slate[100],
+        overlay: isPremium ? "rgba(31, 52, 46, 0.80)" : isDark ? Palette.alpha[80] : Palette.alpha[50],
+        accent: isPremium ? PremiumPalette.accent[200] : isDark ? Palette.brand[900] : Palette.brand[50],
+        inverse: isPremium ? PremiumPalette.text[100] : isDark ? Palette.white : Palette.neutral[900],
     };
 
     // Content tokens (text/foreground)
     const content: ContentTokens = {
-        primary: isDark ? neutral[900] : neutral[800], // High contrast
-        secondary: isDark ? neutral[600] : neutral[500], // Medium contrast
-        tertiary: isDark ? neutral[500] : neutral[400], // Low contrast
-        disabled: isDark ? neutral[400] : neutral[300], // Disabled state
-        inverse: isDark ? neutral[100] : Palette.white, // Text on dark surfaces
-        accent: isDark ? Palette.brand[400] : Palette.brand[600], // Brand text
-        link: isDark ? Palette.brand[300] : Palette.brand[700], // Hyperlinks
+        primary: isPremium ? PremiumPalette.text[100] : isDark ? neutral[900] : neutral[800], // High contrast
+        secondary: isPremium ? PremiumPalette.text[200] : isDark ? neutral[600] : neutral[500], // Medium contrast
+        tertiary: isPremium ? PremiumPalette.text[300] : isDark ? neutral[500] : neutral[400], // Low contrast
+        disabled: isPremium ? PremiumPalette.text[400] : isDark ? neutral[400] : neutral[300], // Disabled state
+        inverse: isPremium ? PremiumPalette.primary[900] : isDark ? neutral[100] : Palette.white, // Text on dark surfaces
+        accent: isPremium ? PremiumPalette.accent[500] : isDark ? Palette.brand[400] : Palette.brand[600], // Brand text
+        link: isPremium ? PremiumPalette.text[400] : isDark ? Palette.brand[300] : Palette.brand[700], // Hyperlinks
     };
 
     // Border tokens (hierarchy-aware)
     const border: BorderTokens = {
-        subtle: isDark ? neutral[200] : neutral[200], // Light borders
-        default: isDark ? neutral[300] : neutral[300], // Standard borders
-        strong: isDark ? neutral[400] : neutral[400], // Emphasized borders
-        accent: isDark ? Palette.brand[600] : Palette.brand[300], // Brand borders
-        focus: isDark ? Palette.brand[400] : Palette.brand[500], // Focus rings
+        subtle: isPremium ? PremiumPalette.text[300] : isDark ? neutral[200] : neutral[200], // Light borders
+        default: isPremium ? PremiumPalette.text[400] : isDark ? neutral[300] : neutral[300], // Standard borders
+        strong: isPremium ? PremiumPalette.accent[500] : isDark ? neutral[400] : neutral[400], // Emphasized borders
+        accent: isPremium ? PremiumPalette.accent[600] : isDark ? Palette.brand[600] : Palette.brand[300], // Brand borders
+        focus: isPremium ? PremiumPalette.text[400] : isDark ? Palette.brand[400] : Palette.brand[500], // Focus rings
         error: isDark ? Palette.semantic.error[400] : Palette.semantic.error[500], // Error borders
     };
 
@@ -385,9 +441,9 @@ const createColorSystem = (mode: "light" | "dark"): ColorSystem => {
         status,
         elevation,
         interactive: {
-            primary: createInteractiveStates(isDark ? Palette.brand[600] : Palette.brand[500]),
-            secondary: createInteractiveStates(isDark ? Palette.slate[600] : Palette.slate[400]),
-            neutral: createInteractiveStates(isDark ? neutral[700] : neutral[200]),
+            primary: createInteractiveStates(isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[600] : Palette.brand[500]),
+            secondary: createInteractiveStates(isPremium ? PremiumPalette.accent[600] : isDark ? Palette.slate[600] : Palette.slate[400]),
+            neutral: createInteractiveStates(isPremium ? PremiumPalette.primary[700] : isDark ? neutral[700] : neutral[200]),
         },
 
         // Selection/chip tokens — standardized alpha variants
@@ -401,9 +457,9 @@ const createColorSystem = (mode: "light" | "dark"): ColorSystem => {
 
         // Raw palette access
         palette: {
-            brand: Palette.brand,
-            neutral: isDark ? neutral : Palette.neutral,
-            slate: Palette.slate,
+            brand: isPremium ? PremiumPalette.text : Palette.brand,
+            neutral: isPremium ? PremiumPalette.primary : isDark ? neutral : Palette.neutral,
+            slate: isPremium ? PremiumPalette.accent : Palette.slate,
         },
 
         // Simple common values
@@ -427,7 +483,8 @@ const createColorSystem = (mode: "light" | "dark"): ColorSystem => {
  *
  * Legacy tokens are deprecated but maintained for compatibility.
  */
-export const Colors: { light: ColorSystem; dark: ColorSystem } = {
+export const Colors: { light: ColorSystem; dark: ColorSystem; premium: ColorSystem } = {
     light: createColorSystem("light"),
     dark: createColorSystem("dark"),
+    premium: createColorSystem("premium"),
 };
