@@ -3,16 +3,14 @@ import { Stack, useRouter } from "expo-router";
 import SettingsScreen from "@/screen/settings/SettingsScreen";
 import { View, Text, TouchableOpacity, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useThemeColors } from "@/hooks/useThemeColor";
+import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "@/contexts/ThemeContext";
 import { Spacing } from "@/styles";
 
 export default function Settings() {
     const router = useRouter();
-    const colors = useThemeColors();
+    const { colors, colorScheme } = useTheme();
     const insets = useSafeAreaInsets();
-    const { colorScheme } = useTheme();
 
     return (
         <>

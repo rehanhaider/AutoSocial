@@ -101,6 +101,59 @@ type AccentColors = {
     redditRed: string;
 };
 
+// Component-specific token types
+type ButtonTokens = {
+    primary: {
+        background: string;
+        backgroundHover: string;
+        backgroundPressed: string;
+        text: string;
+    };
+    secondary: {
+        background: string;
+        backgroundHover: string;
+        backgroundPressed: string;
+        text: string;
+        border: string;
+    };
+    ghost: {
+        background: string;
+        backgroundHover: string;
+        backgroundPressed: string;
+        text: string;
+    };
+};
+
+type InputTokens = {
+    background: string;
+    backgroundFocus: string;
+    border: string;
+    borderFocus: string;
+    borderError: string;
+    text: string;
+    placeholder: string;
+    label: string;
+};
+
+type CardTokens = {
+    background: string;
+    backgroundHover: string;
+    border: string;
+    shadow: string;
+};
+
+type ComponentTokens = {
+    button: ButtonTokens;
+    input: InputTokens;
+    card: CardTokens;
+};
+
+type UtilityTokens = {
+    lighten: (color: string, amount: number) => string;
+    darken: (color: string, amount: number) => string;
+    adjustOpacity: (color: string, opacity: number) => string;
+};
+
 // Modern Color System (primary interface)
 type ColorSystem = {
     // Core semantic tokens (recommended)
@@ -116,6 +169,7 @@ type ColorSystem = {
         secondary: InteractiveTokens;
         neutral: InteractiveTokens;
     };
+
     // Selection/chip tokens to avoid inline alpha concatenation in components
     selection: {
         accent: {
@@ -124,6 +178,12 @@ type ColorSystem = {
             icon: string; // foreground/icon color
         };
     };
+
+    // Component-specific semantic tokens
+    component: ComponentTokens;
+
+    // Utility functions for color manipulation
+    utils: UtilityTokens;
 
     // Raw palette access (when semantic tokens aren't sufficient)
     palette: {
@@ -415,15 +475,67 @@ const createColorSystem = (mode: "light" | "dark" | "premium"): ColorSystem => {
         xl: isDark ? Palette.alpha[50] : Palette.alpha[40],
     };
 
-    // Interactive state helpers
-    const createInteractiveStates = (baseColor: string): InteractiveTokens => ({
-        idle: baseColor,
-        hover: baseColor, // TODO: Implement color manipulation or use predefined variants
-        pressed: baseColor, // TODO: Implement color manipulation or use predefined variants
-        disabled: isDark ? neutral[300] : neutral[300],
-        selected: isDark ? Palette.brand[700] : Palette.brand[100],
-        focus: border.focus,
-    });
+    // Color manipulation utilities
+    const lighten = (hex: string, amount: number): string => {
+        const num = parseInt(hex.replace("#", ""), 16);
+        const amt = Math.round(2.55 * amount);
+        const R = (num >> 16) + amt;
+        const G = ((num >> 8) & 0x00ff) + amt;
+        const B = (num & 0x0000ff) + amt;
+        return (
+            "#" +
+            (
+                0x1000000 +
+                (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+                (B < 255 ? (B < 1 ? 0 : B) : 255)
+            )
+                .toString(16)
+                .slice(1)
+        );
+    };
+
+    const darken = (hex: string, amount: number): string => {
+        const num = parseInt(hex.replace("#", ""), 16);
+        const amt = Math.round(2.55 * amount);
+        const R = (num >> 16) - amt;
+        const G = ((num >> 8) & 0x00ff) - amt;
+        const B = (num & 0x0000ff) - amt;
+        return (
+            "#" +
+            (
+                0x1000000 +
+                (R > 255 ? 255 : R < 0 ? 0 : R) * 0x10000 +
+                (G > 255 ? 255 : G < 0 ? 0 : G) * 0x100 +
+                (B > 255 ? 255 : B < 0 ? 0 : B)
+            )
+                .toString(16)
+                .slice(1)
+        );
+    };
+
+    const adjustOpacity = (hex: string, opacity: number): string => {
+        const cleanHex = hex.replace("#", "");
+        const num = parseInt(cleanHex, 16);
+        const r = (num >> 16) & 255;
+        const g = (num >> 8) & 255;
+        const b = num & 255;
+        return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, opacity))})`;
+    };
+
+    // Interactive state helpers with proper color variations
+    const createInteractiveStates = (baseColor: string): InteractiveTokens => {
+        const isLight = !isDark && !isPremium;
+
+        return {
+            idle: baseColor,
+            hover: isLight ? darken(baseColor, 8) : lighten(baseColor, 8),
+            pressed: isLight ? darken(baseColor, 12) : lighten(baseColor, 12),
+            disabled: isDark ? neutral[300] : neutral[300],
+            selected: isDark ? Palette.brand[700] : Palette.brand[100],
+            focus: border.focus,
+        };
+    };
 
     // Helper to apply alpha to hex (e.g., #rrggbb + alpha)
     const withAlphaHex = (hex: string, alpha: number): string => {
@@ -453,6 +565,64 @@ const createColorSystem = (mode: "light" | "dark" | "premium"): ColorSystem => {
                 border: withAlphaHex(Palette.accent.orange, 0.25), // ~40 hex
                 icon: Palette.accent.orange,
             },
+        },
+
+        // Component-specific semantic tokens
+        component: {
+            // Button variants
+            button: {
+                primary: {
+                    background: isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[600] : Palette.brand[500],
+                    backgroundHover: isPremium ? PremiumPalette.text[400] : isDark ? Palette.brand[500] : Palette.brand[600],
+                    backgroundPressed: isPremium ? PremiumPalette.text[600] : isDark ? Palette.brand[700] : Palette.brand[700],
+                    text: isPremium ? PremiumPalette.primary[900] : Palette.white,
+                },
+                secondary: {
+                    background: "transparent",
+                    backgroundHover: adjustOpacity(
+                        isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[600] : Palette.brand[500],
+                        0.1
+                    ),
+                    backgroundPressed: adjustOpacity(
+                        isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[600] : Palette.brand[500],
+                        0.2
+                    ),
+                    text: isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[400] : Palette.brand[600],
+                    border: isPremium ? PremiumPalette.text[500] : isDark ? Palette.brand[600] : Palette.brand[500],
+                },
+                ghost: {
+                    background: "transparent",
+                    backgroundHover: adjustOpacity(content.primary, 0.05),
+                    backgroundPressed: adjustOpacity(content.primary, 0.1),
+                    text: content.primary,
+                },
+            },
+            // Input/form elements
+            input: {
+                background: surface.base,
+                backgroundFocus: surface.raised,
+                border: border.default,
+                borderFocus: border.focus,
+                borderError: border.error,
+                text: content.primary,
+                placeholder: content.tertiary,
+                label: content.secondary,
+            },
+            // Cards and containers
+            card: {
+                background: surface.base,
+                backgroundHover: surface.muted,
+                border: border.subtle,
+                shadow: elevation.md,
+            },
+        },
+
+        // Utility tokens for common patterns
+        utils: {
+            // Color manipulation functions available at runtime
+            lighten: (color: string, amount: number) => lighten(color, amount),
+            darken: (color: string, amount: number) => darken(color, amount),
+            adjustOpacity: (color: string, opacity: number) => adjustOpacity(color, opacity),
         },
 
         // Raw palette access

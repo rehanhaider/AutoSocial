@@ -1,11 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, View, Platform, Animated } from "react-native";
-import { BorderRadius, Spacing, Shadows } from "@/styles";
+import { BorderRadius, Spacing } from "@/styles";
 import { BlurView } from "expo-blur";
 import React from "react";
 import { useHaptics } from "@/hooks/useHaptics";
+import { useTheme } from "@/hooks/useTheme";
 
-const TabBar = ({ state, navigation, colors, insets, colorScheme }: any) => {
+const TabBar = ({ state, navigation, insets }: any) => {
+    const { colors, shadows, isDark } = useTheme();
     const icons: Record<string, { name: string; lib: any }> = {
         Home: { name: "home", lib: Ionicons },
     };
@@ -18,18 +20,7 @@ const TabBar = ({ state, navigation, colors, insets, colorScheme }: any) => {
             right: 0,
             borderTopLeftRadius: BorderRadius.xl,
             borderTopRightRadius: BorderRadius.xl,
-            ...Shadows.lg,
-            ...Platform.select({
-                ios: {
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: -8 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 16,
-                },
-                android: {
-                    elevation: 8,
-                },
-            }),
+            ...shadows.lg,
         },
         tabBarContent: {
             flex: 1,
@@ -56,9 +47,7 @@ const TabBar = ({ state, navigation, colors, insets, colorScheme }: any) => {
 
     return (
         <View style={[styles.tabBarContainer, { height: 60 + insets.bottom, paddingBottom: insets.bottom }]}>
-            {Platform.OS === "ios" && (
-                <BlurView intensity={95} tint={colorScheme === "dark" ? "dark" : "light"} style={StyleSheet.absoluteFill} />
-            )}
+            {Platform.OS === "ios" && <BlurView intensity={95} tint={isDark ? "dark" : "light"} style={StyleSheet.absoluteFill} />}
             {Platform.OS !== "ios" && (
                 <View
                     style={[
@@ -102,7 +91,7 @@ const TabBar = ({ state, navigation, colors, insets, colorScheme }: any) => {
 
                     return (
                         <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.7}>
-                            <Animated.View style={[{ transform: [{ scale: scaleAnimRef }] }, isFocused && { ...Shadows.sm }]}>
+                            <Animated.View style={[{ transform: [{ scale: scaleAnimRef }] }, isFocused && { ...shadows.sm }]}>
                                 <IconComponent
                                     name={name}
                                     size={isFocused ? 24 : 22}

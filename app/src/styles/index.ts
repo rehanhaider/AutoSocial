@@ -1,8 +1,6 @@
 import { Colors } from "@/styles/colors";
 import { Fonts, Typography } from "@/styles/typography";
 
-export { Typography, Fonts, Colors };
-
 export const Spacing = {
     xxs: 3,
     xs: 4,
@@ -23,36 +21,51 @@ export const BorderRadius = {
     full: 9999,
 };
 
-export const Shadows = {
-    sm: {
-        shadowColor: Colors.light.black,
+// Theme-aware shadow system
+const createShadows = (isDark: boolean = false) => ({
+    none: {
+        shadowColor: "transparent",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0,
+    },
+    xs: {
+        shadowColor: isDark ? "#000000" : "#000000",
         shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.05,
+        shadowOpacity: isDark ? 0.3 : 0.05,
         shadowRadius: 2,
         elevation: 1,
     },
+    sm: {
+        shadowColor: isDark ? "#000000" : "#000000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: isDark ? 0.4 : 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
     md: {
-        shadowColor: Colors.light.black,
+        shadowColor: isDark ? "#000000" : "#000000",
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 3,
+        shadowOpacity: isDark ? 0.5 : 0.15,
+        shadowRadius: 8,
+        elevation: 4,
     },
     lg: {
-        shadowColor: Colors.light.black,
+        shadowColor: isDark ? "#000000" : "#000000",
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        elevation: 6,
+        shadowOpacity: isDark ? 0.6 : 0.2,
+        shadowRadius: 16,
+        elevation: 8,
     },
     xl: {
-        shadowColor: Colors.light.black,
+        shadowColor: isDark ? "#000000" : "#000000",
         shadowOffset: { width: 0, height: 16 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-        elevation: 10,
+        shadowOpacity: isDark ? 0.7 : 0.25,
+        shadowRadius: 24,
+        elevation: 12,
     },
-};
+});
 
 export const Layout = {
     window: {
@@ -80,6 +93,9 @@ export const Animation = {
     },
 };
 
+// Named exports for individual modules
+export { Typography, Fonts, Colors, createShadows };
+
 // Legacy Theme export (deprecated - import individual modules instead)
 /** @deprecated Import specific modules like Colors, Typography, etc. directly */
 export const Theme = {
@@ -88,9 +104,10 @@ export const Theme = {
     Typography,
     Spacing,
     BorderRadius,
-    Shadows,
+    Shadows: createShadows(false),
     Layout,
     Animation,
+    createShadows,
 };
 
 export default Theme;

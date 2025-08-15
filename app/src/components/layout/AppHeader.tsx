@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Typography, Spacing, Shadows } from "@/styles";
-import { useThemeColors } from "@/hooks/useThemeColor";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Typography, Spacing } from "@/styles";
+import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
@@ -11,12 +10,11 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 const AppHeader: React.FC = () => {
     const insets = useSafeAreaInsets();
-    const colors = useThemeColors();
-    const { colorScheme } = useTheme();
+    const { colors, colorScheme, shadows, isDark } = useTheme();
     const router = useRouter();
     const navigation = useNavigation<DrawerNavigationProp<any>>();
 
-    const statusBarStyle = colorScheme === "dark" ? "light-content" : "dark-content";
+    const statusBarStyle = isDark ? "light-content" : "dark-content";
     const statusBarBg = colors.surface.base;
 
     const handleMenuPress = () => {
@@ -35,8 +33,7 @@ const AppHeader: React.FC = () => {
     const styles = StyleSheet.create({
         headerContainer: {
             paddingBottom: Spacing.sm,
-            ...Shadows.md,
-            elevation: 4,
+            ...shadows.md,
             borderBottomWidth: 1,
         },
         headerContent: {

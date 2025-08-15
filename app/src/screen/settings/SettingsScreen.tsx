@@ -1,14 +1,14 @@
 import React from "react";
 import { useSettingsStore } from "@/lib/state/settingStore";
 import { View, Switch, StyleSheet, Pressable, Text, ScrollView } from "react-native";
-import { useThemeColors } from "@/hooks/useThemeColor";
+import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius } from "@/styles";
 import { Theme } from "@/lib/types/settingsTypes";
 import * as Haptics from "expo-haptics";
 
 const SettingsScreen: React.FC = () => {
     const { theme, hapticFeedback, setTheme, setHapticFeedback } = useSettingsStore();
-    const colors = useThemeColors();
+    const { colors } = useTheme();
 
     const themeOptions: { label: string; value: Theme }[] = [
         { label: "Light", value: "light" },
