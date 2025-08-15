@@ -1,6 +1,4 @@
 import React from "react";
-import { ThemedView } from "@/components/feature/settings/ThemedView";
-import { ThemedText } from "@/components/feature/settings/ThemedText";
 import { useSettingsStore } from "@/lib/state/settingStore";
 import { View, Switch, StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColor";
@@ -36,10 +34,10 @@ const SettingsScreen: React.FC = () => {
 
     return (
         <ScrollView style={[{ flex: 1 }, { backgroundColor: colors.surface.base }]}>
-            <ThemedView style={styles.container}>
+            <View style={[styles.container, { backgroundColor: colors.surface.base }]}>
                 {/* Theme Setting */}
                 <View style={styles.settingContainer}>
-                    <ThemedText style={styles.label}>Theme</ThemedText>
+                    <Text style={[styles.label, { color: colors.content.primary }]}>Theme</Text>
                     <View style={[styles.segmentedControl, { backgroundColor: colors.surface.muted }]}>
                         {themeOptions.map((option) => (
                             <Pressable
@@ -66,10 +64,15 @@ const SettingsScreen: React.FC = () => {
 
                 {/* Haptic Feedback Setting */}
                 <View style={styles.settingContainer}>
-                    <ThemedText style={styles.label}>Haptic Feedback</ThemedText>
-                    <Switch value={hapticFeedback === "enabled"} onValueChange={(value) => handleHapticFeedbackChange(value)} />
+                    <Text style={[styles.label, { color: colors.content.primary }]}>Haptic Feedback</Text>
+                    <Switch
+                        value={hapticFeedback === "enabled"}
+                        onValueChange={(value) => handleHapticFeedbackChange(value)}
+                        trackColor={{ false: colors.surface.muted, true: colors.palette.brand[500] }}
+                        thumbColor={hapticFeedback === "enabled" ? colors.content.primary : colors.content.secondary}
+                    />
                 </View>
-            </ThemedView>
+            </View>
         </ScrollView>
     );
 };
