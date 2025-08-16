@@ -1,6 +1,7 @@
-import { Redirect, useLocalSearchParams } from "expo-router";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-    const params = useLocalSearchParams();
-    return <Redirect href={{ pathname: "/(tabs)", params }} />;
+    // For now, redirect to welcome screen as default
+    // In a real app, you'd check authentication status here
+    return <Redirect href="/welcome" />;
 }

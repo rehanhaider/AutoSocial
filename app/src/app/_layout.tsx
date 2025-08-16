@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Drawer } from "expo-router/drawer";
+import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useTheme } from "@/hooks/useTheme";
 import { sharedQueryClient } from "@/lib/sharedQueryClient";
-import WelcomeScreen from "./welcome"; // Import the new WelcomeScreen
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,23 +33,11 @@ export default function RootLayout() {
         SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
     });
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Placeholder for auth status
-
     useEffect(() => {
         if (loaded) {
             SplashScreen.hideAsync();
         }
     }, [loaded]);
-
-    // Simulate authentication check
-    useEffect(() => {
-        // In a real app, you'd check a token, context, or similar here
-        const checkAuth = async () => {
-            // For now, let's just assume false for unauthenticated flow
-            // setIsAuthenticated(true); // Set to true to see main app
-        };
-        checkAuth();
-    }, []);
 
     if (!loaded) {
         return null;
@@ -60,21 +47,14 @@ export default function RootLayout() {
         <QueryClientProvider client={sharedQueryClient}>
             <ThemeProvider>
                 <AppWrapper>
-                    {isAuthenticated ? (
-                        <Drawer
-                            screenOptions={{
-                                drawerType: "front",
-                                swipeEdgeWidth: 32,
-                                swipeEnabled: true,
-                                drawerStyle: { width: "61.8%" },
-                            }}
-                        >
-                            <Drawer.Screen name="(tabs)" options={{ headerShown: false, title: "Home" }} />
-                            <Drawer.Screen name="settings" options={{ drawerItemStyle: { display: "none" } }} />
-                        </Drawer>
-                    ) : (
-                        <WelcomeScreen />
-                    )}
+                    <Stack screenOptions={{ headerShown: false }}>
+                        <Stack.Screen name="index" />
+                        <Stack.Screen name="welcome" />
+                        <Stack.Screen name="login" />
+                        <Stack.Screen name="signup" />
+                        <Stack.Screen name="(tabs)" />
+                        <Stack.Screen name="settings" />
+                    </Stack>
                 </AppWrapper>
             </ThemeProvider>
         </QueryClientProvider>
