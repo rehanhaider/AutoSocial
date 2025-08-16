@@ -1,56 +1,70 @@
+/**
+ * Theme Context
+ *
+ * Clean React context for theme management.
+ * Handles light/dark mode switching and provides theme colors.
+ */
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
-import { Colors } from "@/styles/colors";
-import { useSettingsStore } from "@/lib/state/settingStore";
+import { ThemeContextValue, ThemeMode } from "@/types/theme";
+import { buildTheme } from "@/styles/buildTheme";
+import { useSettingsStore } from "@/state/settingStore";
 
-type ColorScheme = "light" | "dark" | "premium";
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-interface ThemeContextType {
-    colorScheme: ColorScheme;
-    colors: typeof Colors.light;
-    isDark: boolean;
-    isPremium: boolean;
+interface ThemeProviderProps {
+    children: React.ReactNode;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const systemColorScheme = useColorScheme();
-    const { theme } = useSettingsStore();
-    const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+    const { theme: settingsTheme } = useSettingsStore();
+    const [mode, setMode] = useState<ThemeMode>("light");
 
+    // Resolve theme based on settings and system preference
     useEffect(() => {
-        let resolvedScheme: ColorScheme;
+        let resolvedMode: ThemeMode;
 
-        if (theme === "system") {
-            resolvedScheme = systemColorScheme === "dark" ? "dark" : "light";
-        } else if (theme === "premium") {
-            resolvedScheme = "premium";
+        if (settingsTheme === "system") {
+            resolvedMode = systemColorScheme === "dark" ? "dark" : "light";
+        } else if (settingsTheme === "premium") {
+            resolvedMode = "premium";
         } else {
-            resolvedScheme = theme as ColorScheme;
+            resolvedMode = settingsTheme as ThemeMode;
         }
 
-        setColorScheme(resolvedScheme);
-    }, [theme, systemColorScheme]);
+        setMode(resolvedMode);
+    }, [settingsTheme, systemColorScheme]);
 
-    const colors = Colors[colorScheme];
-    const isDark = colorScheme === "dark";
-    const isPremium = colorScheme === "premium";
+    // Build theme colors based on current mode
+    const colors = buildTheme(mode);
+    const isDark = mode === "dark";
 
-    const value: ThemeContextType = {
-        colorScheme,
+    // Theme manipulation functions
+    const toggleTheme = () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    };
+
+    const setTheme = (newMode: ThemeMode) => {
+        setMode(newMode);
+    };
+
+    const value: ThemeContextValue = {
+        mode,
         colors,
         isDark,
-        isPremium,
+        toggleTheme,
+        setTheme,
     };
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const useTheme = (): ThemeContextType => {
+export const useThemeContext = (): ThemeContextValue => {
     const context = useContext(ThemeContext);
     if (context === undefined) {
-        throw new Error("useTheme must be used within a ThemeProvider");
+        throw new Error("useThemeContext must be used within a ThemeProvider");
     }
     return context;
 };

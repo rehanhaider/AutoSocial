@@ -1,6 +1,23 @@
-import { Colors } from "@/styles/colors";
-import { Fonts, Typography } from "@/styles/typography";
+/**
+ * Design System Index
+ *
+ * Clean exports for the entire design system.
+ * Import what you need from here.
+ */
 
+// Theme system
+export * from "./primitives";
+export * from "./buildTheme";
+export * from "./utilities";
+
+// Typography system
+export { Typography, Fonts } from "./typography";
+
+// Theme utilities
+export { useTheme } from "@/hooks/useTheme";
+export { ThemeProvider } from "@/contexts/ThemeContext";
+
+// Design tokens (non-color)
 export const Spacing = {
     xxs: 3,
     xs: 4,
@@ -22,7 +39,7 @@ export const BorderRadius = {
 };
 
 // Theme-aware shadow system
-const createShadows = (isDark: boolean = false) => ({
+export const createShadows = (isDark: boolean = false) => ({
     none: {
         shadowColor: "transparent",
         shadowOffset: { width: 0, height: 0 },
@@ -31,35 +48,35 @@ const createShadows = (isDark: boolean = false) => ({
         elevation: 0,
     },
     xs: {
-        shadowColor: isDark ? "#000000" : "#000000",
+        shadowColor: "#000000",
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: isDark ? 0.3 : 0.05,
         shadowRadius: 2,
         elevation: 1,
     },
     sm: {
-        shadowColor: isDark ? "#000000" : "#000000",
+        shadowColor: "#000000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: isDark ? 0.4 : 0.1,
         shadowRadius: 4,
         elevation: 2,
     },
     md: {
-        shadowColor: isDark ? "#000000" : "#000000",
+        shadowColor: "#000000",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: isDark ? 0.5 : 0.15,
         shadowRadius: 8,
         elevation: 4,
     },
     lg: {
-        shadowColor: isDark ? "#000000" : "#000000",
+        shadowColor: "#000000",
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: isDark ? 0.6 : 0.2,
         shadowRadius: 16,
         elevation: 8,
     },
     xl: {
-        shadowColor: isDark ? "#000000" : "#000000",
+        shadowColor: "#000000",
         shadowOffset: { width: 0, height: 16 },
         shadowOpacity: isDark ? 0.7 : 0.25,
         shadowRadius: 24,
@@ -92,22 +109,3 @@ export const Animation = {
         easeOut: "easeOut",
     },
 };
-
-// Named exports for individual modules
-export { Typography, Fonts, Colors, createShadows };
-
-// Legacy Theme export (deprecated - import individual modules instead)
-/** @deprecated Import specific modules like Colors, Typography, etc. directly */
-export const Theme = {
-    Colors,
-    Fonts,
-    Typography,
-    Spacing,
-    BorderRadius,
-    Shadows: createShadows(false),
-    Layout,
-    Animation,
-    createShadows,
-};
-
-export default Theme;

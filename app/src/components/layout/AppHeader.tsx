@@ -15,7 +15,7 @@ const AppHeader: React.FC = () => {
     const navigation = useNavigation<DrawerNavigationProp<any>>();
 
     const statusBarStyle = isDark ? "light-content" : "dark-content";
-    const statusBarBg = colors.surface.base;
+    const statusBarBg = colors.surface.primary;
 
     const handleMenuPress = () => {
         navigation.openDrawer();
@@ -96,9 +96,9 @@ const AppHeader: React.FC = () => {
                     styles.headerContainer,
                     {
                         paddingTop: insets.top,
-                        backgroundColor: colors.surface.base,
-                        borderBottomColor: colors.border.subtle,
-                        shadowColor: colors.black,
+                        backgroundColor: colors.surface.primary,
+                        borderBottomColor: colors.border.secondary,
+                        shadowColor: colors.pure.black,
                     },
                 ]}
             >
@@ -128,7 +128,7 @@ const AppHeader: React.FC = () => {
                 </View>
 
                 {/* Bottom border for separation */}
-                <View style={[styles.bottomBorder, { backgroundColor: colors.border.subtle }]} />
+                <View style={[styles.bottomBorder, { backgroundColor: colors.border.secondary }]} />
             </View>
         </>
     );

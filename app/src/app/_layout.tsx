@@ -8,7 +8,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Drawer } from "expo-router/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { useTheme } from "@/hooks/useTheme";
 import { sharedQueryClient } from "@/lib/sharedQueryClient";
 
 SplashScreen.preventAutoHideAsync();

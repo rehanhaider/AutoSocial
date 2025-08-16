@@ -19,17 +19,17 @@ export default function Settings() {
                     headerShown: false,
                 }}
             />
-            <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} backgroundColor={colors.surface.base} />
-            <View style={{ flex: 1, backgroundColor: colors.surface.base }}>
+            <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} backgroundColor={colors.surface.primary} />
+            <View style={{ flex: 1, backgroundColor: colors.surface.primary }}>
                 {/* Custom Header */}
                 <View
                     style={{
                         paddingTop: insets.top,
                         paddingHorizontal: Spacing.md,
                         paddingBottom: Spacing.md,
-                        backgroundColor: colors.surface.base,
+                        backgroundColor: colors.surface.primary,
                         borderBottomWidth: 1,
-                        borderBottomColor: colors.border.subtle,
+                        borderBottomColor: colors.border.secondary,
                         flexDirection: "row",
                         alignItems: "center",
                     }}

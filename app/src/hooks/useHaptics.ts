@@ -1,5 +1,5 @@
 import * as Haptics from "expo-haptics";
-import { useSettingsStore } from "@/lib/state/settingStore";
+import { useSettingsStore } from "@/state/settingStore";
 
 export const useHaptics = () => {
     const { hapticFeedback } = useSettingsStore();

@@ -53,7 +53,7 @@ const TabBar = ({ state, navigation, insets }: any) => {
                     style={[
                         StyleSheet.absoluteFill,
                         {
-                            backgroundColor: colors.surface.base,
+                            backgroundColor: colors.surface.primary,
                         },
                     ]}
                 />

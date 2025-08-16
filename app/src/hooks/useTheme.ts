@@ -1,32 +1,83 @@
 /**
- * Unified Theme Hook
+ * useTheme Hook
  *
- * Single hook for all theme-related needs:
- * - Colors (semantic tokens)
- * - Theme state (isDark, isPremium, etc.)
- * - Theme-aware utilities (shadows, etc.)
+ * Main hook for consuming theme colors and utilities.
+ * Provides easy access to all theme-related functionality.
  */
 
-import { useTheme as useThemeContext } from "@/contexts/ThemeContext";
+import { useThemeContext } from "@/contexts/ThemeContext";
+import { Theme, ThemeMode } from "@/types/theme";
 import { createShadows } from "@/styles";
 
-export const useTheme = () => {
-    const { colorScheme, colors, isDark, isPremium } = useThemeContext();
+interface UseThemeReturn {
+    // Theme state
+    mode: ThemeMode;
+    colorScheme: ThemeMode; // Compatibility alias
+    isDark: boolean;
 
-    // Create theme-aware utilities
-    const shadows = createShadows(isDark);
+    // All theme colors and tokens
+    colors: Theme;
+
+    // Quick access to commonly used colors
+    surface: Theme["surface"];
+    content: Theme["content"];
+    border: Theme["border"];
+    status: Theme["status"];
+    interactive: Theme["interactive"];
+
+    // Theme utilities
+    shadows: ReturnType<typeof createShadows>;
+
+    // Theme manipulation
+    toggleTheme: () => void;
+    setTheme: (mode: ThemeMode) => void;
+
+    // Utility functions
+    withOpacity: (color: string, opacity: number) => string;
+}
+
+export const useTheme = (): UseThemeReturn => {
+    const { mode, colors, isDark, toggleTheme, setTheme } = useThemeContext();
+    const isPremium = mode === "premium";
+
+    // Create theme-aware shadows (premium theme should behave like dark mode for shadows)
+    const shadows = createShadows(isDark || isPremium);
+
+    // Utility function for adding opacity to colors
+    const withOpacity = (hex: string, opacity: number): string => {
+        const cleanHex = hex.replace("#", "");
+        const num = parseInt(cleanHex, 16);
+        const r = (num >> 16) & 255;
+        const g = (num >> 8) & 255;
+        const b = num & 255;
+        return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, opacity))})`;
+    };
 
     return {
         // Theme state
-        colorScheme,
+        mode,
+        colorScheme: mode, // Compatibility alias
         isDark,
-        isPremium,
 
-        // Colors (semantic tokens)
+        // All colors
         colors,
 
-        // Theme-aware utilities
+        // Quick access to color categories
+        surface: colors.surface,
+        content: colors.content,
+        border: colors.border,
+        status: colors.status,
+        interactive: colors.interactive,
+
+        // Theme utilities
         shadows,
+
+        // Theme controls
+        toggleTheme,
+        setTheme,
+
+        // Utilities
+        withOpacity,
     };
 };
 

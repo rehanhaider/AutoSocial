@@ -1,9 +1,9 @@
 import React from "react";
-import { useSettingsStore } from "@/lib/state/settingStore";
+import { useSettingsStore } from "@/state/settingStore";
 import { View, Switch, StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius } from "@/styles";
-import { Theme } from "@/lib/types/settingsTypes";
+import { Theme } from "@/types/settingsTypes";
 import * as Haptics from "expo-haptics";
 
 const SettingsScreen: React.FC = () => {
@@ -34,27 +34,41 @@ const SettingsScreen: React.FC = () => {
     };
 
     return (
-        <ScrollView style={[{ flex: 1 }, { backgroundColor: colors.surface.base }]}>
-            <View style={[styles.container, { backgroundColor: colors.surface.base }]}>
+        <ScrollView style={[{ flex: 1 }, { backgroundColor: colors.surface.primary }]}>
+            <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
                 {/* Theme Setting */}
                 <View style={styles.settingContainer}>
                     <Text style={[styles.label, { color: colors.content.primary }]}>Theme</Text>
-                    <View style={[styles.segmentedControl, { backgroundColor: colors.surface.muted }]}>
-                        {themeOptions.map((option) => (
+                    <View
+                        style={[
+                            styles.segmentedControl,
+                            {
+                                backgroundColor: colors.surface.secondary,
+                                borderColor: colors.border.secondary,
+                            },
+                        ]}
+                    >
+                        {themeOptions.map((option, index) => (
                             <Pressable
                                 key={option.value}
                                 style={[
                                     styles.segment,
                                     {
-                                        backgroundColor: theme === option.value ? colors.palette.brand[500] : "transparent",
+                                        backgroundColor: theme === option.value ? colors.interactive.primary.default : "transparent",
+                                        borderRightWidth: index < themeOptions.length - 1 ? 1 : 0,
+                                        borderRightColor: colors.border.secondary,
                                     },
                                 ]}
                                 onPress={() => handleThemeChange(option.value)}
                             >
                                 <Text
-                                    style={{
-                                        color: theme === option.value ? colors.content.primary : colors.content.secondary,
-                                    }}
+                                    style={[
+                                        styles.segmentText,
+                                        {
+                                            color: theme === option.value ? colors.content.inverse : colors.content.secondary,
+                                            fontWeight: theme === option.value ? "600" : "400",
+                                        },
+                                    ]}
                                 >
                                     {option.label}
                                 </Text>
@@ -69,8 +83,8 @@ const SettingsScreen: React.FC = () => {
                     <Switch
                         value={hapticFeedback === "enabled"}
                         onValueChange={(value) => handleHapticFeedbackChange(value)}
-                        trackColor={{ false: colors.surface.muted, true: colors.palette.brand[500] }}
-                        thumbColor={hapticFeedback === "enabled" ? colors.content.primary : colors.content.secondary}
+                        trackColor={{ false: colors.surface.secondary, true: colors.interactive.primary.default }}
+                        thumbColor={hapticFeedback === "enabled" ? colors.pure.white : colors.content.secondary}
                     />
                 </View>
             </View>
@@ -97,10 +111,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderRadius: BorderRadius.md,
         overflow: "hidden",
+        borderWidth: 1,
     },
     segment: {
         paddingVertical: Spacing.sm,
         paddingHorizontal: Spacing.md,
+        minWidth: 60,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    segmentText: {
+        fontSize: 14,
+        textAlign: "center",
     },
     selector: {
         flexDirection: "row",

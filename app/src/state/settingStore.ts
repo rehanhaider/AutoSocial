@@ -1,4 +1,4 @@
-import { HapticFeedback, Theme } from "@/lib/types/settingsTypes";
+import { HapticFeedback, Theme } from "@/types/settingsTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
