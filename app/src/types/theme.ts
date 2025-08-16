@@ -105,7 +105,7 @@ export interface Theme {
 }
 
 // Theme modes
-export type ThemeMode = "light" | "dark" | "premium";
+export type ThemeMode = "light" | "dark" | "premium" | "system";
 
 // Theme context interface
 export interface ThemeContextValue {

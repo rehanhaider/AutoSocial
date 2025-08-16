@@ -1,14 +1,16 @@
 import React from "react";
 import { useSettingsStore } from "@/state/settingStore";
-import { View, Switch, StyleSheet, Pressable, Text, ScrollView } from "react-native";
+import { View, Switch, StyleSheet, Pressable, Text, ScrollView, Modal, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius } from "@/styles";
-import { Theme } from "@/types/settingsTypes";
+import { ThemeMode as Theme } from "@/types/theme";
 import * as Haptics from "expo-haptics";
+import { Ionicons } from "@expo/vector-icons";
 
 const SettingsScreen: React.FC = () => {
     const { theme, hapticFeedback, setTheme, setHapticFeedback } = useSettingsStore();
     const { colors } = useTheme();
+    const [isThemeModalVisible, setThemeModalVisible] = React.useState(false);
 
     const themeOptions: { label: string; value: Theme }[] = [
         { label: "Light", value: "light" },
@@ -18,20 +20,21 @@ const SettingsScreen: React.FC = () => {
     ];
 
     const handleThemeChange = (newTheme: Theme) => {
-        // Trigger haptic feedback if enabled
         if (hapticFeedback === "enabled") {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         }
         setTheme(newTheme);
+        setThemeModalVisible(false); // Close modal on selection
     };
 
     const handleHapticFeedbackChange = (value: boolean) => {
-        // Always trigger feedback when turning ON, but not when turning OFF
         if (value) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         }
         setHapticFeedback(value ? "enabled" : "disabled");
     };
+
+    const selectedThemeLabel = themeOptions.find((option) => option.value === theme)?.label || "Light";
 
     return (
         <ScrollView style={[{ flex: 1 }, { backgroundColor: colors.surface.primary }]}>
@@ -39,42 +42,55 @@ const SettingsScreen: React.FC = () => {
                 {/* Theme Setting */}
                 <View style={styles.settingContainer}>
                     <Text style={[styles.label, { color: colors.content.primary }]}>Theme</Text>
-                    <View
+                    <Pressable
                         style={[
-                            styles.segmentedControl,
+                            styles.selector,
                             {
                                 backgroundColor: colors.surface.secondary,
                                 borderColor: colors.border.secondary,
+                                borderWidth: 1,
                             },
                         ]}
+                        onPress={() => setThemeModalVisible(true)}
                     >
-                        {themeOptions.map((option, index) => (
-                            <Pressable
-                                key={option.value}
-                                style={[
-                                    styles.segment,
-                                    {
-                                        backgroundColor: theme === option.value ? colors.interactive.primary.default : "transparent",
-                                        borderRightWidth: index < themeOptions.length - 1 ? 1 : 0,
-                                        borderRightColor: colors.border.secondary,
-                                    },
-                                ]}
-                                onPress={() => handleThemeChange(option.value)}
-                            >
-                                <Text
-                                    style={[
-                                        styles.segmentText,
-                                        {
-                                            color: theme === option.value ? colors.content.inverse : colors.content.secondary,
-                                            fontWeight: theme === option.value ? "600" : "400",
-                                        },
-                                    ]}
-                                >
-                                    {option.label}
-                                </Text>
-                            </Pressable>
-                        ))}
-                    </View>
+                        <Text style={[styles.selectorText, { color: colors.content.primary }]}>{selectedThemeLabel}</Text>
+                        <Ionicons name="chevron-down-outline" size={20} color={colors.content.secondary} style={styles.selectorIcon} />
+                    </Pressable>
+
+                    <Modal
+                        transparent={true}
+                        visible={isThemeModalVisible}
+                        onRequestClose={() => setThemeModalVisible(false)}
+                        animationType="fade"
+                    >
+                        <TouchableWithoutFeedback onPress={() => setThemeModalVisible(false)}>
+                            <View style={styles.modalOverlay}>
+                                <View style={[styles.modalContent, { backgroundColor: colors.surface.tertiary }]}>
+                                    {themeOptions.map((option) => (
+                                        <Pressable
+                                            key={option.value}
+                                            style={[styles.modalItem, { borderBottomColor: colors.border.secondary }]}
+                                            onPress={() => handleThemeChange(option.value)}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.modalItemText,
+                                                    {
+                                                        color: theme === option.value ? colors.content.accent : colors.content.primary,
+                                                    },
+                                                ]}
+                                            >
+                                                {option.label}
+                                            </Text>
+                                            {theme === option.value && (
+                                                <Ionicons name="checkmark" size={20} color={colors.content.accent} />
+                                            )}
+                                        </Pressable>
+                                    ))}
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </Modal>
                 </View>
 
                 {/* Haptic Feedback Setting */}
@@ -171,6 +187,20 @@ const styles = StyleSheet.create({
     modalItemSubtext: {
         fontSize: 14,
         marginTop: 2,
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalContent: {
+        width: "80%",
+        borderRadius: BorderRadius.lg,
+        overflow: "hidden",
+    },
+    selectorIcon: {
+        marginLeft: Spacing.sm,
     },
 });
 

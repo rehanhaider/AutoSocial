@@ -7,7 +7,7 @@
 
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { Theme, ThemeMode } from "@/types/theme";
-import { createShadows } from "@/styles";
+import { createShadows } from "@/styles/utilities";
 
 interface UseThemeReturn {
     // Theme state

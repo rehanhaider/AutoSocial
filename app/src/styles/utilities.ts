@@ -28,3 +28,49 @@ export const withOpacity = (hex: string, opacity: number): string => {
     const b = num & 255;
     return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, opacity))})`;
 };
+
+// Theme-aware shadow system
+export const createShadows = (isDark: boolean = false) => ({
+    none: {
+        shadowColor: "transparent",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0,
+    },
+    xs: {
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: isDark ? 0.3 : 0.05,
+        shadowRadius: 2,
+        elevation: 1,
+    },
+    sm: {
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: isDark ? 0.4 : 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    md: {
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: isDark ? 0.5 : 0.15,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    lg: {
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: isDark ? 0.6 : 0.2,
+        shadowRadius: 16,
+        elevation: 8,
+    },
+    xl: {
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 16 },
+        shadowOpacity: isDark ? 0.7 : 0.25,
+        shadowRadius: 24,
+        elevation: 12,
+    },
+});
