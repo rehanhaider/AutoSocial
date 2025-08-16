@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity } from "react-native";
+import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Typography, Spacing } from "@/styles";
 import { useTheme } from "@/hooks/useTheme";
@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import Logo from "./Logo";
 
 const AppHeader: React.FC = () => {
     const insets = useSafeAreaInsets();
@@ -103,18 +104,11 @@ const AppHeader: React.FC = () => {
                 ]}
             >
                 <View style={styles.headerContent}>
+                    <Logo />
                     {/* Left side - Hamburger Menu */}
                     <TouchableOpacity style={styles.iconButton} onPress={handleMenuPress} activeOpacity={0.7}>
                         <Ionicons name="menu" size={24} color={colors.content.primary} />
                     </TouchableOpacity>
-
-                    {/* Center - Logo */}
-                    <View style={styles.logoContainer}>
-                        <Text style={[styles.logoText, { color: colors.accent.redditRed }]}>
-                            <Text style={[styles.logoBold, { color: colors.accent.redditRed }]}>Auto</Text>
-                            <Text style={[styles.logoLight, { color: colors.accent.redditRed }]}>Social</Text>
-                        </Text>
-                    </View>
 
                     {/* Right side - Icons */}
                     <View style={styles.rightIconsContainer}>

@@ -50,19 +50,19 @@ export const Typography = {
     heading: {
         h1: {
             fontFamily: Fonts.Primary.bold,
-            fontSize: 24,
+            fontSize: 32,
             lineHeight: 32,
             letterSpacing: -0.25,
         },
         h2: {
             fontFamily: Fonts.Accent.semiBold,
-            fontSize: 20,
+            fontSize: 24,
             lineHeight: 28,
             letterSpacing: 0,
         },
         h3: {
             fontFamily: Fonts.Accent.semiBold,
-            fontSize: 18,
+            fontSize: 20,
             lineHeight: 26,
             letterSpacing: 0,
         },
