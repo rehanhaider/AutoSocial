@@ -1,7 +1,25 @@
 import { Redirect } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
+import { View, ActivityIndicator } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function Index() {
-    // For now, redirect to welcome screen as default
-    // In a real app, you'd check authentication status here
-    return <Redirect href="/welcome" />;
+    const { isAuthenticated, isLoading } = useAuth();
+    const { colors } = useTheme();
+
+    // Show loading spinner while checking auth status
+    if (isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.surface.primary }}>
+                <ActivityIndicator size="large" color={colors.interactive.primary.default} />
+            </View>
+        );
+    }
+
+    // Redirect based on authentication status
+    if (isAuthenticated) {
+        return <Redirect href="/(tabs)" />;
+    } else {
+        return <Redirect href="/welcome" />;
+    }
 }

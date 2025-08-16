@@ -1,18 +1,30 @@
-import React from "react";
-import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, TextInput, Alert } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius } from "@/styles";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LoginScreen: React.FC = () => {
     const { colors } = useTheme();
     const router = useRouter();
+    const { login, isLoading } = useAuth();
 
-    const handleLogin = () => {
-        // TODO: Implement login logic
-        console.log("Login button pressed");
-        // On successful login, navigate to the main app
-        // router.replace('/(tabs)');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Error", "Please fill in all fields");
+            return;
+        }
+
+        const success = await login(email, password);
+        if (success) {
+            router.replace("/(tabs)");
+        } else {
+            Alert.alert("Error", "Invalid email or password");
+        }
     };
 
     return (
@@ -32,6 +44,8 @@ const LoginScreen: React.FC = () => {
                 placeholderTextColor={colors.content.secondary}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
             />
 
             <TextInput
@@ -46,13 +60,24 @@ const LoginScreen: React.FC = () => {
                 placeholder="Password"
                 placeholderTextColor={colors.content.secondary}
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
             />
 
-            <Pressable style={[styles.primaryButton, { backgroundColor: colors.interactive.primary.default }]} onPress={handleLogin}>
-                <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>Log In</Text>
+            <Pressable
+                style={[
+                    styles.primaryButton,
+                    {
+                        backgroundColor: isLoading ? colors.interactive.primary.disabled : colors.interactive.primary.default,
+                    },
+                ]}
+                onPress={handleLogin}
+                disabled={isLoading}
+            >
+                <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>{isLoading ? "Logging in..." : "Log In"}</Text>
             </Pressable>
 
-            <Pressable style={styles.secondaryButton} onPress={() => router.push("/signup")}>
+            <Pressable style={styles.secondaryButton} onPress={() => router.push("/(auth)/signup")}>
                 <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>Don't have an account? Sign Up</Text>
             </Pressable>
         </View>

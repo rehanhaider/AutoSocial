@@ -66,7 +66,7 @@ const SignupScreen: React.FC = () => {
                 <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>Sign Up</Text>
             </Pressable>
 
-            <Pressable style={styles.secondaryButton} onPress={() => router.push("/login")}>
+            <Pressable style={styles.secondaryButton} onPress={() => router.push("/(auth)/login")}>
                 <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>Already have an account? Log In</Text>
             </Pressable>
         </View>

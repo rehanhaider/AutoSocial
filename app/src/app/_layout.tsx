@@ -9,6 +9,7 @@ import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { useTheme } from "@/hooks/useTheme";
 import { sharedQueryClient } from "@/lib/sharedQueryClient";
 
@@ -46,16 +47,17 @@ export default function RootLayout() {
     return (
         <QueryClientProvider client={sharedQueryClient}>
             <ThemeProvider>
-                <AppWrapper>
-                    <Stack screenOptions={{ headerShown: false }}>
-                        <Stack.Screen name="index" />
-                        <Stack.Screen name="welcome" />
-                        <Stack.Screen name="login" />
-                        <Stack.Screen name="signup" />
-                        <Stack.Screen name="(tabs)" />
-                        <Stack.Screen name="settings" />
-                    </Stack>
-                </AppWrapper>
+                <AuthProvider>
+                    <AppWrapper>
+                        <Stack screenOptions={{ headerShown: false }}>
+                            <Stack.Screen name="index" />
+                            <Stack.Screen name="welcome" />
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                            <Stack.Screen name="settings" />
+                        </Stack>
+                    </AppWrapper>
+                </AuthProvider>
             </ThemeProvider>
         </QueryClientProvider>
     );
