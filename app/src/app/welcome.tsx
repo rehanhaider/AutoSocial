@@ -95,7 +95,9 @@ const WelcomeScreen: React.FC = () => {
 
             <View style={[styles.buttonContainer, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
                 <Pressable style={[styles.primaryButton, { backgroundColor: colors.interactive.primary.default }]} onPress={handleSignUp}>
-                    <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>I'm new to AutoSocial, let's signup.</Text>
+                    <Text
+                        style={[styles.primaryButtonText, { color: colors.content.inverse }]}
+                    >{`I'm new to AutoSocial, let's signup.`}</Text>
                 </Pressable>
 
                 <Pressable style={styles.secondaryButton} onPress={handleLogin}>

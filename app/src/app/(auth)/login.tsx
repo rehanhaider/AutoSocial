@@ -78,7 +78,7 @@ const LoginScreen: React.FC = () => {
             </Pressable>
 
             <Pressable style={styles.secondaryButton} onPress={() => router.push("/(auth)/signup")}>
-                <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>Don't have an account? Sign Up</Text>
+                <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>{`Don't have an account? Sign Up`}</Text>
             </Pressable>
         </View>
     );

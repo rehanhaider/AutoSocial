@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { View, ActivityIndicator } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 
-export default function Index() {
+const Index: React.FC = () => {
     const { isAuthenticated, isLoading } = useAuth();
     const { colors } = useTheme();
 
@@ -22,4 +22,6 @@ export default function Index() {
     } else {
         return <Redirect href="/welcome" />;
     }
-}
+};
+
+export default Index;

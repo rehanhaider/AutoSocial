@@ -17,6 +17,7 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 const MainTabs: React.FC = () => {
     const insets = useSafeAreaInsets();
     const params = useLocalSearchParams();
+    const { colors, colorScheme } = useTheme();
 
     return (
         <View style={{ flex: 1 }}>
@@ -29,7 +30,7 @@ const MainTabs: React.FC = () => {
                     tabBarIndicatorStyle: { height: 0 }, // Hide the top indicator
                     swipeEnabled: true,
                 }}
-                tabBar={(props) => <TabBar {...props} insets={insets} />}
+                tabBar={(props) => <TabBar {...props} insets={insets} colors={colors} colorScheme={colorScheme} />}
             >
                 <Tab.Screen name="Home" component={HomeScreen} initialParams={params as any} />
             </Tab.Navigator>

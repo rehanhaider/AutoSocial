@@ -16,7 +16,7 @@ import { sharedQueryClient } from "@/lib/sharedQueryClient";
 SplashScreen.preventAutoHideAsync();
 
 // This component wraps the main app content and applies theme/safe area
-function AppWrapper({ children }: { children: React.ReactNode }) {
+const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { colorScheme } = useTheme();
 
     return (
@@ -27,9 +27,9 @@ function AppWrapper({ children }: { children: React.ReactNode }) {
             </SafeAreaProvider>
         </GestureHandlerRootView>
     );
-}
+};
 
-export default function RootLayout() {
+const RootLayout: React.FC = () => {
     const [loaded] = useFonts({
         SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
     });
@@ -61,4 +61,6 @@ export default function RootLayout() {
             </ThemeProvider>
         </QueryClientProvider>
     );
-}
+};
+
+export default RootLayout;
