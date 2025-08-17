@@ -104,12 +104,11 @@ const AppHeader: React.FC = () => {
                 ]}
             >
                 <View style={styles.headerContent}>
-                    <Logo />
                     {/* Left side - Hamburger Menu */}
                     <TouchableOpacity style={styles.iconButton} onPress={handleMenuPress} activeOpacity={0.7}>
                         <Ionicons name="menu" size={24} color={colors.content.primary} />
                     </TouchableOpacity>
-
+                    <Logo style={{ flex: 1, marginLeft: Spacing.sm }} />
                     {/* Right side - Icons */}
                     <View style={styles.rightIconsContainer}>
                         <TouchableOpacity style={styles.iconButton} onPress={handleNotificationPress} activeOpacity={0.7}>

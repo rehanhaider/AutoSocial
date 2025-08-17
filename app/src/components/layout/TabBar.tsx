@@ -5,20 +5,16 @@ import { BorderRadius, Spacing } from "@/styles";
 import { BlurView } from "expo-blur";
 import { useHaptics } from "@/hooks/useHaptics";
 import { ImpactFeedbackStyle } from "expo-haptics";
+import { useTheme } from "@/hooks/useTheme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const TabBar: React.FC<{ state: any; navigation: any; colors: any; insets: any; colorScheme: any }> = ({
-    state,
-    navigation,
-    colors,
-    insets,
-    colorScheme,
-}) => {
+const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }) => {
     const icons: Record<string, { name: string; lib: any }> = {
-        Hot: { name: "flame", lib: Ionicons },
-        Latest: { name: "flash", lib: Ionicons },
-        Bookmark: { name: "bookmark", lib: Ionicons },
+        Home: { name: "home", lib: Ionicons },
     };
 
+    const insets = useSafeAreaInsets();
+    const { colors, colorScheme, shadows, isDark } = useTheme();
     // Create refs for all routes at the top level
     const scaleAnimRefs = useRef<Record<string, Animated.Value>>({});
 
@@ -55,6 +51,7 @@ const TabBar: React.FC<{ state: any; navigation: any; colors: any; insets: any; 
             right: 0,
             borderTopLeftRadius: BorderRadius.xl,
             borderTopRightRadius: BorderRadius.xl,
+            ...shadows.sm,
             ...Platform.select({
                 ios: {
                     shadowColor: "#000",
@@ -100,7 +97,7 @@ const TabBar: React.FC<{ state: any; navigation: any; colors: any; insets: any; 
                     style={[
                         StyleSheet.absoluteFill,
                         {
-                            backgroundColor: colors.surface.base,
+                            backgroundColor: colors.surface.primary,
                         },
                     ]}
                 />

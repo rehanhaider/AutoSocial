@@ -49,6 +49,8 @@ const SettingsScreen: React.FC = () => {
                                 backgroundColor: colors.surface.secondary,
                                 borderColor: colors.border.secondary,
                                 borderWidth: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
                             },
                         ]}
                         onPress={() => setThemeModalVisible(true)}
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: Spacing.md,
         borderRadius: BorderRadius.md,
         borderWidth: 1,
-        minWidth: 200,
+        width: "50%",
     },
     selectorText: {
         fontSize: 16,
