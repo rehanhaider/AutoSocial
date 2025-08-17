@@ -30,7 +30,7 @@ const MainTabs: React.FC = () => {
                     tabBarIndicatorStyle: { height: 0 }, // Hide the top indicator
                     swipeEnabled: true,
                 }}
-                tabBar={(props) => <TabBar {...props} insets={insets} colors={colors} colorScheme={colorScheme} />}
+                tabBar={(props) => <TabBar {...props} />}
             >
                 <Tab.Screen name="Home" component={HomeScreen} initialParams={params as any} />
             </Tab.Navigator>

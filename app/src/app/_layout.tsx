@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useTheme } from "@/hooks/useTheme";
 import { sharedQueryClient } from "@/lib/sharedQueryClient";
+import "../../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
