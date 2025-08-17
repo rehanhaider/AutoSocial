@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, View, Platform, Animated } from "react-native";
-import { BorderRadius, Spacing } from "@/styles";
+
 import { BlurView } from "expo-blur";
 import { useHaptics } from "@/hooks/useHaptics";
 import { ImpactFeedbackStyle } from "expo-haptics";
@@ -45,13 +45,6 @@ const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }
 
     const styles = StyleSheet.create({
         tabBarContainer: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            borderTopLeftRadius: BorderRadius.xl,
-            borderTopRightRadius: BorderRadius.xl,
-            ...shadows.sm,
             ...Platform.select({
                 ios: {
                     shadowColor: "#000",
@@ -64,45 +57,25 @@ const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }
                 },
             }),
         },
-        tabBarContent: {
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-            paddingTop: Spacing.sm,
-        },
-        iconWrapper: {
-            alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: Spacing.sm,
-            paddingHorizontal: Spacing.md,
-            minWidth: 60,
-            minHeight: 44,
-        },
-        focusedIndicator: {
-            width: 24,
-            height: 3,
-            borderRadius: BorderRadius.sm,
-            marginTop: Spacing.sm,
-        },
     });
 
     return (
-        <View style={[styles.tabBarContainer, { height: 60 + insets.bottom, paddingBottom: insets.bottom }]}>
+        <View
+            className="absolute rounded-t-xl bottom-0 left-0 right-0"
+            style={[styles.tabBarContainer, { height: 60 + insets.bottom, paddingBottom: insets.bottom, ...shadows.sm }]}
+        >
             {Platform.OS === "ios" && (
-                <BlurView intensity={95} tint={colorScheme === "dark" ? "dark" : "light"} style={StyleSheet.absoluteFill} />
+                <BlurView intensity={95} tint={colorScheme === "dark" ? "dark" : "light"} className="absolute inset-0" />
             )}
             {Platform.OS !== "ios" && (
                 <View
-                    style={[
-                        StyleSheet.absoluteFill,
-                        {
-                            backgroundColor: colors.surface.primary,
-                        },
-                    ]}
+                    className="absolute inset-0"
+                    style={{
+                        backgroundColor: colors.surface.primary,
+                    }}
                 />
             )}
-            <View style={styles.tabBarContent}>
+            <View className="flex-1 flex-row justify-around items-center pt-2">
                 {state.routes.map((route: any, index: number) => {
                     const isFocused = state.index === index;
                     const { name, lib: IconComponent } = icons[route.name];
@@ -133,7 +106,9 @@ const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }
                                     color={isFocused ? colors.accent.redditRed : colors.content.tertiary}
                                 />
                             </Animated.View>
-                            {isFocused && <View style={[styles.focusedIndicator, { backgroundColor: colors.accent.redditRed }]} />}
+                            {isFocused && (
+                                <View className="w-6 h-[3px] rounded mt-2 mx-auto" style={{ backgroundColor: colors.accent.redditRed }} />
+                            )}
                         </TouchableOpacity>
                     );
                 })}
