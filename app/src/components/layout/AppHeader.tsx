@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import { View, StyleSheet, StatusBar, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Typography, Spacing } from "@/styles";
 import { useTheme } from "@/hooks/useTheme";
@@ -24,11 +24,6 @@ const AppHeader: React.FC = () => {
 
     const handleSettingsPress = () => {
         router.push("/settings");
-    };
-
-    const handleNotificationPress = () => {
-        // TODO: Implement notification functionality
-        console.log("Notification pressed");
     };
 
     const styles = StyleSheet.create({
@@ -111,11 +106,8 @@ const AppHeader: React.FC = () => {
                     <Logo style={{ flex: 1, marginLeft: Spacing.sm }} />
                     {/* Right side - Icons */}
                     <View style={styles.rightIconsContainer}>
-                        <TouchableOpacity style={styles.iconButton} onPress={handleNotificationPress} activeOpacity={0.7}>
-                            <Ionicons name="notifications-outline" size={24} color={colors.content.primary} />
-                        </TouchableOpacity>
                         <TouchableOpacity style={styles.iconButton} onPress={handleSettingsPress} activeOpacity={0.7}>
-                            <Ionicons name="settings-outline" size={24} color={colors.content.primary} />
+                            <Ionicons name="ellipsis-vertical" size={24} color={colors.content.primary} />
                         </TouchableOpacity>
                     </View>
                 </View>
