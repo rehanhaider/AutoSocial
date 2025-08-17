@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Pressable, Dimensions, ScrollView } from "react-native";
 import PagerView from "react-native-pager-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/hooks/useTheme";
@@ -8,10 +8,10 @@ import { useRouter } from "expo-router";
 import Logo from "@/components/layout/Logo";
 import { Image } from "expo-image";
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const WelcomeScreen: React.FC = () => {
-    const { colors } = useTheme();
+    const { colors, shadows } = useTheme();
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = useState(0);
@@ -24,80 +24,84 @@ const WelcomeScreen: React.FC = () => {
         router.push("/(auth)/login");
     };
 
-    // Welcome slider images
-    const welcomeImages = [
+    const welcomeSlides = [
         {
             source: require("@/../assets/images/welcome-1.png"),
-            alt: "Welcome slide 1",
             title: "Share your story",
             description: "Connect with your audience across platforms, and share what you're passionate about.",
         },
         {
             source: require("@/../assets/images/welcome-3.png"),
-            alt: "Welcome slide 2",
             title: "Automate your social media",
             description: "Schedule and automate your social media posts to reach your audience.",
         },
         {
             source: require("@/../assets/images/welcome-4.png"),
-            alt: "AutoSocial features",
             title: "Grow your brand",
             description: "Increase your reach and grow your brand.",
         },
     ];
 
-    const handlePageChange = (event: any) => {
+    const handlePageSelected = (event: any) => {
         setCurrentPage(event.nativeEvent.position);
     };
 
-    return (
-        <View style={[styles.container, { backgroundColor: colors.surface.primary, paddingTop: insets.top }]}>
-            <View style={styles.contentContainer}>
-                <Logo fontSize={Typography.heading.h1.fontSize} style={{ marginBottom: Spacing.xxl }} />
+    const renderPaginationDots = () => (
+        <View style={styles.pagination}>
+            {welcomeSlides.map((_, index) => (
+                <View
+                    key={index}
+                    style={[
+                        styles.paginationDot,
+                        {
+                            backgroundColor:
+                                index === currentPage ? colors.interactive.primary.default : colors.interactive.neutral.default,
+                            width: 12,
+                            height: 12,
+                        },
+                    ]}
+                />
+            ))}
+        </View>
+    );
 
-                {/* Welcome Images Slider */}
-                <View style={styles.sliderContainer}>
-                    <PagerView style={styles.pagerView} initialPage={0} onPageSelected={handlePageChange}>
-                        {welcomeImages.map((image, index) => (
-                            <View key={index} style={styles.slideContainer}>
-                                <Text style={[Typography.heading.h3, styles.slideTitle, { color: colors.content.primary }]}>
-                                    {image.title}
-                                </Text>
-                                <Text style={[Typography.bodyText.small, styles.slideDescription, { color: colors.content.primary }]}>
-                                    {image.description}
-                                </Text>
-                                <View style={styles.imageContainer}>
-                                    <Image source={image.source} style={styles.image} />
+    return (
+        <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
+            {/* Header Section */}
+            <View style={[styles.header, { paddingTop: insets.top + Spacing.lg }]}>
+                <Logo fontSize={Typography.heading.h1.fontSize} style={styles.logo} />
+            </View>
+
+            {/* Content Section */}
+            <View style={styles.content}>
+                <View style={styles.sliderWrapper}>
+                    <PagerView style={styles.pagerView} initialPage={0} onPageSelected={handlePageSelected} overdrag={true}>
+                        {welcomeSlides.map((slide, index) => (
+                            <View key={index} style={styles.slide} collapsable={false}>
+                                <View style={styles.slideContent}>
+                                    <View style={styles.imageWrapper}>
+                                        <Image source={slide.source} style={styles.slideImage} contentFit="contain" transition={200} />
+                                    </View>
+                                    <View style={styles.textContent}>
+                                        <Text style={[styles.slideTitle, { color: colors.content.primary }]}>{slide.title}</Text>
+                                        <Text style={[styles.slideDescription, { color: colors.content.secondary }]}>
+                                            {slide.description}
+                                        </Text>
+                                    </View>
                                 </View>
                             </View>
                         ))}
                     </PagerView>
-
-                    {/* Pagination Dots */}
-                    <View style={styles.paginationDots}>
-                        {welcomeImages.map((_, index) => (
-                            <View
-                                key={index}
-                                style={[
-                                    styles.dot,
-                                    {
-                                        backgroundColor:
-                                            index === currentPage ? colors.interactive.primary.default : colors.interactive.neutral.default,
-                                        width: 12,
-                                        height: 12,
-                                    },
-                                ]}
-                            />
-                        ))}
-                    </View>
+                    {renderPaginationDots()}
                 </View>
             </View>
 
-            <View style={[styles.buttonContainer, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
+            {/* Footer Section */}
+            <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
                 <Pressable style={[styles.primaryButton, { backgroundColor: colors.interactive.primary.default }]} onPress={handleSignUp}>
-                    <Text
-                        style={[styles.primaryButtonText, { color: colors.content.inverse }]}
-                    >{`I'm new to AutoSocial, let's signup.`}</Text>
+                    <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>
+                        {`I'm new to AutoSocial, let's signup.`}
+                    </Text>
                 </Pressable>
 
                 <Pressable style={styles.secondaryButton} onPress={handleLogin}>
@@ -113,79 +117,91 @@ const WelcomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "transparent",
-        paddingHorizontal: Spacing.md,
     },
-    contentContainer: {
-        flex: 1,
+    header: {
         alignItems: "center",
-        justifyContent: "space-between",
-        paddingTop: Spacing.md,
-        paddingBottom: Spacing.lg,
+        paddingHorizontal: Spacing.xs,
+        paddingBottom: Spacing.md,
     },
-    heading: {
-        textAlign: "center",
-        marginBottom: Spacing.md,
+    logo: {
+        marginBottom: 0,
     },
-    sliderContainer: {
+    content: {
         flex: 1,
-        width: "100%",
-        alignItems: "center",
         justifyContent: "center",
-        marginVertical: Spacing.lg,
+        alignItems: "center",
+    },
+    sliderWrapper: {
+        width: SCREEN_WIDTH,
+        height: Math.min(SCREEN_HEIGHT * 0.6, 500),
+        justifyContent: "center",
+        alignItems: "center",
     },
     pagerView: {
         width: SCREEN_WIDTH,
-        height: SCREEN_WIDTH * 1.2, // Increase height to accommodate text
+        height: "100%",
     },
-    slideContainer: {
+    slide: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: Spacing.lg,
+        paddingHorizontal: Spacing.xs,
     },
-    slideTitle: {
-        textAlign: "center",
+    slideContent: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+    },
+    imageWrapper: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
         marginBottom: Spacing.md,
     },
-    slideDescription: {
-        textAlign: "center",
-        marginBottom: Spacing.lg,
-        paddingHorizontal: Spacing.md,
-    },
-    imageContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-    },
-    image: {
-        width: "100%",
-        height: "100%",
+    slideImage: {
+        width: SCREEN_WIDTH - Spacing.xs,
+        height: SCREEN_WIDTH - Spacing.xs,
         borderRadius: BorderRadius.md,
     },
-    paginationDots: {
+    textContent: {
+        alignItems: "center",
+    },
+    slideTitle: {
+        ...Typography.heading.h3,
+        textAlign: "center",
+        marginBottom: Spacing.sm,
+        fontWeight: "700",
+    },
+    slideDescription: {
+        ...Typography.bodyText.small,
+        textAlign: "center",
+        lineHeight: 20,
+        paddingHorizontal: Spacing.sm,
+    },
+    pagination: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         marginTop: Spacing.md,
     },
-    dot: {
+    paginationDot: {
         width: 8,
         height: 8,
         borderRadius: 4,
         marginHorizontal: Spacing.xs / 2,
     },
-    buttonContainer: {
-        width: "100%",
-        paddingHorizontal: Spacing.md,
+    footer: {
+        paddingHorizontal: Spacing.xs,
+        paddingTop: Spacing.md,
     },
     primaryButton: {
         paddingVertical: Spacing.md,
-        paddingHorizontal: Spacing.lg,
+        paddingHorizontal: Spacing.xs,
         borderRadius: BorderRadius.md,
         alignItems: "center",
-        marginBottom: Spacing.md,
+        marginBottom: Spacing.sm,
     },
     primaryButtonText: {
         fontSize: 18,
@@ -193,7 +209,7 @@ const styles = StyleSheet.create({
     },
     secondaryButton: {
         paddingVertical: Spacing.md,
-        paddingHorizontal: Spacing.lg,
+        paddingHorizontal: Spacing.xs,
         alignItems: "center",
     },
     secondaryButtonText: {
