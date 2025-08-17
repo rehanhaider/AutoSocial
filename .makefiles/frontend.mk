@@ -57,8 +57,8 @@ mobile-preview:
 
 open-release:
 	@echo "🔨 Opening release build..."
-	@if [ -d /home/rehan/SnapNews/mobile/android/app/build/outputs/apk/release ]; then \
-		explorer.exe "$$(wslpath -w /home/rehan/SnapNews/mobile/android/app/build/outputs/apk/release)"; \
+	@if [ -d /home/rehan/Projects/autosocial/app/android/app/build/outputs/apk/release ]; then \
+		explorer.exe "$$(wslpath -w /home/rehan/Projects/autosocial/app/android/app/build/outputs/apk/release)"; \
 	else \
 		echo "❌ Directory not found."; \
 	fi

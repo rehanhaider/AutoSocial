@@ -2,7 +2,7 @@
     "expo": {
         "name": "AutoSocial",
         "slug": "AutoSocial",
-        "version": "0.20250815.2",
+        "version": "0.20250817.1",
         "orientation": "portrait",
         "icon": "./assets/AppIcon.png",
         "scheme": "myapp",
