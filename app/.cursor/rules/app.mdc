@@ -24,3 +24,8 @@ AutoSocial is a multi-platform application designed to automate and schedule Twi
 *   **State Management:** The mobile app uses Zustand for global state management.
 *   **Styling:** The mobile app uses NativeWind for styling.
 *   **Linting and Formatting:** The project uses Prettier and ESLint for code formatting and linting. Configuration files can be found at the root of the project and in the `app` directory.
+
+## Rules
+
+1. **Styling**: All colours must use the `colors` object from `@/styles/theme.ts` and set as `style={{ <color> }}`. All other styling should be done using the `className` prop using nativewind.
+2. **State Management**: All state management should be done using Zustand. Avoid using React Context where possible.
