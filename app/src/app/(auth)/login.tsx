@@ -24,7 +24,7 @@ const LoginScreen: React.FC = () => {
 
         const success = await login(email, password);
         if (success) {
-            router.replace("/(tabs)");
+            router.replace("/(auth)/login");
         } else {
             Alert.alert("Error", "Invalid email or password");
         }

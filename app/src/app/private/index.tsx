@@ -1,20 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Redirect, useLocalSearchParams } from "expo-router";
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-});
-
-const HomeScreen: React.FC = () => {
-    return (
-        <View style={styles.container}>
-            <Text>Home Screen</Text>
-        </View>
-    );
+const Index: React.FC = () => {
+    const params = useLocalSearchParams();
+    return <Redirect href={{ pathname: "/private/(tabs)", params }} />;
 };
 
-export default HomeScreen;
+export default Index;

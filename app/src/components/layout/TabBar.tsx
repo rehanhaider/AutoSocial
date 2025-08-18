@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }) => {
     const icons: Record<string, { name: string; lib: any }> = {
         Home: { name: "home", lib: Ionicons },
+        Settings: { name: "settings", lib: Ionicons },
     };
 
     const insets = useSafeAreaInsets();

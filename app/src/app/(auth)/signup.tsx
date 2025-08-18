@@ -15,7 +15,7 @@ const SignupScreen: React.FC = () => {
         // TODO: Implement signup logic
         console.log("Signup button pressed");
         // On successful signup, navigate to the main app or login
-        // router.replace('/(tabs)');
+        // router.replace('/private');
     };
 
     return (

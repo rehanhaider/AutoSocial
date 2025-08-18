@@ -1,37 +1,31 @@
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { View } from "react-native";
-import AppHeader from "@/components/layout/AppHeader";
-import TabBar from "@/components/layout/TabBar";
-import { useLocalSearchParams } from "expo-router";
-import HomeScreen from "./index";
+import { Drawer } from "expo-router/drawer";
+import { useTheme } from "@/hooks/useTheme";
+import { DrawerContentComponentProps } from "@react-navigation/drawer";
+import AppDrawerContent from "@/components/layout/AppDrawerContent";
 
-type TabParamList = {
-    Home: undefined;
-};
-
-const Tab = createMaterialTopTabNavigator<TabParamList>();
-
-const MainTabs: React.FC = () => {
-    const params = useLocalSearchParams();
-
+const PrivateLayout: React.FC = () => {
+    const { colors } = useTheme();
     return (
-        <View style={{ flex: 1 }}>
-            <AppHeader />
-            <Tab.Navigator
-                initialRouteName="Home"
-                tabBarPosition="bottom"
-                screenOptions={{
-                    tabBarShowLabel: true,
-                    tabBarIndicatorStyle: { height: 0 }, // Hide the top indicator
-                    swipeEnabled: true,
-                }}
-                tabBar={(props) => <TabBar {...props} />}
-            >
-                <Tab.Screen name="Home" component={HomeScreen} initialParams={params as any} />
-            </Tab.Navigator>
-        </View>
+        <Drawer
+            screenOptions={{
+                headerShown: false,
+                drawerStyle: {
+                    width: 280,
+                    backgroundColor: colors.surface.primary,
+                },
+                drawerActiveBackgroundColor: colors.surface.inverse,
+                drawerInactiveBackgroundColor: colors.surface.primary,
+                drawerActiveTintColor: colors.content.inverse,
+                drawerInactiveTintColor: colors.content.primary,
+                drawerLabelStyle: {
+                    fontSize: 16,
+                    fontWeight: "bold",
+                },
+            }}
+            drawerContent={(props: DrawerContentComponentProps) => <AppDrawerContent {...props} />}
+        ></Drawer>
     );
 };
 
-export default MainTabs;
+export default PrivateLayout;
