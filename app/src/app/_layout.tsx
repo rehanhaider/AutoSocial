@@ -8,7 +8,7 @@ import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/stores/authStore";
 import { useTheme } from "@/hooks/useTheme";
 import "@/styles/global.css";
 
@@ -28,7 +28,7 @@ const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
 };
 
-// Protected Stack component that has access to auth context
+// Protected Stack component that has access to auth store
 const ProtectedStack: React.FC = () => {
     const { isAuthenticated } = useAuth();
 
@@ -69,11 +69,9 @@ const RootLayout: React.FC = () => {
 
     return (
         <ThemeProvider>
-            <AuthProvider>
-                <AppWrapper>
-                    <ProtectedStack />
-                </AppWrapper>
-            </AuthProvider>
+            <AppWrapper>
+                <ProtectedStack />
+            </AppWrapper>
         </ThemeProvider>
     );
 };

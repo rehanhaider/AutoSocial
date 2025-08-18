@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, TextInput, Alert } from "react-nativ
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Typography } from "@/styles";
 import { useRouter } from "expo-router";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/stores/authStore";
 import Logo from "@/components/layout/Logo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
