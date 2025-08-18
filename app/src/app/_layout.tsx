@@ -9,7 +9,7 @@ import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/hooks/useTheme";
 import { sharedQueryClient } from "@/lib/sharedQueryClient";
 import "@/styles/global.css";
@@ -27,6 +27,30 @@ const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {children}
             </SafeAreaProvider>
         </GestureHandlerRootView>
+    );
+};
+
+// Protected Stack component that has access to auth context
+const ProtectedStack: React.FC = () => {
+    const { isAuthenticated } = useAuth();
+
+    return (
+        <Stack screenOptions={{ headerShown: false }}>
+            {/* Public routes - always accessible */}
+            <Stack.Screen name="index" />
+            <Stack.Screen name="welcome" />
+
+            {/* Auth routes - only accessible when NOT authenticated */}
+            <Stack.Protected guard={!isAuthenticated}>
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            </Stack.Protected>
+
+            {/* Private routes - only accessible when authenticated */}
+            <Stack.Protected guard={isAuthenticated}>
+                <Stack.Screen name="private" options={{ headerShown: false }} />
+                <Stack.Screen name="settings" />
+            </Stack.Protected>
+        </Stack>
     );
 };
 
@@ -50,13 +74,7 @@ const RootLayout: React.FC = () => {
             <ThemeProvider>
                 <AuthProvider>
                     <AppWrapper>
-                        <Stack screenOptions={{ headerShown: false }}>
-                            <Stack.Screen name="index" />
-                            <Stack.Screen name="welcome" />
-                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                            <Stack.Screen name="settings" />
-                        </Stack>
+                        <ProtectedStack />
                     </AppWrapper>
                 </AuthProvider>
             </ThemeProvider>
