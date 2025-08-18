@@ -8,11 +8,8 @@ import { ImpactFeedbackStyle } from "expo-haptics";
 import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }) => {
-    const icons: Record<string, { name: string; lib: any }> = {
-        Home: { name: "home", lib: Ionicons },
-        Settings: { name: "settings", lib: Ionicons },
-    };
+const TabBar: React.FC<{ tabs: any; state: any; navigation: any }> = ({ tabs, state, navigation }) => {
+    const icons: Record<string, { name: string; lib: any }> = tabs;
 
     const insets = useSafeAreaInsets();
     const { colors, colorScheme, shadows, isDark } = useTheme();

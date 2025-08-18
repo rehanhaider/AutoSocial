@@ -61,25 +61,25 @@ export const buildTheme = (mode: ThemeMode): Theme => {
     const neutralScale = isPremium
         ? premium.primary
         : isDark
-        ? {
-              50: neutral[900],
-              100: neutral[800],
-              200: neutral[700],
-              300: neutral[600],
-              400: neutral[500],
-              500: neutral[400],
-              600: neutral[300],
-              700: neutral[200],
-              800: neutral[100],
-              900: neutral[50],
-          }
-        : neutral;
+          ? {
+                50: neutral[900],
+                100: neutral[800],
+                200: neutral[700],
+                300: neutral[600],
+                400: neutral[500],
+                500: neutral[400],
+                600: neutral[300],
+                700: neutral[200],
+                800: neutral[100],
+                900: neutral[50],
+            }
+          : neutral;
 
     return {
         surface: {
             primary: isPremium ? premium.primary[900] : isDark ? neutral[900] : pure.white,
-            secondary: isPremium ? premium.primary[800] : isDark ? neutral[800] : neutral[50],
-            tertiary: isPremium ? premium.primary[700] : isDark ? neutral[700] : neutral[100],
+            secondary: isPremium ? premium.primary[700] : isDark ? neutral[700] : neutral[50],
+            tertiary: isPremium ? premium.primary[500] : isDark ? neutral[500] : neutral[100],
             inverse: isPremium ? premium.text[100] : isDark ? pure.white : neutral[900],
             overlay: isPremium ? "rgba(31, 52, 46, 0.80)" : isDark ? alpha[80] : alpha[50],
         },
@@ -115,11 +115,11 @@ export const buildTheme = (mode: ThemeMode): Theme => {
             primary: createInteractiveStates(isPremium ? premium.text[500] : isDark ? primary[600] : primary[500], isDark || isPremium),
             secondary: createInteractiveStates(
                 isPremium ? premium.accent[600] : isDark ? neutralScale[600] : neutralScale[400],
-                isDark || isPremium
+                isDark || isPremium,
             ),
             neutral: createInteractiveStates(
                 isPremium ? premium.primary[700] : isDark ? neutralScale[700] : neutralScale[200],
-                isDark || isPremium
+                isDark || isPremium,
             ),
         },
 
