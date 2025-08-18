@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+# Gemini Project Context: AutoSocial
+
+This document provides a comprehensive overview of the AutoSocial project, its architecture, and development practices to be used as instructional context for future interactions.
+
+## Project Overview
+
+AutoSocial is a multi-platform application designed to automate and schedule Twitter posts. It consists of three main components:
+
+*   **Mobile App (`/app`):** A React Native application built with Expo that allows users to create, schedule, and manage their Twitter posts.
+
+## Tech Stack
+
+| Component      | Technologies                                                                                                        |
+| :------------- | :------------------------------------------------------------------------------------------------------------------ |
+| **Mobile App** | React Native, Expo, TypeScript, Zustand (State Management), TanStack Query (Data Fetching), Expo Router, NativeWind |
+
+
+## Development Conventions
+
+*   **Component-Based UI:** The mobile app is built using a component-based architecture. Reusable components can be found in `app/src/components`.
+*   **State Management:** The mobile app uses Zustand for global state management.
+*   **Styling:** The mobile app uses NativeWind for styling.
+*   **Linting and Formatting:** The project uses Prettier and ESLint for code formatting and linting. Configuration files can be found at the root of the project and in the `app` directory.
