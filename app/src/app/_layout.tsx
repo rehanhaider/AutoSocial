@@ -4,14 +4,12 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/hooks/useTheme";
-import { sharedQueryClient } from "@/lib/sharedQueryClient";
 import "@/styles/global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -70,15 +68,13 @@ const RootLayout: React.FC = () => {
     }
 
     return (
-        <QueryClientProvider client={sharedQueryClient}>
-            <ThemeProvider>
-                <AuthProvider>
-                    <AppWrapper>
-                        <ProtectedStack />
-                    </AppWrapper>
-                </AuthProvider>
-            </ThemeProvider>
-        </QueryClientProvider>
+        <ThemeProvider>
+            <AuthProvider>
+                <AppWrapper>
+                    <ProtectedStack />
+                </AppWrapper>
+            </AuthProvider>
+        </ThemeProvider>
     );
 };
 
