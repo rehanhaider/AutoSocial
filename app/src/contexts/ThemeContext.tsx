@@ -9,7 +9,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { ThemeContextValue, ThemeMode } from "@/types/theme";
 import { buildTheme } from "@/styles/buildTheme";
-import { useSettingsStore } from "@/state/settingStore";
+import { useSettingsStore } from "@/stores/settingStore";
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
