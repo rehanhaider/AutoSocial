@@ -65,7 +65,11 @@ const TabBar: React.FC<{ state: any; navigation: any }> = ({ state, navigation }
             style={[styles.tabBarContainer, { height: 60 + insets.bottom, paddingBottom: insets.bottom, ...shadows.sm }]}
         >
             {Platform.OS === "ios" && (
-                <BlurView intensity={95} tint={colorScheme === "dark" ? "dark" : "light"} className="absolute inset-0" />
+                <BlurView
+                    intensity={95}
+                    tint={colorScheme === "dark" || colorScheme === "premium" ? "dark" : "light"}
+                    className="absolute inset-0"
+                />
             )}
             {Platform.OS !== "ios" && (
                 <View

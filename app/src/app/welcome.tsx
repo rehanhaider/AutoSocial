@@ -47,17 +47,15 @@ const WelcomeScreen: React.FC = () => {
     };
 
     const renderPaginationDots = () => (
-        <View style={styles.pagination}>
+        <View className="flex-row justify-center items-center" style={{ marginTop: Spacing.md }}>
             {welcomeSlides.map((_, index) => (
                 <View
                     key={index}
+                    className="w-4 h-4 rounded-sm mx-0.5"
                     style={[
-                        styles.paginationDot,
                         {
                             backgroundColor:
                                 index === currentPage ? colors.interactive.primary.default : colors.interactive.neutral.default,
-                            width: 12,
-                            height: 12,
                         },
                     ]}
                 />
@@ -66,25 +64,36 @@ const WelcomeScreen: React.FC = () => {
     );
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
+        <View className="flex-1" style={{ backgroundColor: colors.surface.primary }}>
             {/* Header Section */}
-            <View style={[styles.header, { paddingTop: insets.top + Spacing.lg }]}>
-                <Logo fontSize={Typography.heading.h1.fontSize} style={styles.logo} />
+            <View className="items-center pb-2 px-1" style={{ paddingTop: insets.top + Spacing.lg }}>
+                <Logo fontSize={Typography.heading.h1.fontSize} />
             </View>
 
             {/* Content Section */}
-            <View style={styles.content}>
-                <View style={styles.sliderWrapper}>
+            <View className="flex-1 justify-center items-center">
+                <View className="w-full justify-center items-center" style={{ height: Math.min(SCREEN_HEIGHT * 0.6, 500) }}>
                     <PagerView style={styles.pagerView} initialPage={0} onPageSelected={handlePageSelected} overdrag={true}>
                         {welcomeSlides.map((slide, index) => (
-                            <View key={index} style={styles.slide} collapsable={false}>
-                                <View style={styles.slideContent}>
-                                    <View style={styles.imageWrapper}>
-                                        <Image source={slide.source} style={styles.slideImage} contentFit="contain" transition={200} />
+                            <View className="flex-1 justify-center items-center px-1" key={index} collapsable={false}>
+                                <View className="flex-1 justify-center items-center w-full">
+                                    <View className="flex-1 justify-center items-center w-full mb-md">
+                                        <Image
+                                            className="px-1"
+                                            source={slide.source}
+                                            style={styles.slideImage}
+                                            contentFit="contain"
+                                            transition={200}
+                                        />
                                     </View>
-                                    <View style={styles.textContent}>
-                                        <Text style={[styles.slideTitle, { color: colors.content.primary }]}>{slide.title}</Text>
-                                        <Text style={[styles.slideDescription, { color: colors.content.secondary }]}>
+                                    <View className="items-center">
+                                        <Text
+                                            className="text-center mb-sm font-bold"
+                                            style={[{ color: colors.content.primary, ...Typography.heading.h3 }]}
+                                        >
+                                            {slide.title}
+                                        </Text>
+                                        <Text className="text-center px-xxs" style={[{ color: colors.content.secondary }]}>
                                             {slide.description}
                                         </Text>
                                     </View>
@@ -97,15 +106,19 @@ const WelcomeScreen: React.FC = () => {
             </View>
 
             {/* Footer Section */}
-            <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
-                <Pressable style={[styles.primaryButton, { backgroundColor: colors.interactive.primary.default }]} onPress={handleSignUp}>
-                    <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>
+            <View className="px-xs pt-md" style={{ paddingBottom: Math.max(insets.bottom, Spacing.md) }}>
+                <Pressable
+                    className="items-center px-sm py-md rounded-md mb-sm"
+                    style={[{ backgroundColor: colors.interactive.primary.default }]}
+                    onPress={handleSignUp}
+                >
+                    <Text className="font-bold" style={[{ color: colors.content.primary }]}>
                         {`I'm new to AutoSocial, let's signup.`}
                     </Text>
                 </Pressable>
 
-                <Pressable style={styles.secondaryButton} onPress={handleLogin}>
-                    <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>
+                <Pressable className="items-center px-sm py-md" onPress={handleLogin}>
+                    <Text className="font-bold" style={[{ color: colors.content.primary }]}>
                         I already have a AutoSocial account.
                     </Text>
                 </Pressable>
@@ -115,106 +128,13 @@ const WelcomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        alignItems: "center",
-        paddingHorizontal: Spacing.xs,
-        paddingBottom: Spacing.md,
-    },
-    logo: {
-        marginBottom: 0,
-    },
-    content: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    sliderWrapper: {
-        width: SCREEN_WIDTH,
-        height: Math.min(SCREEN_HEIGHT * 0.6, 500),
-        justifyContent: "center",
-        alignItems: "center",
-    },
     pagerView: {
         width: SCREEN_WIDTH,
         height: "100%",
     },
-    slide: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: Spacing.xs,
-    },
-    slideContent: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-    },
-    imageWrapper: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        marginBottom: Spacing.md,
-    },
     slideImage: {
         width: SCREEN_WIDTH - Spacing.xs,
         height: SCREEN_WIDTH - Spacing.xs,
-        borderRadius: BorderRadius.md,
-    },
-    textContent: {
-        alignItems: "center",
-    },
-    slideTitle: {
-        ...Typography.heading.h3,
-        textAlign: "center",
-        marginBottom: Spacing.sm,
-        fontWeight: "700",
-    },
-    slideDescription: {
-        ...Typography.bodyText.small,
-        textAlign: "center",
-        lineHeight: 20,
-        paddingHorizontal: Spacing.sm,
-    },
-    pagination: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: Spacing.md,
-    },
-    paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: Spacing.xs / 2,
-    },
-    footer: {
-        paddingHorizontal: Spacing.xs,
-        paddingTop: Spacing.md,
-    },
-    primaryButton: {
-        paddingVertical: Spacing.md,
-        paddingHorizontal: Spacing.xs,
-        borderRadius: BorderRadius.md,
-        alignItems: "center",
-        marginBottom: Spacing.sm,
-    },
-    primaryButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-    },
-    secondaryButton: {
-        paddingVertical: Spacing.md,
-        paddingHorizontal: Spacing.xs,
-        alignItems: "center",
-    },
-    secondaryButtonText: {
-        fontSize: 16,
-        fontWeight: "500",
     },
 });
 

@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius } from "@/styles";
+import { Spacing, BorderRadius, Typography } from "@/styles";
 import { useRouter } from "expo-router";
+import Logo from "@/components/layout/Logo";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SignupScreen: React.FC = () => {
+    const insets = useSafeAreaInsets();
     const { colors } = useTheme();
     const router = useRouter();
 
@@ -16,12 +19,17 @@ const SignupScreen: React.FC = () => {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
-            <Text style={[styles.title, { color: colors.content.primary }]}>Sign Up</Text>
+        <View className="flex-1 px-lg justify-center items-center" style={{ backgroundColor: colors.surface.primary }}>
+            <View className="items-center pb-xl mb-md px-1" style={{ paddingTop: insets.top + Spacing.lg }}>
+                <Logo fontSize={Typography.heading.h1.fontSize} />
+            </View>
+            <Text className="text-2xl font-bold mb-md" style={[{ color: colors.content.primary }]}>
+                Sign up for AutoSocial
+            </Text>
 
             <TextInput
+                className="w-full p-md rounded-md border mb-md"
                 style={[
-                    styles.input,
                     {
                         backgroundColor: colors.surface.secondary,
                         color: colors.content.primary,
@@ -35,8 +43,8 @@ const SignupScreen: React.FC = () => {
             />
 
             <TextInput
+                className="w-full p-md rounded-md border mb-md"
                 style={[
-                    styles.input,
                     {
                         backgroundColor: colors.surface.secondary,
                         color: colors.content.primary,
@@ -49,8 +57,8 @@ const SignupScreen: React.FC = () => {
             />
 
             <TextInput
+                className="w-full p-md rounded-md border mb-md"
                 style={[
-                    styles.input,
                     {
                         backgroundColor: colors.surface.secondary,
                         color: colors.content.primary,
@@ -62,56 +70,23 @@ const SignupScreen: React.FC = () => {
                 secureTextEntry
             />
 
-            <Pressable style={[styles.primaryButton, { backgroundColor: colors.interactive.primary.default }]} onPress={handleSignup}>
-                <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>Sign Up</Text>
+            <Pressable
+                className="w-full p-md rounded-md items-center"
+                style={[{ backgroundColor: colors.interactive.primary.default }]}
+                onPress={handleSignup}
+            >
+                <Text className="font-bold" style={[{ color: colors.content.primary }]}>
+                    Sign Up
+                </Text>
             </Pressable>
 
-            <Pressable style={styles.secondaryButton} onPress={() => router.push("/(auth)/login")}>
-                <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>Already have an account? Log In</Text>
+            <Pressable className="w-full items-center py-md" onPress={() => router.push("/(auth)/login")}>
+                <Text className="font-bold" style={[{ color: colors.content.primary }]}>
+                    Already have an account? Log In
+                </Text>
             </Pressable>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: Spacing.lg,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: Spacing.xl,
-    },
-    input: {
-        width: "100%",
-        padding: Spacing.md,
-        borderRadius: BorderRadius.md,
-        borderWidth: 1,
-        marginBottom: Spacing.md,
-    },
-    primaryButton: {
-        width: "100%",
-        paddingVertical: Spacing.md,
-        borderRadius: BorderRadius.md,
-        alignItems: "center",
-        marginBottom: Spacing.md,
-    },
-    primaryButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-    },
-    secondaryButton: {
-        width: "100%",
-        paddingVertical: Spacing.md,
-        alignItems: "center",
-    },
-    secondaryButtonText: {
-        fontSize: 16,
-        fontWeight: "500",
-    },
-});
 
 export default SignupScreen;

@@ -10,7 +10,7 @@ const Index: React.FC = () => {
     // Show loading spinner while checking auth status
     if (isLoading) {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.surface.primary }}>
+            <View className="flex-1 justify-center items-center" style={{ backgroundColor: colors.surface.primary }}>
                 <ActivityIndicator size="large" color={colors.interactive.primary.default} />
             </View>
         );

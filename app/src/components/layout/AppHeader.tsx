@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, StatusBar, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Typography, Spacing } from "@/styles";
 import { useTheme } from "@/hooks/useTheme";
@@ -11,7 +11,7 @@ import Logo from "./Logo";
 
 const AppHeader: React.FC = () => {
     const insets = useSafeAreaInsets();
-    const { colors, colorScheme, shadows, isDark } = useTheme();
+    const { colors, shadows, isDark } = useTheme();
     const router = useRouter();
     const navigation = useNavigation<DrawerNavigationProp<any>>();
 
@@ -26,94 +26,38 @@ const AppHeader: React.FC = () => {
         router.push("/settings");
     };
 
-    const styles = StyleSheet.create({
-        headerContainer: {
-            paddingBottom: Spacing.sm,
-            ...shadows.md,
-            borderBottomWidth: 1,
-        },
-        headerContent: {
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: Spacing.xs,
-            paddingTop: Spacing.sm,
-        },
-        iconButton: {
-            width: 44,
-            height: 44,
-            borderRadius: 22,
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        rightIconsContainer: {
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        logoContainer: {
-            flexDirection: "row",
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "flex-start",
-        },
-        logoText: {
-            ...Typography.heading.h2,
-            letterSpacing: -0.5,
-        },
-        logoBold: {
-            ...Typography.heading.h2,
-            fontFamily: Typography.heading.h1.fontFamily,
-            fontWeight: "800",
-            letterSpacing: -0.5,
-        },
-        logoLight: {
-            ...Typography.heading.h2,
-            fontFamily: Typography.bodyText.medium.fontFamily,
-            fontWeight: "300",
-            opacity: 0.95,
-            letterSpacing: 0.5,
-        },
-        bottomBorder: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 1,
-            opacity: 0.5,
-        },
-    });
-
     return (
         <>
             <StatusBar barStyle={statusBarStyle} backgroundColor={statusBarBg} />
             <View
+                className="border-b"
                 style={[
-                    styles.headerContainer,
                     {
                         paddingTop: insets.top,
+                        paddingBottom: Spacing.sm,
                         backgroundColor: colors.surface.primary,
                         borderBottomColor: colors.border.secondary,
-                        shadowColor: colors.pure.black,
+                        ...shadows.sm,
                     },
                 ]}
             >
-                <View style={styles.headerContent}>
+                <View className="flex-row items-center justify-between" style={[{ paddingHorizontal: Spacing.xs, paddingTop: Spacing.sm }]}>
                     {/* Left side - Hamburger Menu */}
-                    <TouchableOpacity style={styles.iconButton} onPress={handleMenuPress} activeOpacity={0.7}>
+                    <TouchableOpacity className="w-10 h-10 items-center justify-center" onPress={handleMenuPress} activeOpacity={0.7}>
                         <Ionicons name="menu" size={24} color={colors.content.primary} />
                     </TouchableOpacity>
                     <Logo style={{ flex: 1, marginLeft: Spacing.sm }} />
                     {/* Right side - Icons */}
-                    <View style={styles.rightIconsContainer}>
-                        <TouchableOpacity style={styles.iconButton} onPress={handleSettingsPress} activeOpacity={0.7}>
+                    <View className="flex-row items-center justify-center">
+                        <TouchableOpacity
+                            className="w-10 h-10 items-center justify-center"
+                            onPress={handleSettingsPress}
+                            activeOpacity={0.7}
+                        >
                             <Ionicons name="ellipsis-vertical" size={24} color={colors.content.primary} />
                         </TouchableOpacity>
                     </View>
                 </View>
-
-                {/* Bottom border for separation */}
-                <View style={[styles.bottomBorder, { backgroundColor: colors.border.secondary }]} />
             </View>
         </>
     );

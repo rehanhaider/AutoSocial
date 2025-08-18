@@ -23,7 +23,7 @@ const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-                <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+                <StatusBar style={colorScheme === "dark" || colorScheme === "premium" ? "light" : "dark"} />
                 {children}
             </SafeAreaProvider>
         </GestureHandlerRootView>

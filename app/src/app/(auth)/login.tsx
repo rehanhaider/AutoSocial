@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable, TextInput, Alert } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius } from "@/styles";
+import { Spacing, BorderRadius, Typography } from "@/styles";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/contexts/AuthContext";
+import Logo from "@/components/layout/Logo";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen: React.FC = () => {
+    const insets = useSafeAreaInsets();
     const { colors } = useTheme();
     const router = useRouter();
     const { login, isLoading } = useAuth();
@@ -28,101 +31,68 @@ const LoginScreen: React.FC = () => {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
-            <Text style={[styles.title, { color: colors.content.primary }]}>Login</Text>
+        <View className="flex-1 px-lg justify-center items-center" style={{ backgroundColor: colors.surface.primary }}>
+            <View className="items-center pb-xl mb-md px-1" style={{ paddingTop: insets.top + Spacing.lg }}>
+                <Logo fontSize={Typography.heading.h1.fontSize} />
+            </View>
+            <Text className="text-2xl font-bold mb-md" style={[{ color: colors.content.primary }]}>
+                Log in to your account
+            </Text>
+            <View className="flex-col w-full justify-center items-center">
+                <TextInput
+                    className="w-full p-md rounded-md border mb-md"
+                    style={[
+                        {
+                            backgroundColor: colors.surface.secondary,
+                            color: colors.content.primary,
+                            borderColor: colors.border.secondary,
+                        },
+                    ]}
+                    placeholder="Email"
+                    placeholderTextColor={colors.content.secondary}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    value={email}
+                    onChangeText={setEmail}
+                />
 
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        backgroundColor: colors.surface.secondary,
-                        color: colors.content.primary,
-                        borderColor: colors.border.secondary,
-                    },
-                ]}
-                placeholder="Email"
-                placeholderTextColor={colors.content.secondary}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
-            />
+                <TextInput
+                    className="w-full p-md rounded-md border mb-md"
+                    style={[
+                        {
+                            backgroundColor: colors.surface.secondary,
+                            color: colors.content.primary,
+                            borderColor: colors.border.secondary,
+                        },
+                    ]}
+                    placeholder="Password"
+                    placeholderTextColor={colors.content.secondary}
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                />
 
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        backgroundColor: colors.surface.secondary,
-                        color: colors.content.primary,
-                        borderColor: colors.border.secondary,
-                    },
-                ]}
-                placeholder="Password"
-                placeholderTextColor={colors.content.secondary}
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-            />
+                <Pressable
+                    className="w-full p-md rounded-md items-center"
+                    style={[
+                        {
+                            backgroundColor: isLoading ? colors.interactive.primary.disabled : colors.interactive.primary.default,
+                        },
+                    ]}
+                    onPress={handleLogin}
+                    disabled={isLoading}
+                >
+                    <Text className="font-bold" style={[{ color: colors.content.primary }]}>
+                        {isLoading ? "Logging in..." : "Log In"}
+                    </Text>
+                </Pressable>
 
-            <Pressable
-                style={[
-                    styles.primaryButton,
-                    {
-                        backgroundColor: isLoading ? colors.interactive.primary.disabled : colors.interactive.primary.default,
-                    },
-                ]}
-                onPress={handleLogin}
-                disabled={isLoading}
-            >
-                <Text style={[styles.primaryButtonText, { color: colors.content.inverse }]}>{isLoading ? "Logging in..." : "Log In"}</Text>
-            </Pressable>
-
-            <Pressable style={styles.secondaryButton} onPress={() => router.push("/(auth)/signup")}>
-                <Text style={[styles.secondaryButtonText, { color: colors.content.primary }]}>{`Don't have an account? Sign Up`}</Text>
-            </Pressable>
+                <Pressable className="w-full items-center py-md" onPress={() => router.push("/(auth)/signup")}>
+                    <Text className="font-bold" style={[{ color: colors.content.primary }]}>{`Don't have an account? Sign Up`}</Text>
+                </Pressable>
+            </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: Spacing.lg,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: Spacing.xl,
-    },
-    input: {
-        width: "100%",
-        padding: Spacing.md,
-        borderRadius: BorderRadius.md,
-        borderWidth: 1,
-        marginBottom: Spacing.md,
-    },
-    primaryButton: {
-        width: "100%",
-        paddingVertical: Spacing.md,
-        borderRadius: BorderRadius.md,
-        alignItems: "center",
-        marginBottom: Spacing.md,
-    },
-    primaryButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-    },
-    secondaryButton: {
-        width: "100%",
-        paddingVertical: Spacing.md,
-        alignItems: "center",
-    },
-    secondaryButtonText: {
-        fontSize: 16,
-        fontWeight: "500",
-    },
-});
 
 export default LoginScreen;

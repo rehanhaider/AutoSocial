@@ -39,7 +39,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
     // Build theme colors based on current mode
     const colors = buildTheme(mode);
-    const isDark = mode === "dark";
+    const isDark = mode === "dark" || mode === "premium";
 
     // Theme manipulation functions
     const toggleTheme = () => {

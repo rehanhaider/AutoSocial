@@ -19,32 +19,26 @@ export default function Settings() {
                     headerShown: false,
                 }}
             />
-            <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} backgroundColor={colors.surface.primary} />
-            <View style={{ flex: 1, backgroundColor: colors.surface.primary }}>
+            <StatusBar
+                barStyle={colorScheme === "dark" || colorScheme === "premium" ? "light-content" : "dark-content"}
+                backgroundColor={colors.surface.primary}
+            />
+            <View className="flex-1" style={{ backgroundColor: colors.surface.primary }}>
                 {/* Custom Header */}
                 <View
+                    className="flex-row items-center border-b"
                     style={{
                         paddingTop: insets.top,
                         paddingHorizontal: Spacing.md,
                         paddingBottom: Spacing.md,
                         backgroundColor: colors.surface.primary,
-                        borderBottomWidth: 1,
                         borderBottomColor: colors.border.secondary,
-                        flexDirection: "row",
-                        alignItems: "center",
                     }}
                 >
-                    <TouchableOpacity onPress={() => router.back()} style={{ padding: 8, marginRight: Spacing.md }} activeOpacity={0.7}>
+                    <TouchableOpacity className="p-2" onPress={() => router.back()} style={{ marginRight: Spacing.md }} activeOpacity={0.7}>
                         <Ionicons name="arrow-back" size={24} color={colors.content.primary} />
                     </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: "600",
-                            color: colors.content.primary,
-                            flex: 1,
-                        }}
-                    >
+                    <Text className="flex-1 text-lg font-semibold" style={{ color: colors.content.primary }}>
                         Settings
                     </Text>
                 </View>
