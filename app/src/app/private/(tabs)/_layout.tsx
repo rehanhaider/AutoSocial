@@ -1,42 +1,39 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { View } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
 import AppHeader from "@/components/layout/AppHeader";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBar from "@/components/layout/TabBar";
 import { useLocalSearchParams } from "expo-router";
-import HomeScreen from "./index";
-import PaletteScreen from "./palette";
-import { Ionicons } from "@expo/vector-icons";
+import { TabParamList } from "@/types/ui";
+import ScheduledPosts from "./index";
+import Drafts from "./drafts";
+import Setting from "./settings";
 
-const TABS = {
-    Home: {
-        name: "home",
-        lib: Ionicons,
-        component: HomeScreen,
+const TABS: TabParamList = {
+    ScheduledPosts: {
+        name: "list",
+        component: ScheduledPosts,
     },
-    Palette: {
-        name: "color-palette",
-        lib: Ionicons,
-        component: PaletteScreen,
+    Drafts: {
+        name: "create",
+        component: Drafts,
     },
-} as const;
-
-type TabParamList = Record<keyof typeof TABS, undefined>;
+    Analytics: {
+        name: "settings",
+        component: Setting,
+    },
+};
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 const MainTabs: React.FC = () => {
-    const insets = useSafeAreaInsets();
-    const { colors, colorScheme } = useTheme();
     const params = useLocalSearchParams();
 
     return (
         <View style={{ flex: 1 }}>
             <AppHeader />
             <Tab.Navigator
-                initialRouteName="Home"
+                initialRouteName="ScheduledPosts"
                 tabBarPosition="bottom"
                 screenOptions={{
                     tabBarShowLabel: true,
@@ -46,7 +43,7 @@ const MainTabs: React.FC = () => {
                 tabBar={(props) => <TabBar tabs={TABS} {...props} />}
             >
                 {Object.entries(TABS).map(([key, value]) => (
-                    <Tab.Screen key={key} name={key as keyof typeof TABS} component={value.component} initialParams={params as any} />
+                    <Tab.Screen key={key} name={key} component={value.component} initialParams={params as any} />
                 ))}
             </Tab.Navigator>
         </View>

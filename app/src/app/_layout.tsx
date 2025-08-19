@@ -46,7 +46,7 @@ const ProtectedStack: React.FC = () => {
             {/* Private routes - only accessible when authenticated */}
             <Stack.Protected guard={isAuthenticated}>
                 <Stack.Screen name="private" options={{ headerShown: false }} />
-                <Stack.Screen name="settings" />
+                <Stack.Screen name="accountSettings" />
             </Stack.Protected>
         </Stack>
     );

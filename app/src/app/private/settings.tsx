@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack, useRouter } from "expo-router";
-import SettingsScreen from "@/screen/settings/SettingsScreen";
+import SettingsScreen from "@/screens/settings/SettingsScreen";
 import { View, Text, TouchableOpacity, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/hooks/useTheme";

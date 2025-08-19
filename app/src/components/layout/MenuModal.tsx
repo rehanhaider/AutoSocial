@@ -18,7 +18,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ isDropdownVisible, onClose, heade
 
     const handleSettingsPress = () => {
         onClose();
-        router.push("/settings");
+        router.push("/accountSettings");
     };
 
     const handleLogoutPress = async () => {

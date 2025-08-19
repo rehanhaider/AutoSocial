@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const ScheduledPosts: React.FC = () => {
+const Drafts: React.FC = () => {
     return (
         <View className="flex-1 justify-center items-center">
-            <Text>Scheduled Posts</Text>
+            <Text>Drafts</Text>
         </View>
     );
 };
 
-export default ScheduledPosts;
+export default Drafts;

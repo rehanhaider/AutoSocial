@@ -7,9 +7,10 @@ import { useHaptics } from "@/hooks/useHaptics";
 import { ImpactFeedbackStyle } from "expo-haptics";
 import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TabParamList } from "@/types/ui";
 
-const TabBar: React.FC<{ tabs: any; state: any; navigation: any }> = ({ tabs, state, navigation }) => {
-    const icons: Record<string, { name: string; lib: any }> = tabs;
+const TabBar: React.FC<{ tabs: TabParamList; state: any; navigation: any }> = ({ tabs, state, navigation }) => {
+    const icons: Record<string, { name: string }> = tabs;
 
     const insets = useSafeAreaInsets();
     const { colors, colorScheme, shadows, isDark } = useTheme();
@@ -80,8 +81,8 @@ const TabBar: React.FC<{ tabs: any; state: any; navigation: any }> = ({ tabs, st
             <View className="flex-1 flex-row justify-around items-center pt-2">
                 {state.routes.map((route: any, index: number) => {
                     const isFocused = state.index === index;
-                    const { name, lib: IconComponent } = icons[route.name];
                     const scaleAnimRef = scaleAnimRefs.current[route.key];
+                    const iconInfo = icons[route.name];
 
                     const onPress = () => {
                         const event = navigation.emit({
@@ -96,14 +97,21 @@ const TabBar: React.FC<{ tabs: any; state: any; navigation: any }> = ({ tabs, st
                         // Subtle haptic feedback on tab press (if enabled in settings)
                         try {
                             triggerHaptic && triggerHaptic(ImpactFeedbackStyle.Light);
-                        } catch {}
+                        } catch (error) {
+                            // Silently fail if haptic feedback is not available
+                        }
                     };
+
+                    // Skip rendering if no scale animation ref or icon info
+                    if (!scaleAnimRef || !iconInfo) {
+                        return null;
+                    }
 
                     return (
                         <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.7}>
                             <Animated.View style={[{ transform: [{ scale: scaleAnimRef }] }]}>
-                                <IconComponent
-                                    name={name}
+                                <Ionicons
+                                    name={iconInfo.name as any}
                                     size={isFocused ? 24 : 22}
                                     color={isFocused ? colors.accent.redditRed : colors.content.tertiary}
                                 />

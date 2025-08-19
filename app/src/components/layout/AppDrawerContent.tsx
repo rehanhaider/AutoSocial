@@ -15,7 +15,7 @@ const AppDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
     const menuItems = [
         { label: "Home", icon: "home-outline", route: "/private/(tabs)" },
-        { label: "Settings", icon: "settings-outline", route: "/private/settings" },
+        { label: "Account Settings", icon: "settings-outline", route: "/accountSettings" },
     ];
 
     const handleMenuItemPress = (route: string) => {

@@ -1,13 +1,13 @@
 import React from "react";
 import { Stack, useRouter } from "expo-router";
-import SettingsScreen from "@/screen/settings/SettingsScreen";
+import SettingsScreen from "@/screens/settings/SettingsScreen";
 import { View, Text, TouchableOpacity, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Spacing } from "@/styles";
 
-export default function Settings() {
+const AccountSettings = () => {
     const router = useRouter();
     const { colors, colorScheme } = useTheme();
     const insets = useSafeAreaInsets();
@@ -39,7 +39,7 @@ export default function Settings() {
                         <Ionicons name="arrow-back" size={24} color={colors.content.primary} />
                     </TouchableOpacity>
                     <Text className="flex-1 text-lg font-semibold" style={{ color: colors.content.primary }}>
-                        Settings
+                        Account Settings
                     </Text>
                 </View>
 
@@ -48,4 +48,6 @@ export default function Settings() {
             </View>
         </>
     );
-}
+};
+
+export default AccountSettings;
