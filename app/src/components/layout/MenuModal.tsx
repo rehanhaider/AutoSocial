@@ -4,22 +4,17 @@ import { Spacing } from "@/styles";
 import { useTheme } from "@/hooks/useTheme";
 import { useRouter } from "expo-router";
 import { useAuthStore } from "@/stores/authStore";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface MenuModalProps {
     isDropdownVisible: boolean;
     onClose: () => void;
-    headerHeight?: number; // Optional for backward compatibility
+    headerHeight: number;
 }
 
-const MenuModal: React.FC<MenuModalProps> = ({ isDropdownVisible, onClose, headerHeight: propHeaderHeight }) => {
+const MenuModal: React.FC<MenuModalProps> = ({ isDropdownVisible, onClose, headerHeight }) => {
     const { colors, shadows } = useTheme();
     const router = useRouter();
     const { logout } = useAuthStore();
-    const insets = useSafeAreaInsets();
-
-    // Calculate exact header height to match AppHeader
-    const headerHeight = insets.top + Spacing.sm + Spacing.sm; // safe area + paddingBottom + paddingTop + button height
 
     const handleSettingsPress = () => {
         onClose();
@@ -39,7 +34,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ isDropdownVisible, onClose, heade
     return (
         <Modal visible={isDropdownVisible} transparent={true} animationType="fade" onRequestClose={onClose}>
             <TouchableWithoutFeedback onPress={onClose}>
-                <View className="flex-1 justify-start items-end pr-xs" style={{ paddingTop: propHeaderHeight }}>
+                <View className="flex-1 justify-start items-end pr-xs" style={{ paddingTop: headerHeight }}>
                     <TouchableWithoutFeedback>
                         <View
                             style={[
