@@ -1,19 +1,20 @@
-import React from "react";
-import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, StatusBar, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Typography, Spacing } from "@/styles";
+import { Spacing } from "@/styles";
 import { useTheme } from "@/hooks/useTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import Logo from "./Logo";
+import MenuModal from "./MenuModal";
 
 const AppHeader: React.FC = () => {
     const insets = useSafeAreaInsets();
     const { colors, shadows, isDark } = useTheme();
-    const router = useRouter();
     const navigation = useNavigation<DrawerNavigationProp<any>>();
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [headerHeight, setHeaderHeight] = useState(0);
 
     const statusBarStyle = isDark ? "light-content" : "dark-content";
     const statusBarBg = colors.surface.primary;
@@ -22,8 +23,12 @@ const AppHeader: React.FC = () => {
         navigation.openDrawer();
     };
 
-    const handleSettingsPress = () => {
-        router.push("/settings");
+    const handleEllipsesPress = () => {
+        setIsDropdownVisible(true);
+    };
+
+    const handleCloseDropdown = () => {
+        setIsDropdownVisible(false);
     };
 
     return (
@@ -31,6 +36,10 @@ const AppHeader: React.FC = () => {
             <StatusBar barStyle={statusBarStyle} backgroundColor={statusBarBg} />
             <View
                 className="border-b"
+                onLayout={(event) => {
+                    const height = event.nativeEvent.layout.height - insets.top - Spacing.sm;
+                    setHeaderHeight(height);
+                }}
                 style={[
                     {
                         paddingTop: insets.top,
@@ -51,7 +60,7 @@ const AppHeader: React.FC = () => {
                     <View className="flex-row items-center justify-center">
                         <TouchableOpacity
                             className="w-10 h-10 items-center justify-center"
-                            onPress={handleSettingsPress}
+                            onPress={handleEllipsesPress}
                             activeOpacity={0.7}
                         >
                             <Ionicons name="ellipsis-vertical" size={24} color={colors.content.primary} />
@@ -59,6 +68,9 @@ const AppHeader: React.FC = () => {
                     </View>
                 </View>
             </View>
+
+            {/* Dropdown Modal */}
+            <MenuModal isDropdownVisible={isDropdownVisible} onClose={handleCloseDropdown} headerHeight={headerHeight} />
         </>
     );
 };
